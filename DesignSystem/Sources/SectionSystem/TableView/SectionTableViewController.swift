@@ -113,6 +113,7 @@ open class SectionTableViewController: UITableViewController {
     
     public func setupTableView() {
         tableView = UITableView(frame: view.bounds, style: .plain)
+        tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.dataSource = data
         tableView.delegate = data

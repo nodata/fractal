@@ -65,8 +65,8 @@ class MainMenuPresenter  {
         let button = MenuOption(title: "Button", intent: NavigationRouter.Intent.buttonExample.rawValue)
         let selection = MenuOption(title: "Selection", intent: NavigationRouter.Intent.selectionExample.rawValue)
         let filtering = MenuOption(title: "Filtering", intent: NavigationRouter.Intent.filteringExample.rawValue)
-        let card = MenuOption(title: "Card", intent: NavigationRouter.Intent.cardExample.rawValue)
-        return [button, selection, filtering, card]
+        //let card = MenuOption(title: "Card", intent: NavigationRouter.Intent.cardExample.rawValue)
+        return [button, selection, filtering]
     }()
 
     var staticDemo: [NavigationOption] = {
