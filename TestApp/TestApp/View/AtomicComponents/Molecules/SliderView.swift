@@ -27,9 +27,9 @@ public class SliderView: UIView {
         let dragGestureRecogniser = UIPanGestureRecognizer(target: self, action: #selector(didDrag))
         self.addGestureRecognizer(dragGestureRecogniser)
 
-        _ = NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: BrandingManager.didChange), object: nil, queue: nil) { [weak self] (_) in
-            self?.refresh()
-        }
+//        _ = NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: BrandingManager.didChange), object: nil, queue: nil) { [weak self] (_) in
+//            self?.refresh()
+//        }
     }
 
     @objc private func didDrag(dragGestureRecogniser: UIPanGestureRecognizer) {

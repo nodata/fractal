@@ -48,11 +48,9 @@ extension SliderSection: ViewSection {
         return SectionCellSize(width: view.bounds.size.width, height: nil)
     }
 
-    public var configure: (UIView, Int) -> Void {
-        return { (view, index) in
-            guard let sliderView = view as? SliderView else { return }
-            sliderView.set(steps: self.steps, snapStyle: self.snapStyle, didChangeClosure: self.didChangeClosure)
-            sliderView.set(value: self.valueClosure() / self.steps)
-        }
+    public func configure(_ view: UIView, at index: Int) {
+        guard let sliderView = view as? SliderView else { return }
+        sliderView.set(steps: self.steps, snapStyle: self.snapStyle, didChangeClosure: self.didChangeClosure)
+        sliderView.set(value: self.valueClosure() / self.steps)
     }
 }

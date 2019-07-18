@@ -9,26 +9,53 @@
 import UIKit
 import DesignSystem
 
+var rebuildStack = false
+
 class ViewController: UIViewController {
     
+    private var notificationObject: NSObjectProtocol?
+    private var containedNavigationController: UINavigationController?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-        let vc = MainMenuViewController()
-        let navigationController = UINavigationController(rootViewController: vc)
-        navigationController.navigationBar.prefersLargeTitles = true
+        notificationObject = NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: BrandingManager.didChange), object: nil, queue: nil) { [weak self] (_) in
+            guard rebuildStack else { return }
+            self?.setupUI()
+            rebuildStack = false
+        }
+        
         let cardViewController = CardViewController(topLevelViewController: navigationController)
-
-        contain(navigationController)
         contain(cardViewController)
         cardViewController.view.superview?.alpha = 0.0 //TODO: find a way to put this inside CardViewController
 
-        NavigationRouter.new(navigationController, cardViewController)
+        NavigationRouter.new(UINavigationController(), cardViewController)
+
+        setupUI()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    private func setupUI() { // HACK
+        
+        let vc = MainMenuViewController()
+        let nc = UINavigationController(rootViewController: vc)
+        nc.navigationBar.prefersLargeTitles = true
+        
+        let rootNC = NavigationRouter.shared.rootNavigationController
+        if rootNC.viewControllers.count > 0  {
+            nc.viewControllers = [MainMenuViewController(), SettingsViewController()]
+        }
+        rootNC.willMove(toParent:nil)
+        rootNC.view.superview?.removeFromSuperview()
+        rootNC.view.removeFromSuperview()
+        rootNC.removeFromParent()
+        
+        contain(nc)
+        NavigationRouter.shared.rootNavigationController = nc
     }
 }
 

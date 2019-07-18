@@ -15,8 +15,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        BrandingManager.set(brand: FractalBrand())
-        //BrandingManager.set(brand: FractalDarkBrand())
+        
+        if UserDefaults.standard.bool(forKey: "useDarkMode") {
+            BrandingManager.set(brand: FractalDarkBrand())
+        } else {
+            BrandingManager.set(brand: FractalBrand())
+        }
+
         BrandingManager.subscribeToNotifications()
         return true
     }

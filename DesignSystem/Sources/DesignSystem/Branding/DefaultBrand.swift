@@ -8,9 +8,13 @@
 
 import Foundation
 
+extension DefaultBrand {
+    static let idString = "DefaultBrand"
+}
+
 class DefaultBrand: NSObject, Brand {
 
-    var id: String = "DefaultBrand"
+    var id: String = DefaultBrand.idString
 
     var keyboardAppearance: UIKeyboardAppearance = .default
 
@@ -20,8 +24,33 @@ class DefaultBrand: NSObject, Brand {
 
     var resourceBundle: Bundle? = Bundle(for: BrandingManager.self)
 
-    func setAppearance() {
-
+    public func setAppearance() {
+        
+        let attributes: [NSAttributedString.Key: AnyObject] = [
+            NSAttributedString.Key.font: BrandingManager.Typography.large.font,
+            NSAttributedString.Key.foregroundColor: UIColor.text]
+        
+        let largeAttributes: [NSAttributedString.Key: AnyObject] = [
+            NSAttributedString.Key.font: BrandingManager.Typography.xlarge(.strong).font,
+            NSAttributedString.Key.foregroundColor: UIColor.text]
+        
+        UINavigationBar.appearance().titleTextAttributes = attributes
+        UINavigationBar.appearance().largeTitleTextAttributes = largeAttributes
+        UINavigationBar.appearance().shadowImage = nil
+        //UINavigationBar.appearance().isTranslucent = false
+        UINavigationBar.appearance().barTintColor = .background
+        UINavigationBar.appearance().tintColor = .brand
+        
+        UITabBar.appearance().shadowImage = nil
+        UITabBar.appearance().isOpaque = true
+        UITabBar.appearance().barTintColor = .background
+        UITabBar.appearance().tintColor = .brand
+        
+        let tabFont = BrandingManager.Typography.xsmall.font
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: tabFont],
+                                                         for: .normal)
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: tabFont],
+                                                         for: .selected)
     }
 
     func imageName(for key: UIImage.Key) -> String? {
@@ -83,7 +112,7 @@ class DefaultBrand: NSObject, Brand {
             case .sliderNegativeTint, .switchNegativeTint:
                 return Palette.mono2.color
             case .detailDisclosure:
-                return Palette.mono2.color
+                return Palette.mono3.color
             default:
                 return Palette.blue.color
             }

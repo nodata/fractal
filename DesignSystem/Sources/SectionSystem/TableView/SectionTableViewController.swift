@@ -98,16 +98,21 @@ open class SectionTableViewController: UITableViewController {
 
     open override func viewDidLoad() {
         super.viewDidLoad()
+       
         view.backgroundColor = .clear
+        
         if useRefreshControl {
             let control = UIRefreshControl()
             control.addTarget(self, action: #selector(refreshTriggered), for: .valueChanged)
             control.tintColor = refreshControlTintColor
             refreshControl = control
-        } else {
-            tableView.alwaysBounceVertical = false
         }
-        tableView.backgroundColor = .clear
+        
+        setupTableView()
+    }
+    
+    public func setupTableView() {
+        tableView = UITableView(frame: view.bounds, style: .plain)
         tableView.separatorStyle = .none
         tableView.dataSource = data
         tableView.delegate = data
@@ -115,8 +120,9 @@ open class SectionTableViewController: UITableViewController {
         tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.alwaysBounceVertical = true
         tableView.keyboardDismissMode = .interactive
-
         configureTableView?(tableView)
+        registeredReuseIdentifiers.removeAll()
+        data.registerCells(in: tableView, with: &registeredReuseIdentifiers)
     }
 
     @available (*, unavailable)

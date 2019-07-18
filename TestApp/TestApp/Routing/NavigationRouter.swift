@@ -25,7 +25,7 @@ class NavigationRouter {
 
     static var shared: NavigationRouter!
 
-    private let rootNavigationController: UINavigationController
+    var rootNavigationController: UINavigationController
     private let cardViewController: CardViewController
 
     private var currentNavigationController: UINavigationController {

@@ -171,23 +171,23 @@ public class BrandingManager {
         public var defaultColor: UIColor { return .text } // TODO: put inside brand
     }
 
-    public static func set(brand: Brand) {
+    public static func set(brand: Brand?) {
+        
+        let settingBrand = brand ?? DefaultBrand()
         
         if let current = currentBrand {
-            guard current.id != brand.id else { print("Current brand: \(current.id) id matches: \(brand.id)"); return }
+            guard current.id != settingBrand.id else { print("Current brand: \(current.id) id matches: \(settingBrand.id)"); return }
         }
         
-        currentBrand = brand
-        brand.setAppearance()
+        currentBrand = settingBrand
+        settingBrand.setAppearance()
 
-        print("Setting Brand:", brand.id)
-        if #available(iOS 11.0.0, *), UIApplication.shared.supportsAlternateIcons {
-            UIApplication.shared.setAlternateIconName("\(brand.id)-AppIcon", completionHandler: nil)
-        } else {
-            UIApplication.shared.setAlternateIconName(nil, completionHandler: nil)
-        }
-        
+        print("Setting Brand:", settingBrand.id)        
         NotificationCenter.default.post(name: Notification.Name(rawValue: BrandingManager.didChange), object: nil)
+    }
+    
+    public static var isDefaultBrand: Bool {
+        return currentBrand?.id == DefaultBrand.idString
     }
 
     public static var brand: Brand {

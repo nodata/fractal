@@ -11,16 +11,28 @@ import DesignSystem
 
 class SettingsViewController: SectionTableViewController, SectionBuilder {
 
-    private let darkModeObserved = Observed<Bool>(false)
-
+    private let darkModeObserved = Observed<Bool>(UserDefaults.standard.bool(forKey: "useDarkMode"))
+    private var notificationObject: NSObjectProtocol?
+    
     override func viewDidLoad() {
         title = "Settings"
         super.viewDidLoad()
-        view.backgroundColor = .background
+        notificationObject = NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: BrandingManager.didChange), object: nil, queue: nil) { [weak self] (_) in
+            self?.setupUI()
+            self?.reload()
+        }
+        darkModeObserved.addObserver(self) { [weak self] value in self?.setForDark(value) }
+        setupUI()
         setSections()
         reload()
     }
 
+    private func setupUI() {
+        setSections()
+        setupTableView()
+        view.backgroundColor = .background
+    }
+    
     private func setSections() {
         dataSource.sections = [
             image(.logo, heightType: .custom(200.0)),
@@ -31,11 +43,20 @@ class SettingsViewController: SectionTableViewController, SectionBuilder {
                 information("Version", detailClosure: { "0.2" })
                 ]),
             spacing(32.0),
-            singleButton("Remove All Branding", tappedClosure: { [weak self] in self?.removeBranding() })
+            singleButton(BrandingManager.isDefaultBrand ? "Add Branding" : "Remove All Branding",
+                         tappedClosure: { [weak self] in self?.brandingToggle() })
         ]
     }
 
-    private func removeBranding() {
-
+    private func brandingToggle() {
+        rebuildStack = true
+        guard BrandingManager.isDefaultBrand else { BrandingManager.set(brand: nil); return }
+        setForDark(darkModeObserved.value)
+    }
+    
+    private func setForDark(_ darkMode: Bool) {
+        rebuildStack = true
+        UserDefaults.standard.set(darkMode, forKey: "useDarkMode")
+        BrandingManager.set(brand: darkMode ? FractalDarkBrand() : FractalBrand())
     }
 }

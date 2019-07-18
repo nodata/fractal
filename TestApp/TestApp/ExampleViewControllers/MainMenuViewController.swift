@@ -12,6 +12,7 @@ import DesignSystem
 class MainMenuViewController: SectionTableViewController, SectionBuilder {
 
     private var presenter: MainMenuPresenter!
+    private var notificationObject: NSObjectProtocol?
 
     var cardHeight: CGFloat = 400.0
 
@@ -22,13 +23,24 @@ class MainMenuViewController: SectionTableViewController, SectionBuilder {
     override func viewDidLoad() {
         title = "Fractal"
         super.viewDidLoad()
-        view.backgroundColor = .background
         DependencyRegistry.shared.prepare(viewController: self)
-
-        didPullDownToRefreshClosure = { [weak self] in
+        didPullDownToRefreshClosure = { [weak self] in self?.reload() }
+        notificationObject = NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: BrandingManager.didChange), object: nil, queue: nil) { [weak self] (_) in
+            self?.setupUI()
             self?.reload()
         }
+        
+        setupUI()
+        reload()
+    }
+    
+    func setupUI() {
+        setSections()
+        setupTableView()
+        view.backgroundColor = .background
+    }
 
+    func setSections() {
         dataSource.sections = [
             spacing(52.0),
             group([
@@ -45,9 +57,8 @@ class MainMenuViewController: SectionTableViewController, SectionBuilder {
             spacing(10.0),
             headline(BrandingManager.brand.id),
         ]
-        reload()
     }
-
+    
     func inject(presenter: MainMenuPresenter) {
         self.presenter = presenter
     }
