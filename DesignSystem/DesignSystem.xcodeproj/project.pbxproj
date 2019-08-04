@@ -44,6 +44,9 @@
 		92AC188222E9F69B0002376E /* GroupSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92AC188122E9F69B0002376E /* GroupSection.swift */; };
 		92AC188622E9F6E00002376E /* DividerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92AC188522E9F6E00002376E /* DividerSection.swift */; };
 		92AC188D22EDB3570002376E /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92AC188C22EDB3570002376E /* DividerView.swift */; };
+		92AC189A22F6A6A90002376E /* CarouselSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92AC189922F6A6A90002376E /* CarouselSection.swift */; };
+		92AC189C22F6A6D70002376E /* CarouselViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92AC189B22F6A6D70002376E /* CarouselViewController.swift */; };
+		92AC189E22F6AB8B0002376E /* ViewControllersSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92AC189D22F6AB8B0002376E /* ViewControllersSection.swift */; };
 		92BA39012179829900266383 /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BA38F72179829800266383 /* DesignSystem.framework */; };
 		92BA39062179829900266383 /* DesignSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BA39052179829900266383 /* DesignSystemTests.swift */; };
 		92C5D92522F1727000E1A68D /* Section+Enumeration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C5D92422F1727000E1A68D /* Section+Enumeration.swift */; };
@@ -99,6 +102,9 @@
 		92AC188122E9F69B0002376E /* GroupSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupSection.swift; sourceTree = "<group>"; };
 		92AC188522E9F6E00002376E /* DividerSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DividerSection.swift; sourceTree = "<group>"; };
 		92AC188C22EDB3570002376E /* DividerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
+		92AC189922F6A6A90002376E /* CarouselSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselSection.swift; sourceTree = "<group>"; };
+		92AC189B22F6A6D70002376E /* CarouselViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewController.swift; sourceTree = "<group>"; };
+		92AC189D22F6AB8B0002376E /* ViewControllersSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllersSection.swift; sourceTree = "<group>"; };
 		92BA38F72179829800266383 /* DesignSystem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DesignSystem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		92BA39002179829900266383 /* DesignSystemTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DesignSystemTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		92BA39052179829900266383 /* DesignSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemTests.swift; sourceTree = "<group>"; };
@@ -222,6 +228,7 @@
 		922F554922BA1650005ABF39 /* Organisms */ = {
 			isa = PBXGroup;
 			children = (
+				92AC189B22F6A6D70002376E /* CarouselViewController.swift */,
 				922F555222BA39C0005ABF39 /* CardView.swift */,
 				922F555322BA39C0005ABF39 /* CardViewController.swift */,
 				922F555422BA39C0005ABF39 /* DrawerHandleView.swift */,
@@ -239,6 +246,8 @@
 		92AC188022E9F68E0002376E /* Sections */ = {
 			isa = PBXGroup;
 			children = (
+				92AC189D22F6AB8B0002376E /* ViewControllersSection.swift */,
+				92AC189922F6A6A90002376E /* CarouselSection.swift */,
 				92AC188522E9F6E00002376E /* DividerSection.swift */,
 				92AC188122E9F69B0002376E /* GroupSection.swift */,
 			);
@@ -394,6 +403,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9209635E2271518E00FC8E6F /* SectionCollectionViewController.swift in Sources */,
+				92AC189A22F6A6A90002376E /* CarouselSection.swift in Sources */,
 				728D057D2282996000B44543 /* BrandingManager+Extensions.swift in Sources */,
 				9228C566229CB21600B8972B /* TextView.swift in Sources */,
 				9209635A2271518E00FC8E6F /* SectionTableViewController.swift in Sources */,
@@ -414,12 +424,14 @@
 				9228C61E229E2AE000B8972B /* DefaultBrand.swift in Sources */,
 				9228C560229CB21600B8972B /* Slider.swift in Sources */,
 				92EAA29922A01F5F000EB39F /* CGFloat+Extensions.swift in Sources */,
+				92AC189E22F6AB8B0002376E /* ViewControllersSection.swift in Sources */,
 				920963592271518E00FC8E6F /* Section+DefaultValues.swift in Sources */,
 				92AC188222E9F69B0002376E /* GroupSection.swift in Sources */,
 				9228C565229CB21600B8972B /* SegmentedControl.swift in Sources */,
 				9228C562229CB21600B8972B /* ImageView.swift in Sources */,
 				728D057E2282996000B44543 /* BrandingManager+String.swift in Sources */,
 				9228C561229CB21600B8972B /* TextField.swift in Sources */,
+				92AC189C22F6A6D70002376E /* CarouselViewController.swift in Sources */,
 				728D057B2282996000B44543 /* BrandingManager+UIView.swift in Sources */,
 				92AC188D22EDB3570002376E /* DividerView.swift in Sources */,
 				9209633A2271518E00FC8E6F /* UIView+Pin.swift in Sources */,

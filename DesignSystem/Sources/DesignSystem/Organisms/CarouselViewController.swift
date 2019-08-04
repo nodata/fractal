@@ -6,7 +6,6 @@
 //  Copyright © 2018 mercari. All rights reserved.
 //
 import Foundation
-import DesignSystem
 
 public class CarouselViewController: SectionCollectionViewController {
 
