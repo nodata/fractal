@@ -9,7 +9,7 @@
 import Foundation
 
 extension SectionBuilder {
-    public func carousel(_ reuseIdentifier: String = UUID().uuidString, height: CarouselSection.HeightType = .full, pagingEnabled: Bool = false, sections: @escaping () -> [Section]) -> CarouselSection {
+    public func carousel(_ reuseIdentifier: String = UUID().uuidString, height: CarouselSection.HeightType = .full, pagingEnabled: Bool = false, sections: @autoclosure @escaping () -> [Section]) -> CarouselSection {
         return CarouselSection(id: reuseIdentifier, heightType: height, pagingEnabled: pagingEnabled, sectionsClosure: sections)
     }
 }
