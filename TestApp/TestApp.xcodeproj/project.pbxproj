@@ -636,7 +636,6 @@
 			files = (
 				9264750923245E8B00F51DBD /* Phase2.swift in Sources */,
 				9228C5F4229CCE8100B8972B /* CarouselViewController.swift in Sources */,
->>>>>>> 6a52cc8591f3940bd2382f76c07a07504f2d83b1
 				9228C609229CCEE300B8972B /* SegmentedControlView.swift in Sources */,
 				9264750B23245E9400F51DBD /* Phase3.swift in Sources */,
 				9228C5EF229CCE2200B8972B /* ReloadableSection.swift in Sources */,
