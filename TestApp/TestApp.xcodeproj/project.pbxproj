@@ -634,8 +634,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-<<<<<<< HEAD
-=======
 				9264750923245E8B00F51DBD /* Phase2.swift in Sources */,
 				9228C5F4229CCE8100B8972B /* CarouselViewController.swift in Sources */,
 >>>>>>> 6a52cc8591f3940bd2382f76c07a07504f2d83b1
