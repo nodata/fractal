@@ -20,38 +20,47 @@ class NavigationRouter {
         selectionExample,
         filteringExample,
         cardExample,
+        yoga,
         settings
     }
 
     static var shared: NavigationRouter!
 
-    private let rootNavigationController: UINavigationController
+    private let rootNavigationController: NavigationController
     private let cardViewController: CardViewController
 
-    private var currentNavigationController: UINavigationController {
+    private var currentNavigationController: NavigationController {
         
-        if let cardNavigationController = cardViewController.cardViews.last?.viewController as? UINavigationController {
+        if let cardNavigationController = cardViewController.cardViews.last?.viewController as? NavigationController {
             return cardNavigationController
         }
         
         return rootNavigationController
     }
 
-    static func new(_ rootNavigationController: UINavigationController, _ cardViewController: CardViewController) {
+    static func new(_ rootNavigationController: NavigationController, _ cardViewController: CardViewController) {
         shared = NavigationRouter(rootNavigationController, cardViewController)
     }
 
-    private init(_ rootNavigationController: UINavigationController, _ cardViewController: CardViewController) {
+    private init(_ rootNavigationController: NavigationController, _ cardViewController: CardViewController) {
         self.rootNavigationController = rootNavigationController
         self.cardViewController = cardViewController
     }
 
-    func perform(_ rawIntent: String) {
-        guard let intent = Intent(rawValue: rawIntent) else { print("No navigation intent for \(rawIntent)"); return }
+    // MARK: - Public Actions
+
+    func navigationOptionSelected(_ option: String) {
+        guard let intent = Intent(rawValue: option) else { print("No navigation intent for \(option)"); return }
         perform(intent)
     }
 
-    func perform(_ intent: NavigationRouter.Intent) {
+    func yogaEventTapped(_ event: YogaSectionOption) {
+        presentYogaDetail(event)
+    }
+    
+    // MARK: - Private
+
+    private func perform(_ intent: NavigationRouter.Intent) {
 
         switch intent {
         case .palette:
@@ -68,6 +77,8 @@ class NavigationRouter {
             pushFilteringExample()
         case .cardExample:
             presentCardExample()
+        case .yoga:
+            presentYogaExample()
         case .settings:
             presentSettings()
         }
@@ -108,8 +119,19 @@ class NavigationRouter {
     private func presentCardExample() {
         let viewController = MainMenuViewController()
         viewController.cardHeight = max(500.0, 800.0 - (100.0 * CGFloat(cardViewController.cardViews.count)))
-        let nav = UINavigationController(rootViewController: viewController)
+        let nav = NavigationController(rootViewController: viewController)
         cardViewController.present(nav, options: [.darkBackground, .isFullscreen])
+    }
+    
+    private func presentYogaExample() {
+        let viewController = YogaViewController()
+        currentNavigationController.pushViewController(viewController, animated: true)
+    }
+    
+    private func presentYogaDetail(_ event: YogaSectionOption) {
+        guard let event = event as? YogaEvent else { return }
+        let viewController = YogaDetailViewController(event: event)
+        currentNavigationController.pushViewController(viewController, animated: true)
     }
 
     private func presentSettings() {

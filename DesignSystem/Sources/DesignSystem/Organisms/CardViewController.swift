@@ -151,7 +151,7 @@ public class CardViewController: UIViewController {
         cardView.animateIn()
     }
 
-    func dismissModalCard(with viewController:UIViewController, completion: (() -> Void)? = nil) {
+    public func dismissModalCard(with viewController: UIViewController, completion: (() -> Void)? = nil) {
         
         var found = false
         
@@ -205,9 +205,10 @@ extension CardViewController: CardViewDelegate {
         return { [weak self] in
             
             guard let `self` = self else { return }
+            guard self.cardViews.count > 0 else { return }
 
             let scale = 1.0 - CardViewController.scaleFactor
-
+            
             if self.cardViews.count == 1 {
 
                 self.topLevelViewController?.view.superview?.transform = CGAffineTransform(scaleX: scale, y: scale)

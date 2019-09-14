@@ -30,6 +30,7 @@ class DependencyRegistry {
 
     func prepare(viewController: TypographyViewController) {
         let vc = SectionCollectionViewController()
+        vc.tearDownOnBrandChange = false
         let viewModel = TypographyViewModel()
         viewController.inject(viewModel, sectionController: vc)
     }
@@ -42,5 +43,15 @@ class DependencyRegistry {
     func prepare(viewController: SelectionAndInfoViewController) {
         let vc = SectionTableViewController()
         viewController.inject(sectionController: vc)
+    }
+
+    func prepare(viewController: YogaViewController) {
+        let presenter = MockYogaPresenter()
+        viewController.inject(presenter)
+    }
+    
+    func prepare(viewController: YogaDetailViewController, with yogaEvent: YogaEvent) {
+        let presenter = YogaDetailPresenter(yogaEvent)
+        viewController.inject(presenter)
     }
 }

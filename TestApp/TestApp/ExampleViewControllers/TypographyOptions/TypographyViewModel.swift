@@ -13,7 +13,7 @@ class TypographyViewModel {
 
     private var options = [BrandingManager.Typography]() { didSet { didChange?([1]) }}
     var didChange: (([Int]) -> Void)?
-    let isTesting: Observed<Bool> = Observed<Bool>(UserDefaults.standard.bool(forKey: BrandingManager.contentSizeOverrideKey))
+    let isTesting: Observable<Bool> = Observable<Bool>(UserDefaults.standard.bool(forKey: BrandingManager.contentSizeOverrideKey))
 
     init() {
         isTesting.addObserver(self) { [weak self] (testing) in
@@ -30,7 +30,7 @@ class TypographyViewModel {
     }
 
     private func fetchTypographyOptions() {
-        self.options = BrandingManager.Typography.allCases
+        self.options = (BrandingManager.brand as? BrandTest)?.allTypographyCases ?? []
     }
 
     // MARK: - Properties

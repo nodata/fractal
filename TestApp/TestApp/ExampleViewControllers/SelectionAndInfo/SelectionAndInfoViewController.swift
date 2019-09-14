@@ -13,10 +13,10 @@ class SelectionAndInfoViewController: UIViewController, SectionBuilder {
 
     private var sectionViewController: SectionController!
     private let viewModel = ViewModel()
-    private var switch1Value = Observed<Bool>(true)
-    private var switch2Value = Observed<Bool>(true)
-    private var switch3Value = Observed<Bool>(true)
-    private var switch4Value = Observed<Bool>(true)
+    private var switch1Value = Observable<Bool>(true)
+    private var switch2Value = Observable<Bool>(true)
+    private var switch3Value = Observable<Bool>(true)
+    private var switch4Value = Observable<Bool>(true)
 
     private var didChange: () -> Void {
         return { [weak self] in
@@ -53,9 +53,10 @@ class SelectionAndInfoViewController: UIViewController, SectionBuilder {
                 switchOption("Detail Switch", detail: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua", observedBool: switch4Value)
                 ]),
             seperator(),
-            group([checkboxOptions(viewModel.checkboxDataClosure, selectionClosure: checkboxSelectedClosure),
-                   checkboxOptions(viewModel.detailCheckboxDataClosure, style: .detail, selectionClosure: checkboxSelectedClosure)]),
-            seperator()
+            group([checkboxOptions(viewModel.checkboxDataClosure, selectionClosure: checkboxSelectedClosure)]),
+            seperator(),
+            group([checkboxOptions(viewModel.detailCheckboxDataClosure, style: .detail, selectionClosure: checkboxSelectedClosure)]),
+            spacing()
         ]
     }
 
@@ -80,13 +81,13 @@ fileprivate struct DemoOption {
 }
 
 extension DemoOption: CheckboxOption {
-    var _id: String {
+    var id: String {
         return value1
     }
-    var _title: String {
+    var title: String {
         return value1
     }
-    var _detail: String? {
+    var detail: String? {
         return detailValue
     }
 }
@@ -105,7 +106,7 @@ extension SelectionAndInfoViewController {
         fileprivate var checkboxDataClosure: () -> (Int, [CheckboxOption]) {
             let closure: () -> (Int, [CheckboxOption]) = {
                 var array = [CheckboxOption]()
-                for i in 0..<20 {
+                for i in 0..<4 {
                     array.append(DemoOption(value1: "Option \(i+1)", detailValue: nil))
                 }
                 return (self.selectedIndex, array)

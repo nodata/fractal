@@ -9,23 +9,6 @@
 import Foundation
 import DesignSystem
 
-public extension BrandingManager.Color.Key {
-    static let check = BrandingManager.Color.Key("check")
-}
-
-public extension UIImage.Key {
-    static let logo = UIImage.Key("logo")
-    static let icon0 = UIImage.Key("icon0")
-    static let icon1 = UIImage.Key("icon1")
-    static let icon2 = UIImage.Key("icon2")
-    static let icon3 = UIImage.Key("icon3")
-    static let icon4 = UIImage.Key("icon4")
-    static let icon5 = UIImage.Key("icon5")
-    static let icon6 = UIImage.Key("icon6")
-    static let icon7 = UIImage.Key("icon7")
-    static let icon8 = UIImage.Key("icon8")
-}
-
 class FractalBrand: Brand {
 
     var id: String = "FractalBrand"
@@ -36,35 +19,6 @@ class FractalBrand: Brand {
 
     var defaultCellHeight: CGFloat = 52.0
 
-    public func setAppearance() {
-
-        let attributes: [NSAttributedString.Key: AnyObject] = [
-            NSAttributedString.Key.font: BrandingManager.Typography.large.font,
-            NSAttributedString.Key.foregroundColor: UIColor.brand]
-
-        let largeAttributes: [NSAttributedString.Key: AnyObject] = [
-            NSAttributedString.Key.font: BrandingManager.Typography.xxlarge.font,
-            NSAttributedString.Key.foregroundColor: UIColor.brand]
-
-        UINavigationBar.appearance().titleTextAttributes = attributes
-        UINavigationBar.appearance().largeTitleTextAttributes = largeAttributes
-        UINavigationBar.appearance().shadowImage = UIImage(color: .brand)
-        //UINavigationBar.appearance().isTranslucent = false
-        UINavigationBar.appearance().barTintColor = .background
-        UINavigationBar.appearance().tintColor = .brand
-
-        UITabBar.appearance().shadowImage = UIImage(color: .divider)
-        UITabBar.appearance().isOpaque = true
-        UITabBar.appearance().barTintColor = .background
-        UITabBar.appearance().tintColor = .brand
-
-        let tabFont = BrandingManager.Typography.xsmall.font
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: tabFont],
-                                                         for: .normal)
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: tabFont],
-                                                         for: .selected)
-    }
-
     func imageName(for key: UIImage.Key) -> String? {
         switch key {
         case .logo:
@@ -73,6 +27,8 @@ class FractalBrand: Brand {
             return key.rawValue
         }
     }
+
+    // MARK: - Spacing / Sizes
 
     func value(for spacing: BrandingManager.Spacing) -> CGFloat {
         switch spacing {
@@ -118,55 +74,33 @@ class FractalBrand: Brand {
         }
     }
 
-    func value(for color: BrandingManager.Color) -> UIColor {
-        switch color {
-        case .atom(let key):
-            switch key {
-            case .shadow:
-                return Palette.shadow.color
-            case .warning:
-                return Palette.pink1.color
-            case .sliderPositiveTint:
-                return Palette.blue.color
-            case .sliderNegativeTint, .switchNegativeTint:
-                return Palette.mono3.color
-            case .detailDisclosure:
-                return Palette.pink1.color
-            case .switchPositiveTint:
-                return Palette.blue.color
-            case .check:
-                return Palette.pink1.color
+    // MARK: - Typography
+
+    // ultraLight, thin, light, regular, medium, semibold, bold, heavy, strong, black
+
+    func fontName(for typography: BrandingManager.Typography) -> String? {
+        if typography.isStrong {
+            switch typography {
+            case .xxlarge, .xlarge, .large:
+                return "Avenir-Black"
             default:
-                return Palette.blue.color
-            }
-        case .brand(let key):
-            switch key {
-            case .secondary:
-                return Palette.pink1.color
-            case .tertiary:
-                return Palette.pink2.color
-            default:
-                return Palette.blue.color
-            }
-        case .background(let key):
-            switch key {
-            case .cellSelected:
-                return Palette.pink3.color
-            default:
-                return Palette.mono.color
-            }
-        case .divider(_):
-            return Palette.mono2.color
-        case .text(let key):
-            switch key {
-            case .light:
-                return Palette.mono.color
-            case .information:
-                return .brand(.secondary)
-            default:
-                return Palette.mono6.color
+                return "Avenir-Medium"
             }
         }
+        return "Avenir"
+    }
+
+    func fontWeight(for typography: BrandingManager.Typography) -> UIFont.Weight {
+
+        guard let name = fontName(for: typography) else { return .regular }
+
+        if name == "Avenir-Black" {
+            return .black
+        } else if name == "Avenir-Medium" {
+            return .medium
+        }
+
+        return .regular
     }
 
     public func fontSize(for typography: BrandingManager.Typography) -> CGFloat {
@@ -226,67 +160,81 @@ class FractalBrand: Brand {
         }
     }
 
-    func fontName(for fontWeight: UIFont.Weight) -> String? {
-        switch fontWeight {
-        case .black:
-            return "Avenir-Black"
-        case .medium:
-            return "Avenir-Medium"
+    // MARK: - Colors
+
+    func atomColor(for key: UIColor.Key) -> UIColor {
+        switch key {
+        case .shadow:
+            return .shadow
+        case .warning:
+            return .pink1
+        case .sliderPositiveTint:
+            return .blue
+        case .sliderNegativeTint, .switchNegativeTint:
+            return .mono3
+        case .detailDisclosure:
+            return .pink1
+        case .switchPositiveTint:
+            return .blue
+        case .check:
+            return .pink1
+        case .divider:
+            return .mono2
+        case .clear:
+            return .clear
         default:
-            return "Avenir"
+            return .blue
         }
     }
 
-    // ultraLight, thin, light, regular, medium, semibold, bold, heavy, strong, black
-    public func fontWeight(for typography: BrandingManager.Typography) -> UIFont.Weight {
-        if typography.isStrong {
-            switch typography {
-            case .xxlarge, .xlarge, .large:
-                return .black
-            default:
-                return .medium
-            }
-        }
-        return .regular
-    }
-
-    internal enum Palette: String, CaseIterable {
-
-        case blue, pink1, pink2, pink3,
-        mono6, mono5, mono4, mono3, mono2, mono,
-        shadow
-
-        var color: UIColor {
-            switch self {
-            case .pink1:
-                return #colorLiteral(red: 0.973, green: 0.522, blue: 0.502, alpha: 1)
-            case .pink2:
-                return #colorLiteral(red: 0.976, green: 0.725, blue: 0.714, alpha: 1)
-            case .pink3:
-                return #colorLiteral(red: 0.961, green: 0.890, blue: 0.890, alpha: 1)
-            case .blue:
-                return #colorLiteral(red: 0.659, green: 0.871, blue: 0.878, alpha: 1)
-            case .mono6:
-                return #colorLiteral(red: 0.0, green: 0.0, blue: 0.0, alpha: 1)
-            case .mono5:
-                return #colorLiteral(red: 0.1, green: 0.1, blue: 0.1, alpha: 1)
-            case .mono4:
-                return #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
-            case .mono3:
-                return #colorLiteral(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
-            case .mono2:
-                return #colorLiteral(red: 0.95, green: 0.95, blue: 0.95, alpha: 1)
-            case .mono:
-                return #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
-            case .shadow:
-                return #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.18)
-            }
+    func brandColor(for key: UIColor.Key) -> UIColor {
+        switch key {
+        case .secondary:
+            return .pink1
+        case .tertiary:
+            return .pink2
+        default:
+            return .blue
         }
     }
 
-    var rawPalette: [BrandingManager.PaletteOption] {
-        return Palette.allCases.map { BrandingManager.PaletteOption(name: $0.rawValue, color: $0.color) }
+    func backgroundColor(for key: UIColor.Key) -> UIColor {
+        switch key {
+        case .cellSelected:
+            return .pink3
+        case .clear:
+            return .clear
+        case .missing:
+            return .red
+        default:
+            return .mono
+        }
     }
+
+    func textColor(for key: UIColor.Key) -> UIColor {
+        switch key {
+        case .light:
+            return .mono
+        case .information:
+            return .brand(.secondary)
+        default:
+            return .mono6
+        }
+    }
+}
+
+fileprivate extension UIColor {
+    static let pink1  = #colorLiteral(red: 0.973, green: 0.522, blue: 0.502, alpha: 1)
+    static let pink2  = #colorLiteral(red: 0.976, green: 0.725, blue: 0.714, alpha: 1)
+    static let pink3  = #colorLiteral(red: 0.961, green: 0.890, blue: 0.890, alpha: 1)
+    static let blue   = #colorLiteral(red: 0.659, green: 0.871, blue: 0.878, alpha: 1)
+    static let mono6  = #colorLiteral(red: 0.0, green: 0.0, blue: 0.0, alpha: 1)
+    static let mono5  = #colorLiteral(red: 0.1, green: 0.1, blue: 0.1, alpha: 1)
+    static let mono4  = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+    static let mono3  = #colorLiteral(red: 0.9, green: 0.9, blue: 0.9, alpha: 1)
+    static let mono2  = #colorLiteral(red: 0.95, green: 0.95, blue: 0.95, alpha: 1)
+    static let mono   = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1)
+    static let shadow = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.18)
 }
 
 extension FractalBrand: ButtonBrand {
@@ -294,15 +242,21 @@ extension FractalBrand: ButtonBrand {
     func widthPin(for size: Button.Size) -> Pin {
         return .width(-.keyline*2)
     }
-
+    
     func heightPin(for size: Button.Size) -> Pin {
-        return .height(asConstant: 48.0)
+        return .height(asConstant: height(for: size.height))
     }
-
+    
+    func height(for size: Button.Size.Height) -> CGFloat {
+        return 48.0
+    }
+    
     func configure(_ button: Button, with style: Button.Style) {
 
         button.layer.cornerRadius = 3.0
         button.setTypography(.large)
+        button.contentEdgeInsets = UIEdgeInsets(top: 0.0, left: .keyline, bottom: 0.0, right: .keyline)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0.0, left: -.keyline/2, bottom: 0.0, right: .keyline * 1.5)
 
         switch style {
         case .primary:
@@ -337,3 +291,46 @@ extension FractalBrand: ButtonBrand {
     }
 }
 
+extension FractalBrand: NavigationControllerBrand {
+    func applyBrand(to navigationBar: UINavigationBar) {
+        let attributes: [NSAttributedString.Key: AnyObject] = [
+            NSAttributedString.Key.font: BrandingManager.Typography.large.font,
+            NSAttributedString.Key.foregroundColor: UIColor.brand]
+
+        let largeAttributes: [NSAttributedString.Key: AnyObject] = [
+            NSAttributedString.Key.font: BrandingManager.Typography.xxlarge.font,
+            NSAttributedString.Key.foregroundColor: UIColor.brand]
+
+        navigationBar.titleTextAttributes = attributes
+        navigationBar.largeTitleTextAttributes = largeAttributes
+        navigationBar.shadowImage = UIImage(color: .brand)
+        navigationBar.barTintColor = .background
+        navigationBar.tintColor = .brand
+    }
+}
+
+extension FractalBrand: BrandTest {
+    public var allTypographyCases: [BrandingManager.Typography] {
+        let basicCases = BrandingManager.Typography.allCases
+        let str = basicCases.map { BrandingManager.Typography($0.style, [.strong]) }
+        let noAcc = basicCases.map { BrandingManager.Typography($0.style, [.noAccessibility]) }
+        let strNoAcc = basicCases.map { BrandingManager.Typography($0.style, [.strong, .noAccessibility]) }
+        return basicCases + str + noAcc + strNoAcc
+    }
+
+    var rawPalette: [BrandingManager.PaletteOption] {
+
+        let array = [BrandingManager.PaletteOption(name: "pink1", color: .pink1),
+                     BrandingManager.PaletteOption(name: "pink2", color: .pink2),
+                     BrandingManager.PaletteOption(name: "pink3", color: .pink3),
+                     BrandingManager.PaletteOption(name: "blue", color: .blue),
+                     BrandingManager.PaletteOption(name: "mono6", color: .mono6),
+                     BrandingManager.PaletteOption(name: "mono5", color: .mono5),
+                     BrandingManager.PaletteOption(name: "mono4", color: .mono4),
+                     BrandingManager.PaletteOption(name: "mono3", color: .mono3),
+                     BrandingManager.PaletteOption(name: "mono2", color: .mono2),
+                     BrandingManager.PaletteOption(name: "mono", color: .mono),
+                     BrandingManager.PaletteOption(name: "shadow", color: .shadow)]
+        return array
+    }
+}

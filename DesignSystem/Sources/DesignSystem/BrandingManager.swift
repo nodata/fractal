@@ -19,52 +19,59 @@ private var globalDateManager = DateManager()
 infix operator ====
 
 public protocol Brand {
+
     var id: String { get }
     var keyboardAppearance: UIKeyboardAppearance { get }
     var preferredStatusBarStyle: UIStatusBarStyle { get }
     var defaultCellHeight: CGFloat { get }
     var resourceBundle: Bundle? { get }
-    func setAppearance()
+
     func imageName(for key: UIImage.Key) -> String?
+
+    // Spacing and Sizing
     func value(for spacing: BrandingManager.Spacing) -> CGFloat
     func value(for size: BrandingManager.IconSize) -> CGSize
-    func value(for color: BrandingManager.Color) -> UIColor
-    func fontName(for fontWeight: UIFont.Weight) -> String?
-    func fontSize(for typography: BrandingManager.Typography) -> CGFloat
+
+    // Typograhy
+    func fontName(for typography: BrandingManager.Typography) -> String?
     func fontWeight(for typography: BrandingManager.Typography) -> UIFont.Weight
+    func fontSize(for typography: BrandingManager.Typography) -> CGFloat
+
+    // Colors
+    func atomColor(for key: UIColor.Key) -> UIColor
+    func brandColor(for key: UIColor.Key) -> UIColor
+    func backgroundColor(for key: UIColor.Key) -> UIColor
+    func textColor(for key: UIColor.Key) -> UIColor
+}
+
+protocol BrandTest {
     var rawPalette: [BrandingManager.PaletteOption] { get }
+    var allTypographyCases: [BrandingManager.Typography] { get }
+}
+
+public extension UIColor {
+    struct Key: Equatable, RawRepresentable {
+        public let rawValue: String
+
+        public init(_ value: String) {
+            self.rawValue = value
+        }
+
+        public init(rawValue: String) {
+            self.rawValue = rawValue
+        }
+
+        public static func ==(lhs: Key, rhs: Key) -> Bool {
+            return lhs.rawValue == rhs.rawValue
+        }
+    }
 }
 
 public class BrandingManager {
 
-    public static let didChange = "DesignSystem_DidChange"
-    public static let contentSizeOverrideKey = "DesignSystem_contentSizeCategory_override"
-    public static let contentSizeOverrideValueKey = "DesignSystem_contentSizeCategory_value"
-
-    public enum Color {
-        case
-        atom(Key),
-        brand(Key),
-        background(Key),
-        text(Key),
-        divider(Key)
-
-        public struct Key: Equatable, RawRepresentable {
-            public let rawValue: String
-
-            public init(_ value: String) {
-                self.rawValue = value
-            }
-
-            public init(rawValue: String) {
-                self.rawValue = rawValue
-            }
-
-            public static func ==(lhs: Key, rhs: Key) -> Bool {
-                return lhs.rawValue == rhs.rawValue
-            }
-        }
-    }
+    public static let didChange = "BrandingManager_BrandDidChange"
+    public static let contentSizeOverrideKey = "BrandingManager_contentSizeCategory_override"
+    public static let contentSizeOverrideValueKey = "BrandingManager_contentSizeCategory_value"
 
     public struct PaletteOption {
         public let name: String
@@ -76,6 +83,7 @@ public class BrandingManager {
         }
     }
 
+    //TODO: change to keys, and use cornerRadius and other spacing types
     public enum Spacing: String, CaseIterable {
         case xxsmall,
         xsmall,
@@ -99,24 +107,43 @@ public class BrandingManager {
         xxlarge
     }
 
+    //TODO: change to keys
     public struct Typography: CaseIterable, Equatable {
 
-        fileprivate enum Style: String {
-            case xxsmall,
+        public enum Style: String {
+            case xxxsmall,
+            xxsmall,
             xsmall,
             small,
             medium,
             large,
             xlarge,
-            xxlarge
+            xxlarge,
+            xxxlarge
         }
 
-        private let style: Style
-        private var modifiers: [Modifier]
+        // Style + Modifier determines the actual font properties under the hood in your brand
 
-        public enum Modifier: String, CaseIterable {
-            case strong,
-            noAccessibility
+        public let style: Style
+        public var modifiers: [Modifier]
+
+        public struct Modifier: Equatable, RawRepresentable {
+            public let rawValue: String
+
+            public init(_ value: String) {
+                self.rawValue = value
+            }
+
+            public init(rawValue: String) {
+                self.rawValue = rawValue
+            }
+
+            public static func ==(lhs: Modifier, rhs: Modifier) -> Bool {
+                return lhs.rawValue == rhs.rawValue
+            }
+
+            public static let strong = Modifier("strong")
+            public static let noAccessibility = Modifier("noAccessibility")
         }
 
         public static func == (lhs: Typography, rhs: Typography) -> Bool {
@@ -131,14 +158,11 @@ public class BrandingManager {
         }
 
         public static var allCases: [Typography] {
-            let basic = [.xxsmall, .xsmall, .small, .medium, large, xlarge, xxlarge]
-            let str = basic.map { Typography($0.style, [.strong]) }
-            let noAcc = basic.map { Typography($0.style, [.noAccessibility]) }
-            let strNoAcc = basic.map { Typography($0.style, [.strong, .noAccessibility]) }
-            return basic + str + noAcc + strNoAcc
+            let basicCases = [.xxsmall, .xsmall, .small, .medium, large, xlarge, xxlarge]
+            return basicCases
         }
 
-        fileprivate init(_ style: Style, _ modifiers: [Modifier] = []) {
+        public init(_ style: Style, _ modifiers: [Modifier] = []) {
             self.style = style
             self.modifiers = modifiers
         }
@@ -151,7 +175,7 @@ public class BrandingManager {
         }
 
         public var font: UIFont {
-            let name = BrandingManager.brand.fontName(for: fontWeight)
+            let name = BrandingManager.brand.fontName(for: self)
             let defaultFont: UIFont = .systemFont(ofSize: fontSize, weight: fontWeight)
             guard let fontName = name else { return defaultFont }
             return UIFont(name: fontName, size: fontSize) ?? defaultFont
@@ -159,7 +183,9 @@ public class BrandingManager {
 
         // Apple font weights
         // ultraLight, thin, light, regular, medium, semibold, bold, heavy, strong, black
-        public var fontWeight: UIFont.Weight { return BrandingManager.brand.fontWeight(for: self) }
+        public var fontWeight: UIFont.Weight {
+            return BrandingManager.brand.fontWeight(for: self)
+        }
 
         public var useAccessibility: Bool { return !modifiers.contains(.noAccessibility) }
 
@@ -179,15 +205,7 @@ public class BrandingManager {
         }
         
         currentBrand = brand
-        brand.setAppearance()
-
         print("Setting Brand:", brand.id)
-        if #available(iOS 11.0.0, *), UIApplication.shared.supportsAlternateIcons {
-            UIApplication.shared.setAlternateIconName("\(brand.id)-AppIcon", completionHandler: nil)
-        } else {
-            UIApplication.shared.setAlternateIconName(nil, completionHandler: nil)
-        }
-        
         NotificationCenter.default.post(name: Notification.Name(rawValue: BrandingManager.didChange), object: nil)
     }
 
@@ -261,8 +279,8 @@ public extension CGFloat { // Spacing and size
 }
 
 public extension UIImageView {
-    convenience init(_ key: UIImage.Key, file: String = #file, in bundle: Bundle? = nil, renderingMode: UIImage.RenderingMode = .alwaysOriginal) {
-        self.init(image: UIImage.with(key, file: file, in: bundle)?.withRenderingMode(renderingMode))
+    convenience init(_ key: UIImage.Key, in bundle: Bundle? = nil, renderingMode: UIImage.RenderingMode = .alwaysOriginal) {
+        self.init(image: UIImage.with(key, in: bundle)?.withRenderingMode(renderingMode))
     }
 }
 
@@ -284,33 +302,27 @@ public extension UIImage {
         }
     }
 
-    static func with(_ key: Key, file: String = #file, in bundle: Bundle? = nil) -> UIImage? {
+    static func with(_ key: Key, in bundle: Bundle? = nil) -> UIImage? {
         guard let name = BrandingManager.brand.imageName(for: key) else { return nil }
-        var image: UIImage? = nil
 
-        if let bundle = bundle {
-            image = UIImage(named: name, in: bundle, compatibleWith: nil)
+        if let bundle = bundle, let image = UIImage(named: name, in: bundle, compatibleWith: nil) {
+            return image
         }
 
-        if image == nil, let bundle = BrandingManager.brand.resourceBundle {
-            image = UIImage(named: name, in: bundle, compatibleWith: nil)
+        if let bundle = BrandingManager.brand.resourceBundle, let image = UIImage(named: name, in: bundle, compatibleWith: nil) {
+            return image
         }
 
-        if image == nil {
-            image = UIImage(named: name, in: .main, compatibleWith: nil)
+        if let image = UIImage(named: name, in: .main, compatibleWith: nil) {
+            return image
         }
 
-        if image == nil {
-            image = UIImage(named: name, in: Bundle(for: BrandingManager.self), compatibleWith: nil)
+        if let image = UIImage(named: name, in: Bundle(for: BrandingManager.self), compatibleWith: nil) {
+            return image
         }
 
-        if image == nil {
-            print("Failed to find \(key.rawValue) in any bundle")
-            return UIImage(named: name, in: Bundle.main, compatibleWith: nil)
-        }
-
-
-        return image
+        print("Failed to find \(key.rawValue) in any bundle")
+        return nil
     }
 }
 
@@ -330,25 +342,20 @@ public extension UIColor {
     static var brand:      UIColor { return .brand(.primary) }
     static var background: UIColor { return .background(.primary) }
     static var text:       UIColor { return .text(.primary) }
-    static var divider:    UIColor { return .divider(.primary) }
 
-    static func atom(_ key: BrandingManager.Color.Key = .primary) -> UIColor {
-        return BrandingManager.brand.value(for: .atom(key))
+    static func atom(_ key: UIColor.Key = .primary) -> UIColor {
+        return BrandingManager.brand.atomColor(for: key)
     }
 
-    static func brand(_ key: BrandingManager.Color.Key = .primary) -> UIColor {
-        return BrandingManager.brand.value(for: .brand(key))
+    static func brand(_ key: UIColor.Key = .primary) -> UIColor {
+        return BrandingManager.brand.brandColor(for: key)
     }
 
-    static func background(_ key: BrandingManager.Color.Key = .primary) -> UIColor {
-        return BrandingManager.brand.value(for: .background(key))
+    static func background(_ key: UIColor.Key = .primary) -> UIColor {
+        return BrandingManager.brand.backgroundColor(for: key)
     }
 
-    static func text(_ key: BrandingManager.Color.Key = .primary) -> UIColor {
-        return BrandingManager.brand.value(for: .text(key))
-    }
-
-    static func divider(_ key: BrandingManager.Color.Key = .primary) -> UIColor {
-        return BrandingManager.brand.value(for: .divider(key))
+    static func text(_ key: UIColor.Key = .primary) -> UIColor {
+        return BrandingManager.brand.textColor(for: key)
     }
 }

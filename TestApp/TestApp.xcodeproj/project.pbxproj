@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9202FFC32313C56E006A8E92 /* YogaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9202FFC22313C56E006A8E92 /* YogaViewController.swift */; };
+		9202FFC52313C578006A8E92 /* YogaDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9202FFC42313C578006A8E92 /* YogaDetailViewController.swift */; };
+		9202FFC72313C72E006A8E92 /* YogaBrand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9202FFC62313C72E006A8E92 /* YogaBrand.swift */; };
+		9202FFCD231D0599006A8E92 /* YogaPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9202FFCC231D0599006A8E92 /* YogaPresenter.swift */; };
+		9202FFCF231D05F5006A8E92 /* YogaDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9202FFCE231D05F5006A8E92 /* YogaDetailPresenter.swift */; };
+		9202FFD1231D07A0006A8E92 /* YogaOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9202FFD0231D07A0006A8E92 /* YogaOptionsSection.swift */; };
+		9202FFD3231D105E006A8E92 /* YogaEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9202FFD2231D105E006A8E92 /* YogaEventView.swift */; };
 		92096185226EE6FD00FC8E6F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92096184226EE6FD00FC8E6F /* AppDelegate.swift */; };
 		92096187226EE6FD00FC8E6F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92096186226EE6FD00FC8E6F /* ViewController.swift */; };
 		9209618A226EE6FD00FC8E6F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 92096188226EE6FD00FC8E6F /* Main.storyboard */; };
@@ -67,6 +74,17 @@
 		9228C620229F934200B8972B /* BrandingManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C61F229F934200B8972B /* BrandingManager+Extensions.swift */; };
 		922F556622BC9DC3005ABF39 /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 922F555922BA8F45005ABF39 /* DesignSystem.framework */; };
 		922F556722BC9DC3005ABF39 /* DesignSystem.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 922F555922BA8F45005ABF39 /* DesignSystem.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		923545B6230BCBDF00775912 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 923545B5230BCBDF00775912 /* TabBarController.swift */; };
+		926095C4231F95A400BF2A85 /* ButtonCarouselSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926095C3231F95A400BF2A85 /* ButtonCarouselSection.swift */; };
+		926095C623209DB600BF2A85 /* HeroImageSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926095C523209DB600BF2A85 /* HeroImageSection.swift */; };
+		926095C82320B4B100BF2A85 /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926095C72320B4B100BF2A85 /* CommentView.swift */; };
+		926095CA2320BDC200BF2A85 /* EventDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926095C92320BDC200BF2A85 /* EventDetailsView.swift */; };
+		926095CC2320D66700BF2A85 /* EventDetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926095CB2320D66700BF2A85 /* EventDetailSection.swift */; };
+		926095CE2320D67300BF2A85 /* CommentsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926095CD2320D67300BF2A85 /* CommentsSection.swift */; };
+		9264750423240BDD00F51DBD /* HeroImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9264750323240BDD00F51DBD /* HeroImageView.swift */; };
+		9264750723245E8200F51DBD /* Phase1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9264750623245E8200F51DBD /* Phase1.swift */; };
+		9264750923245E8B00F51DBD /* Phase2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9264750823245E8B00F51DBD /* Phase2.swift */; };
+		9264750B23245E9400F51DBD /* Phase3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9264750A23245E9400F51DBD /* Phase3.swift */; };
 		92810CAD22D5E8C500F8F0DE /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92810CAC22D5E8C500F8F0DE /* SettingsViewController.swift */; };
 		92810CB122D70A5200F8F0DE /* IconSelectionSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92810CB022D70A5200F8F0DE /* IconSelectionSection.swift */; };
 		92810CB322D70AAB00F8F0DE /* IconSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92810CB222D70AAB00F8F0DE /* IconSelectView.swift */; };
@@ -106,6 +124,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9202FFC22313C56E006A8E92 /* YogaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YogaViewController.swift; sourceTree = "<group>"; };
+		9202FFC42313C578006A8E92 /* YogaDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YogaDetailViewController.swift; sourceTree = "<group>"; };
+		9202FFC62313C72E006A8E92 /* YogaBrand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YogaBrand.swift; sourceTree = "<group>"; };
+		9202FFCC231D0599006A8E92 /* YogaPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YogaPresenter.swift; sourceTree = "<group>"; };
+		9202FFCE231D05F5006A8E92 /* YogaDetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YogaDetailPresenter.swift; sourceTree = "<group>"; };
+		9202FFD0231D07A0006A8E92 /* YogaOptionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YogaOptionsSection.swift; sourceTree = "<group>"; };
+		9202FFD2231D105E006A8E92 /* YogaEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YogaEventView.swift; sourceTree = "<group>"; };
 		92096181226EE6FD00FC8E6F /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92096184226EE6FD00FC8E6F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		92096186226EE6FD00FC8E6F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -171,6 +196,17 @@
 		9228C618229CD82C00B8972B /* FractalDarkBrand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FractalDarkBrand.swift; sourceTree = "<group>"; };
 		9228C61F229F934200B8972B /* BrandingManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BrandingManager+Extensions.swift"; sourceTree = "<group>"; };
 		922F555922BA8F45005ABF39 /* DesignSystem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DesignSystem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		923545B5230BCBDF00775912 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		926095C3231F95A400BF2A85 /* ButtonCarouselSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCarouselSection.swift; sourceTree = "<group>"; };
+		926095C523209DB600BF2A85 /* HeroImageSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroImageSection.swift; sourceTree = "<group>"; };
+		926095C72320B4B100BF2A85 /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
+		926095C92320BDC200BF2A85 /* EventDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsView.swift; sourceTree = "<group>"; };
+		926095CB2320D66700BF2A85 /* EventDetailSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailSection.swift; sourceTree = "<group>"; };
+		926095CD2320D67300BF2A85 /* CommentsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsSection.swift; sourceTree = "<group>"; };
+		9264750323240BDD00F51DBD /* HeroImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroImageView.swift; sourceTree = "<group>"; };
+		9264750623245E8200F51DBD /* Phase1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phase1.swift; sourceTree = "<group>"; };
+		9264750823245E8B00F51DBD /* Phase2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phase2.swift; sourceTree = "<group>"; };
+		9264750A23245E9400F51DBD /* Phase3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phase3.swift; sourceTree = "<group>"; };
 		92810CAC22D5E8C500F8F0DE /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		92810CB022D70A5200F8F0DE /* IconSelectionSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSelectionSection.swift; sourceTree = "<group>"; };
 		92810CB222D70AAB00F8F0DE /* IconSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSelectView.swift; sourceTree = "<group>"; };
@@ -204,6 +240,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9202FFC12313C55A006A8E92 /* Yoga */ = {
+			isa = PBXGroup;
+			children = (
+				9202FFCC231D0599006A8E92 /* YogaPresenter.swift */,
+				9202FFC22313C56E006A8E92 /* YogaViewController.swift */,
+				9202FFCE231D05F5006A8E92 /* YogaDetailPresenter.swift */,
+				9202FFC42313C578006A8E92 /* YogaDetailViewController.swift */,
+			);
+			path = Yoga;
+			sourceTree = "<group>";
+		};
 		92096178226EE6FD00FC8E6F = {
 			isa = PBXGroup;
 			children = (
@@ -228,13 +275,14 @@
 		92096183226EE6FD00FC8E6F /* TestApp */ = {
 			isa = PBXGroup;
 			children = (
+				9264750523245E7300F51DBD /* Phases */,
 				9228C61A229E1DEC00B8972B /* Extensions */,
 				9228C612229CCF3F00B8972B /* View */,
-				920962B2226EFB4700FC8E6F /* DependencyRegistry.swift */,
-				922F555B22BB5082005ABF39 /* Routing */,
 				92096284226EFB2D00FC8E6F /* ExampleViewControllers */,
 				9209626A226EFB2400FC8E6F /* Helpers.swift */,
 				92096184226EE6FD00FC8E6F /* AppDelegate.swift */,
+				920962B2226EFB4700FC8E6F /* DependencyRegistry.swift */,
+				920962B1226EFB4700FC8E6F /* NavigationRouter.swift */,
 				92096186226EE6FD00FC8E6F /* ViewController.swift */,
 				92096188226EE6FD00FC8E6F /* Main.storyboard */,
 				9209618B226EE6FE00FC8E6F /* Assets.xcassets */,
@@ -299,13 +347,15 @@
 		92096284226EFB2D00FC8E6F /* ExampleViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				92810CAB22D5E8B100F8F0DE /* Settings */,
+				923545B5230BCBDF00775912 /* TabBarController.swift */,
 				92096287226EFB2D00FC8E6F /* MainMenuViewController.swift */,
 				9209627E226EFB2D00FC8E6F /* MainMenuPresenter.swift */,
 				92096270226EFB2D00FC8E6F /* ButtonExample */,
 				9209627A226EFB2D00FC8E6F /* FilteringExample */,
 				9209627C226EFB2D00FC8E6F /* SelectionAndInfo */,
 				9209627F226EFB2D00FC8E6F /* TypographyOptions */,
+				92810CAB22D5E8B100F8F0DE /* Settings */,
+				9202FFC12313C55A006A8E92 /* Yoga */,
 				92096285226EFB2D00FC8E6F /* SizeOptionsViewController.swift */,
 				92096286226EFB2D00FC8E6F /* ColorPaletteViewController.swift */,
 			);
@@ -325,10 +375,10 @@
 		92096291226EFB2D00FC8E6F /* Sections */ = {
 			isa = PBXGroup;
 			children = (
+				9228C5D8229CCE2200B8972B /* HeadlineSection.swift */,
 				9228C5D2229CCE2100B8972B /* ButtonGroupSection.swift */,
 				9228C5CD229CCE2100B8972B /* CheckboxOptionsSection.swift */,
 				9228C5D9229CCE2200B8972B /* GapSection.swift */,
-				9228C5D8229CCE2200B8972B /* HeadlineSection.swift */,
 				9228C5DB229CCE2200B8972B /* InformationSection.swift */,
 				9228C5D4229CCE2100B8972B /* LoadingSection.swift */,
 				9228C5CE229CCE2100B8972B /* NavigationGroupSection.swift */,
@@ -346,6 +396,11 @@
 				92810CB022D70A5200F8F0DE /* IconSelectionSection.swift */,
 				92810CB422D7309C00F8F0DE /* IconSelectionCarouselSection.swift */,
 				92810CB622D86B0700F8F0DE /* ImageSection.swift */,
+				9202FFD0231D07A0006A8E92 /* YogaOptionsSection.swift */,
+				926095C3231F95A400BF2A85 /* ButtonCarouselSection.swift */,
+				926095C523209DB600BF2A85 /* HeroImageSection.swift */,
+				926095CB2320D66700BF2A85 /* EventDetailSection.swift */,
+				926095CD2320D67300BF2A85 /* CommentsSection.swift */,
 			);
 			path = Sections;
 			sourceTree = "<group>";
@@ -370,6 +425,10 @@
 				9228C601229CCEE200B8972B /* TextFieldView.swift */,
 				9228C5FD229CCEE200B8972B /* TextViewView.swift */,
 				92810CB222D70AAB00F8F0DE /* IconSelectView.swift */,
+				9202FFD2231D105E006A8E92 /* YogaEventView.swift */,
+				926095C72320B4B100BF2A85 /* CommentView.swift */,
+				926095C92320BDC200BF2A85 /* EventDetailsView.swift */,
+				9264750323240BDD00F51DBD /* HeroImageView.swift */,
 			);
 			path = Molecules;
 			sourceTree = "<group>";
@@ -386,8 +445,8 @@
 			isa = PBXGroup;
 			children = (
 				9228C617229CD80C00B8972B /* Brands */,
-				92096291226EFB2D00FC8E6F /* Sections */,
 				9209628D226EFB2D00FC8E6F /* AtomicComponents */,
+				92096291226EFB2D00FC8E6F /* Sections */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -404,6 +463,7 @@
 			children = (
 				9228C615229CD80800B8972B /* FractalBrand.swift */,
 				9228C618229CD82C00B8972B /* FractalDarkBrand.swift */,
+				9202FFC62313C72E006A8E92 /* YogaBrand.swift */,
 			);
 			path = Brands;
 			sourceTree = "<group>";
@@ -424,12 +484,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		922F555B22BB5082005ABF39 /* Routing */ = {
+		9264750523245E7300F51DBD /* Phases */ = {
 			isa = PBXGroup;
 			children = (
-				920962B1226EFB4700FC8E6F /* NavigationRouter.swift */,
+				9264750623245E8200F51DBD /* Phase1.swift */,
+				9264750823245E8B00F51DBD /* Phase2.swift */,
+				9264750A23245E9400F51DBD /* Phase3.swift */,
 			);
-			path = Routing;
+			path = Phases;
 			sourceTree = "<group>";
 		};
 		92810CAB22D5E8B100F8F0DE /* Settings */ = {
@@ -572,19 +634,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+<<<<<<< HEAD
+=======
+				9264750923245E8B00F51DBD /* Phase2.swift in Sources */,
+				9228C5F4229CCE8100B8972B /* CarouselViewController.swift in Sources */,
+>>>>>>> 6a52cc8591f3940bd2382f76c07a07504f2d83b1
 				9228C609229CCEE300B8972B /* SegmentedControlView.swift in Sources */,
+				9264750B23245E9400F51DBD /* Phase3.swift in Sources */,
 				9228C5EF229CCE2200B8972B /* ReloadableSection.swift in Sources */,
 				92810CB322D70AAB00F8F0DE /* IconSelectView.swift in Sources */,
+				926095CA2320BDC200BF2A85 /* EventDetailsView.swift in Sources */,
 				9228C60C229CCEE300B8972B /* LoadingView.swift in Sources */,
+				9202FFC32313C56E006A8E92 /* YogaViewController.swift in Sources */,
 				9228C605229CCEE300B8972B /* HeadlineView.swift in Sources */,
 				9228C606229CCEE300B8972B /* NavigationOptionView.swift in Sources */,
+				9202FFCD231D0599006A8E92 /* YogaPresenter.swift in Sources */,
 				9228C60B229CCEE300B8972B /* BounceScaleImageView.swift in Sources */,
 				92096187226EE6FD00FC8E6F /* ViewController.swift in Sources */,
+				926095CC2320D66700BF2A85 /* EventDetailSection.swift in Sources */,
 				920962B3226EFB4700FC8E6F /* NavigationRouter.swift in Sources */,
 				920962A5226EFB2D00FC8E6F /* MainMenuViewController.swift in Sources */,
 				9228C5ED229CCE2200B8972B /* InformationSection.swift in Sources */,
 				9228C5EA229CCE2200B8972B /* HeadlineSection.swift in Sources */,
 				92810CB722D86B0700F8F0DE /* ImageSection.swift in Sources */,
+				9202FFC72313C72E006A8E92 /* YogaBrand.swift in Sources */,
+				923545B6230BCBDF00775912 /* TabBarController.swift in Sources */,
 				9228C5E9229CCE2200B8972B /* SwitchOptionSection.swift in Sources */,
 				92096185226EE6FD00FC8E6F /* AppDelegate.swift in Sources */,
 				9228C5E6229CCE2200B8972B /* LoadingSection.swift in Sources */,
@@ -592,22 +666,29 @@
 				92096296226EFB2D00FC8E6F /* ButtonExampleViewController.swift in Sources */,
 				92096295226EFB2D00FC8E6F /* ButtonExamplePresenter.swift in Sources */,
 				9228C5DE229CCE2200B8972B /* SingleButtonSection.swift in Sources */,
+				926095CE2320D67300BF2A85 /* CommentsSection.swift in Sources */,
 				9228C60E229CCEE300B8972B /* TextFieldView.swift in Sources */,
+				9264750423240BDD00F51DBD /* HeroImageView.swift in Sources */,
 				920962B4226EFB4700FC8E6F /* DependencyRegistry.swift in Sources */,
 				92810CAD22D5E8C500F8F0DE /* SettingsViewController.swift in Sources */,
+				9202FFC52313C578006A8E92 /* YogaDetailViewController.swift in Sources */,
 				9209629F226EFB2D00FC8E6F /* TypographyViewModel.swift in Sources */,
 				920962AB226EFB2D00FC8E6F /* TypographyOptionView.swift in Sources */,
 				9228C60D229CCEE300B8972B /* SwitchOptionView.swift in Sources */,
 				9228C5EB229CCE2200B8972B /* GapSection.swift in Sources */,
 				9209629C226EFB2D00FC8E6F /* FilteringTableViewController.swift in Sources */,
 				9209626B226EFB2400FC8E6F /* Helpers.swift in Sources */,
+				9202FFCF231D05F5006A8E92 /* YogaDetailPresenter.swift in Sources */,
 				92810CB122D70A5200F8F0DE /* IconSelectionSection.swift in Sources */,
+				926095C623209DB600BF2A85 /* HeroImageSection.swift in Sources */,
+				926095C4231F95A400BF2A85 /* ButtonCarouselSection.swift in Sources */,
 				920962AF226EFB2D00FC8E6F /* TypographyOptionsSection.swift in Sources */,
 				9209629D226EFB2D00FC8E6F /* SelectionAndInfoViewController.swift in Sources */,
 				9228C5E4229CCE2200B8972B /* ButtonGroupSection.swift in Sources */,
 				9228C60F229CCEE300B8972B /* SingleButtonView.swift in Sources */,
 				9228C604229CCEE300B8972B /* DividerView.swift in Sources */,
 				9228C5E8229CCE2200B8972B /* TextFieldSection.swift in Sources */,
+				9264750723245E8200F51DBD /* Phase1.swift in Sources */,
 				9228C5EC229CCE2200B8972B /* NavigationSection.swift in Sources */,
 				920962AC226EFB2D00FC8E6F /* SizeOptionView.swift in Sources */,
 				9228C5E1229CCE2200B8972B /* SliderSection.swift in Sources */,
@@ -620,8 +701,10 @@
 				920962AE226EFB2D00FC8E6F /* SizeOptionsSection.swift in Sources */,
 				9228C620229F934200B8972B /* BrandingManager+Extensions.swift in Sources */,
 				920962A4226EFB2D00FC8E6F /* ColorPaletteViewController.swift in Sources */,
+				9202FFD1231D07A0006A8E92 /* YogaOptionsSection.swift in Sources */,
 				9228C5F5229CCE8100B8972B /* FilterViewController.swift in Sources */,
 				92810CB522D7309C00F8F0DE /* IconSelectionCarouselSection.swift in Sources */,
+				9202FFD3231D105E006A8E92 /* YogaEventView.swift in Sources */,
 				9228C619229CD82C00B8972B /* FractalDarkBrand.swift in Sources */,
 				920962B0226EFB2D00FC8E6F /* ColorPaletteOptionsSection.swift in Sources */,
 				9228C608229CCEE300B8972B /* SliderView.swift in Sources */,
@@ -630,6 +713,7 @@
 				9228C60A229CCEE300B8972B /* TextViewView.swift in Sources */,
 				9228C5E0229CCE2200B8972B /* NavigationGroupSection.swift in Sources */,
 				920962A0226EFB2D00FC8E6F /* TypographyOptionsViewController.swift in Sources */,
+				926095C82320B4B100BF2A85 /* CommentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

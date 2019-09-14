@@ -29,7 +29,7 @@ class MainMenuPresenter  {
     var selection: (Int, NavigationOption, UIViewController) -> Void {
         return { (_, option, viewController) in
             guard let rawIntent = option.intent else { return }
-            NavigationRouter.shared.perform(rawIntent)
+            NavigationRouter.shared.navigationOptionSelected(rawIntent)
         }
     }
 
@@ -64,13 +64,14 @@ class MainMenuPresenter  {
     var staticExamples: [NavigationOption] = {
         let button = MenuOption(title: "Button", intent: NavigationRouter.Intent.buttonExample.rawValue)
         let selection = MenuOption(title: "Selection", intent: NavigationRouter.Intent.selectionExample.rawValue)
-        let filtering = MenuOption(title: "Filtering", intent: NavigationRouter.Intent.filteringExample.rawValue)
-        let card = MenuOption(title: "Card", intent: NavigationRouter.Intent.cardExample.rawValue)
-        return [button, selection, filtering, card]
+        //let filtering = MenuOption(title: "Filtering", intent: NavigationRouter.Intent.filteringExample.rawValue)
+        //let card = MenuOption(title: "Card", intent: NavigationRouter.Intent.cardExample.rawValue)
+        return [button, selection]
     }()
 
     var staticDemo: [NavigationOption] = {
+        let yoga = MenuOption(title: "Yoga", intent: NavigationRouter.Intent.yoga.rawValue)
         let settings = MenuOption(title: "Settings", intent: NavigationRouter.Intent.settings.rawValue)
-        return [settings]
+        return [yoga, settings]
     }()
 }

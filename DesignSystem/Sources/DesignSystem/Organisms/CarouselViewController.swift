@@ -7,7 +7,7 @@
 //
 import Foundation
 
-public class CarouselViewController: SectionCollectionViewController {
+public class CarouselViewController: SectionCollectionViewController, BrandUpdateable {
 
     public init() {
         super.init(useRefreshControl: false, direction: .horizontal)
@@ -18,5 +18,9 @@ public class CarouselViewController: SectionCollectionViewController {
         collectionView.backgroundColor = .clear
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
+    }
+    
+    public func brandWasUpdated() {
+        reload()
     }
 }

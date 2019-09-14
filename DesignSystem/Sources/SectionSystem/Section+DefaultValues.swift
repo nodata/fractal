@@ -14,7 +14,7 @@ extension Section {
     public var itemCount: Int { return 0 }
     public var hasInputs: Bool { return false }
 
-    public var itemInsets: UIEdgeInsets { return .zero }
+    public var sectionInsets: UIEdgeInsets { return .zero }
     public var minimumLineSpacing: CGFloat { return 0.0 }
     public var minimumInteritemSpacing: CGFloat { return 0.0 }
 }
@@ -70,7 +70,21 @@ extension ViewSection {
         }
     }
 
-    public func decoupleVisibleViews() { mapTable.removeAllObjects() }
+    func decoupleVisibleViews() { mapTable.removeAllObjects() }
+
+    func deleteVisibleViews() {
+        for view in visibleViews {
+            //TODO: make recursive search
+            if let cell = view.superview?.superview as? SectionCollectionViewCell {
+                cell.sectionView = nil
+            } else if let cell = view.superview?.superview as? SectionTableViewCell {
+                cell.sectionView = nil
+            }
+            
+            view.removeFromSuperview()
+        }
+        mapTable.removeAllObjects()
+    }
 }
 
 extension ViewControllerSection {
@@ -107,6 +121,25 @@ extension ViewControllerSection {
     }
 
     func decoupleVisibleViewControllers() { mapTable.removeAllObjects() }
+
+    func deleteVisibleViewControllers() {
+        for vc in visibleViewControllers {
+            
+            //TODO: make recursive search
+            if let cell = vc.view.superview?.superview?.superview as? SectionCollectionViewCell {
+                cell.sectionViewController = nil
+            } else if let cell = vc.view.superview?.superview?.superview as? SectionTableViewCell {
+                cell.sectionViewController = nil
+            }
+            
+            vc.willMove(toParent:nil)
+            vc.view.superview?.removeFromSuperview()
+            vc.view.removeFromSuperview()
+            vc.removeFromParent()
+        }
+        
+        mapTable.removeAllObjects()
+    }
 }
 
 extension NestedSection {
