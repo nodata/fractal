@@ -52,6 +52,7 @@
 		92BA39012179829900266383 /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BA38F72179829800266383 /* DesignSystem.framework */; };
 		92BA39062179829900266383 /* DesignSystemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BA39052179829900266383 /* DesignSystemTests.swift */; };
 		92C5D92522F1727000E1A68D /* Section+Enumeration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C5D92422F1727000E1A68D /* Section+Enumeration.swift */; };
+		92E077592341AB170083E3EF /* UIView+Fix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92E077582341AB170083E3EF /* UIView+Fix.swift */; };
 		92EAA29922A01F5F000EB39F /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92EAA29822A01F5F000EB39F /* CGFloat+Extensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -114,6 +115,7 @@
 		92BA39052179829900266383 /* DesignSystemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemTests.swift; sourceTree = "<group>"; };
 		92BA39072179829900266383 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		92C5D92422F1727000E1A68D /* Section+Enumeration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Section+Enumeration.swift"; sourceTree = "<group>"; };
+		92E077582341AB170083E3EF /* UIView+Fix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Fix.swift"; sourceTree = "<group>"; };
 		92EAA29822A01F5F000EB39F /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -196,6 +198,7 @@
 			children = (
 				920962E42271518D00FC8E6F /* UIColor+Extensions.swift */,
 				920962E52271518D00FC8E6F /* UIView+Pin.swift */,
+				92E077582341AB170083E3EF /* UIView+Fix.swift */,
 				920962E62271518D00FC8E6F /* UIViewController+Contain.swift */,
 				920962E72271518D00FC8E6F /* NSObject+Extensions.swift */,
 				92EAA29822A01F5F000EB39F /* CGFloat+Extensions.swift */,
@@ -449,6 +452,7 @@
 				92AC189C22F6A6D70002376E /* CarouselViewController.swift in Sources */,
 				728D057B2282996000B44543 /* BrandingManager+UIView.swift in Sources */,
 				92AC188D22EDB3570002376E /* DividerView.swift in Sources */,
+				92E077592341AB170083E3EF /* UIView+Fix.swift in Sources */,
 				9209633A2271518E00FC8E6F /* UIView+Pin.swift in Sources */,
 				728D057A2282996000B44543 /* BrandingManager.swift in Sources */,
 				9228C564229CB21600B8972B /* Switch.swift in Sources */,

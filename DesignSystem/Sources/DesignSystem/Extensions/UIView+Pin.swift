@@ -31,6 +31,7 @@ extension UIView {
         }
         let newConstraints = pins.filter { !$0.type.needsView }.constraints(pinning: self)
         activateIfNeeded(newConstraints)
+
         return newConstraints
     }
 
@@ -88,7 +89,7 @@ public struct Pin {
     public static var rightOf: Pin { return .rightOf() }
 
     public static var heightToWidth: Pin { return .heightToWidth() }
-    public static var widthToHeight: Pin { return .heightToWidth() }
+    public static var widthToHeight: Pin { return .widthToHeight() }
 
     public static var none: Pin { return Pin(.none) }
 

@@ -48,6 +48,12 @@ public class HeadlineView: UIView {
         self.style = style
         super.init(frame: .zero)
         addSubview(label)
+
+        label.frame = CGRect(x: self.bounds.origin.x + .keyline,
+                             y: self.bounds.origin.y + style.topPadding,
+                             width: self.bounds.maxY - .small,
+                             height: 0.0)
+
         label.pin(to: self, [.leading(.keyline),
                              .bottom(-.small),
                              .top(style.topPadding),
