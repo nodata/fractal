@@ -8,17 +8,7 @@
 
 import Foundation
 
-protocol Fixable {
-
-}
-
-extension UIView: Fixable {
-
-    // MARK: - Fixing Functions
-
-    public func fix(to view: UIView? = nil) {
-
-    }
+extension UIView {
 
     public func fix(_ fixtures: [Fixture]) {
 
@@ -29,7 +19,14 @@ extension UIView: Fixable {
     }
 
     public var fixtures: [Fixture] {
-        return []
+        get {
+            return objc_getAssociatedObject(self, &AssociatedKeys.fixtures) as? [Fixture] ?? []
+        }
+
+        set {
+            objc_setAssociatedObject(self, &AssociatedKeys.fixtures, newValue.filter { !$0.isDisposable }, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            refreshFixtures()
+        }
     }
 
     public var activeFixtures: (Fixture?, Fixture?, Fixture?, Fixture?) {
@@ -44,74 +41,92 @@ extension UIView: Fixable {
         return fixtures.filter { $0.key == key }
     }
 
-    private func refreshFixtures() {
+    fileprivate func refreshFixtures() {
+        autoresizingMask = [.flexibleWidth,
+                            .flexibleHeight,
+                            .flexibleTopMargin,
+                            .flexibleBottomMargin,
+                            .flexibleRightMargin,
+                            .flexibleRightMargin]
+
+        var newFrame: CGRect = .zero
+
         for fixture in fixtures {
             guard fixture.type.attribute != .notAnAttribute else { continue }
             if fixture.type.needsView { guard fixture.view != nil else { continue } }
+
+            if fixture.type == .leading {
+                newFrame.origin.x = (fixture.view?.bounds.minX ?? 0.0) + fixture.constant
+            }
         }
     }
 }
 
 extension Array where Element == Fixture {
 
+    public static func fix(to view: UIView? = nil) -> [Fixture] {
+        let initial = Fixture(.none, isDisposable: true, view: view, constant: 0.0, options: [])
+        return [initial]
+    }
+
+    private var view: UIView? { return first?.view }
+
     // It's a little messy to have both static variables and static functions
     // but it means users can remove empty brackets and it's easier to read an array of fixtures
 
-    public var leading: [Fixture] { return leading() }
-
-    public func fix(to view: UIView? = nil) -> [Fixture] {
-
-        // Add fixer and black starting Fixture to MapTable
-
-
-
-
-        myView.fix(to: self)
-                .leading(0.0)
-                .top(0.0)
-                .width
-                .height
-
-
-      //  myView.fixtures = fix(to: someOtherView).width(-100.0).height(-100.0)
-
-
-        myView.fix(to: someView, [.leading(0.0),
-                                  .top(0.0)])
-        myView.fix(to: someOtherView).width(asConstant: 100.0).height(-100.0)
-
-    }
-
+    public var leading:  [Fixture] { return leading() }
+    public var trailing: [Fixture] { return trailing() }
+    public var top:      [Fixture] { return top() }
+    public var bottom:   [Fixture] { return bottom() }
+    public var width:    [Fixture] { return width() }
+    public var height:   [Fixture] { return height() }
 
     public func leading(_ constant: CGFloat = 0.0, options: [Fixture.Option] = []) -> [Fixture] {
         var new = self
-        new.append(Fixture(.leading, view: nil, constant: constant, options: options))
+        new.append(Fixture(.leading, view: view, constant: constant, options: options))
         return new
     }
 
-    private var fixer: Fixer {
-        
+    public func trailing(_ constant: CGFloat = 0.0, options: [Fixture.Option] = []) -> [Fixture] {
+        var new = self
+        new.append(Fixture(.trailing, view: view, constant: constant, options: options))
+        return new
     }
 
-//    public func trailing(_ constant: CGFloat = 0.0, options: [Fixture.Option] = []) -> Fixer {
-//        return Fixture(.trailing, view: view, constant: constant, options: options)
-//    }
-//
-//    public func top(_ constant: CGFloat = 0.0, options: [Fixture.Option] = []) -> Fixer {
-//        return Fixture(.top, view: view, constant: constant, options: options)
-//    }
-//
-//    public func bottom(_ constant: CGFloat = 0.0, options: [Fixture.Option] = []) -> Fixer {
-//        return Fixture(.bottom, view: view, constant: constant, options: options)
-//    }
-}
+    public func top(_ constant: CGFloat = 0.0, options: [Fixture.Option] = []) -> [Fixture] {
+        var new = self
+        new.append(Fixture(.top, view: view, constant: constant, options: options))
+        return new
+    }
 
-fileprivate class Fixer {
+    public func bottom(_ constant: CGFloat = 0.0, options: [Fixture.Option] = []) -> [Fixture] {
+        var new = self
+        new.append(Fixture(.bottom, view: view, constant: constant, options: options))
+        return new
+    }
 
-    fileprivate let view: UIView?
+    public func width(_ constant: CGFloat = 0.0, options: [Fixture.Option] = []) -> [Fixture] {
+        var new = self
+        new.append(Fixture(.width(view == nil), view: view, constant: constant, options: options))
+        return new
+    }
 
-    init(view: UIView?) {
-        self.view = view
+    public func height(_ constant: CGFloat = 0.0, options: [Fixture.Option] = []) -> [Fixture] {
+        var new = self
+        new.append(Fixture(.height(view == nil), view: view, constant: constant, options: options))
+        return new
+    }
+
+    public func width(asConstant: CGFloat, options: [Fixture.Option] = []) -> [Fixture] {
+        var new = self
+        new.append(Fixture(.width(true), view: nil, constant: asConstant, options: options))
+        return new
+    }
+
+    public func height(asConstant: CGFloat, options: [Fixture.Option] = []) -> [Fixture] {
+        var new = self
+        new.append(Fixture(.height(true), view: nil, constant: asConstant, options: options))
+        return new
     }
 }
 
@@ -124,7 +139,8 @@ public class Fixture {
     // MARK: - Initialisation
 
     fileprivate let type: LayoutType
-    public var view: UIView?
+    fileprivate let isDisposable: Bool
+    public weak var view: UIView?
     public var key: String?
     public var constant: CGFloat
     public var multiplier: CGFloat
@@ -132,8 +148,9 @@ public class Fixture {
     public var priority: UILayoutPriority
     public var isActive: Bool
 
-    fileprivate init(_ type: LayoutType, view: UIView?, constant: CGFloat = 0.0, options: [Option] = []) {
+    fileprivate init(_ type: LayoutType, isDisposable: Bool = false, view: UIView?, constant: CGFloat = 0.0, options: [Option] = []) {
 
+        self.isDisposable = isDisposable
         self.view = view
         self.type = type
         self.constant = constant
@@ -333,9 +350,10 @@ public class Fixture {
             }
         }
     }
+}
 
-
-
+private struct AssociatedKeys {
+    static var fixtures = "FixableFixtures"
 }
 
 private func FixAssert(_ message: String = "") {
