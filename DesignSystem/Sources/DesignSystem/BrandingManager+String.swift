@@ -13,7 +13,7 @@ import UIKit
 
 extension NSAttributedString {
 
-    public convenience init(string: String, typography: BrandingManager.Typography, color: UIColor? = nil, underlineStyle: NSUnderlineStyle? = nil, alignment: NSTextAlignment = .left, paragraphStyle: NSMutableParagraphStyle? = nil) {
+    public convenience init(string: String, typography: Typography, color: UIColor? = nil, underlineStyle: NSUnderlineStyle? = nil, alignment: NSTextAlignment = .left, paragraphStyle: NSMutableParagraphStyle? = nil) {
 
         var attr = [NSAttributedString.Key: Any]()
         attr[.font] = typography.font
@@ -24,7 +24,7 @@ extension NSAttributedString {
         self.init(string: string, attributes: attr)
     }
 
-    private static func paragraphStyle(for typography: BrandingManager.Typography, alignment: NSTextAlignment) -> NSMutableParagraphStyle {
+    private static func paragraphStyle(for typography: Typography, alignment: NSTextAlignment) -> NSMutableParagraphStyle {
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = typography.lineHeight - typography.font.lineHeight
@@ -36,7 +36,7 @@ extension NSAttributedString {
 
 extension Label {
 
-    public func text(_ string: String?, typography: BrandingManager.Typography, color: UIColor? = nil, underlineStyle: NSUnderlineStyle? = nil) {
+    public func text(_ string: String?, typography: Typography, color: UIColor? = nil, underlineStyle: NSUnderlineStyle? = nil) {
 
         let originalTextAlignment = textAlignment
         let attributedString = NSAttributedString(string: string ?? "",
@@ -58,7 +58,7 @@ extension Label {
 
 extension String {
 
-    public func size(typography: BrandingManager.Typography, maxLines: Int = 0) -> CGSize {
+    public func size(typography: Typography, maxLines: Int = 0) -> CGSize {
         guard count > 0 else { return .zero }
         let attributedString = NSAttributedString(string: self, typography: typography)
         let rect = attributedString.boundingRect(with: CGSize(width: CGFloat.infinity, height: .infinity), options: .usesLineFragmentOrigin, context: nil)
@@ -68,7 +68,7 @@ extension String {
         return CGSize(width: ceil(rect.size.width), height: ceil(lineHeight * lines))
     }
 
-    public func height(typography: BrandingManager.Typography, width: CGFloat, maxLines: Int = 0) -> CGFloat {
+    public func height(typography: Typography, width: CGFloat, maxLines: Int = 0) -> CGFloat {
         guard count > 0 else { return 0.0 }
         let attributedString = NSAttributedString(string: self, typography: typography)
         let rect = attributedString.boundingRect(with: CGSize(width: width, height: .infinity), options: .usesLineFragmentOrigin, context: nil)

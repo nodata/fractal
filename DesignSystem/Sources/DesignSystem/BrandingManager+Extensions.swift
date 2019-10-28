@@ -15,6 +15,60 @@ public protocol ButtonBrand {
     func configure(_ button: Button, with style: Button.Style)
 }
 
+public extension Brand {
+    var resourceBundle: Bundle? { return nil }
+}
+
+public extension CGSize { // IconSize
+
+    static var xsmallIcon:  CGSize { return BrandingManager.brand.size(for: .iconxsmall) }
+    static var smallIcon:   CGSize { return BrandingManager.brand.size(for: .iconsmall) }
+    static var mediumIcon:  CGSize { return BrandingManager.brand.size(for: .iconmedium) }
+    static var largeIcon:   CGSize { return BrandingManager.brand.size(for: .iconlarge) }
+    static var xlargeIcon:  CGSize { return BrandingManager.brand.size(for: .iconxlarge) }
+    static var xxlargeIcon: CGSize { return BrandingManager.brand.size(for: .iconxxlarge) }
+}
+
+public extension UIColor {
+
+    static var atom:       UIColor { return .atom(.primary) }
+    static var brand:      UIColor { return .brand(.primary) }
+    static var background: UIColor { return .background(.primary) }
+    static var text:       UIColor { return .text(.primary) }
+
+    static func atom(_ key: UIColor.Key = .primary) -> UIColor {
+        return BrandingManager.brand.atomColor(for: key)
+    }
+
+    static func brand(_ key: UIColor.Key = .primary) -> UIColor {
+        return BrandingManager.brand.brandColor(for: key)
+    }
+
+    static func background(_ key: UIColor.Key = .primary) -> UIColor {
+        return BrandingManager.brand.backgroundColor(for: key)
+    }
+
+    static func text(_ key: UIColor.Key = .primary) -> UIColor {
+        return BrandingManager.brand.textColor(for: key)
+    }
+}
+
+public extension CGFloat { // Spacing and size
+
+    static var xxsmall:  CGFloat { return BrandingManager.brand.floatValue(for: .xxsmall) }
+    static var xsmall:   CGFloat { return BrandingManager.brand.floatValue(for: .xsmall) }
+    static var small:    CGFloat { return BrandingManager.brand.floatValue(for: .small) }
+    static var medium:   CGFloat { return BrandingManager.brand.floatValue(for: .medium) }
+    static var large:    CGFloat { return BrandingManager.brand.floatValue(for: .large) }
+    static var xlarge:   CGFloat { return BrandingManager.brand.floatValue(for: .xlarge) }
+    static var xxlarge:  CGFloat { return BrandingManager.brand.floatValue(for: .xxlarge) }
+    static var xxxlarge: CGFloat { return BrandingManager.brand.floatValue(for: .xxxlarge) }
+
+    static var padding:  CGFloat { return BrandingManager.brand.floatValue(for: .padding) }
+    static var keyline:  CGFloat { return BrandingManager.brand.floatValue(for: .keyline) }
+    static var divider:  CGFloat { return BrandingManager.brand.floatValue(for: .divider) }
+}
+
 public extension Button.Style {
     static let primary   = Button.Style("primary")
     static let secondary = Button.Style("secondary")
@@ -23,8 +77,39 @@ public extension Button.Style {
     static let toggle    = Button.Style("toggle")
 }
 
-public extension Brand {
-    var resourceBundle: Bundle? { return nil }
+public extension Typography.Key {
+    static let xxxsmall = Typography.Key("xxxsmall")
+    static let xxsmall  = Typography.Key("xxsmall")
+    static let xsmall   = Typography.Key("xsmall")
+    static let small    = Typography.Key("small")
+    static let medium   = Typography.Key("medium")
+    static let large    = Typography.Key("large")
+    static let xlarge   = Typography.Key("xlarge")
+    static let xxlarge  = Typography.Key("xxlarge")
+    static let xxxlarge = Typography.Key("xxxlarge")
+}
+
+public extension CGFloat.Key {
+    static let xxsmall  = CGFloat.Key("xxsmall")
+    static let xsmall   = CGFloat.Key("xsmall")
+    static let small    = CGFloat.Key("small")
+    static let medium   = CGFloat.Key("medium")
+    static let large    = CGFloat.Key("large")
+    static let xlarge   = CGFloat.Key("xlarge")
+    static let xxlarge  = CGFloat.Key("xxlarge")
+    static let xxxlarge = CGFloat.Key("xxxlarge")
+    static let keyline  = CGFloat.Key("keyline")
+    static let padding  = CGFloat.Key("padding")
+    static let divider  = CGFloat.Key("divider")
+}
+
+public extension CGSize.Key {
+    static let iconxsmall   = CGSize.Key("iconxsmall")
+    static let iconsmall    = CGSize.Key("iconsmall")
+    static let iconmedium   = CGSize.Key("iconmedium")
+    static let iconlarge    = CGSize.Key("iconlarge")
+    static let iconxlarge   = CGSize.Key("iconxlarge")
+    static let iconxxlarge  = CGSize.Key("iconxxlarge")
 }
 
 public extension UIImage.Key {

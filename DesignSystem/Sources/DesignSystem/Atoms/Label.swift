@@ -10,7 +10,7 @@ import UIKit
 
 public class Label: UILabel {
 
-    public var typography: BrandingManager.Typography = .medium { didSet { lineHeight = numberOfLines == 1 ? 0.0 : typography.lineHeight } }
+    public var typography: Typography = .medium { didSet { lineHeight = numberOfLines == 1 ? 0.0 : typography.lineHeight } }
     public var actualLineHeight: CGFloat { return max(lineHeight, font.lineHeight) }
     public var underlineStyle: NSUnderlineStyle = [] { didSet { update() } }
     public var letterSpace: CGFloat = 0.0 { didSet { update() } }
@@ -36,7 +36,7 @@ public class Label: UILabel {
         }
     }
 
-    public func apply(typography: BrandingManager.Typography, color: UIColor? = nil) {
+    public func apply(typography: Typography, color: UIColor? = nil) {
         self.typography = typography
         textColor = color ?? typography.defaultColor
     }

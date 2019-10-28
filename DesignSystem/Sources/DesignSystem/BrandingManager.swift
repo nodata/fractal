@@ -29,13 +29,14 @@ public protocol Brand {
     func imageName(for key: UIImage.Key) -> String?
 
     // Spacing and Sizing
-    func value(for spacing: BrandingManager.Spacing) -> CGFloat
-    func value(for size: BrandingManager.IconSize) -> CGSize
+    func cornerRadius(for key: CGFloat.Key) -> CGFloat
+    func floatValue(for key: CGFloat.Key) -> CGFloat
+    func size(for key: CGSize.Key) -> CGSize
 
     // Typograhy
-    func fontName(for typography: BrandingManager.Typography) -> String?
-    func fontWeight(for typography: BrandingManager.Typography) -> UIFont.Weight
-    func fontSize(for typography: BrandingManager.Typography) -> CGFloat
+    func fontName(for typography: Typography) -> String?
+    func fontWeight(for typography: Typography) -> UIFont.Weight
+    func fontSize(for typography: Typography) -> CGFloat
 
     // Colors
     func atomColor(for key: UIColor.Key) -> UIColor
@@ -46,25 +47,7 @@ public protocol Brand {
 
 protocol BrandTest {
     var rawPalette: [BrandingManager.PaletteOption] { get }
-    var allTypographyCases: [BrandingManager.Typography] { get }
-}
-
-public extension UIColor {
-    struct Key: Equatable, RawRepresentable {
-        public let rawValue: String
-
-        public init(_ value: String) {
-            self.rawValue = value
-        }
-
-        public init(rawValue: String) {
-            self.rawValue = rawValue
-        }
-
-        public static func ==(lhs: Key, rhs: Key) -> Bool {
-            return lhs.rawValue == rhs.rawValue
-        }
-    }
+    var allTypographyCases: [Typography] { get }
 }
 
 public class BrandingManager {
@@ -81,121 +64,6 @@ public class BrandingManager {
             self.name = name
             self.color = color
         }
-    }
-
-    //TODO: change to keys, and use cornerRadius and other spacing types
-    public enum Spacing: String, CaseIterable {
-        case xxsmall,
-        xsmall,
-        small,
-        medium,
-        large,
-        xlarge,
-        xxlarge,
-        xxxlarge,
-        keyline,
-        padding,
-        divider
-    }
-
-    public enum IconSize: String, CaseIterable {
-        case xsmall,
-        small,
-        medium,
-        large,
-        xlarge,
-        xxlarge
-    }
-
-    //TODO: change to keys
-    public struct Typography: CaseIterable, Equatable {
-
-        public enum Style: String {
-            case xxxsmall,
-            xxsmall,
-            xsmall,
-            small,
-            medium,
-            large,
-            xlarge,
-            xxlarge,
-            xxxlarge
-        }
-
-        // Style + Modifier determines the actual font properties under the hood in your brand
-
-        public let style: Style
-        public var modifiers: [Modifier]
-
-        public struct Modifier: Equatable, RawRepresentable {
-            public let rawValue: String
-
-            public init(_ value: String) {
-                self.rawValue = value
-            }
-
-            public init(rawValue: String) {
-                self.rawValue = rawValue
-            }
-
-            public static func ==(lhs: Modifier, rhs: Modifier) -> Bool {
-                return lhs.rawValue == rhs.rawValue
-            }
-
-            public static let strong = Modifier("strong")
-            public static let noAccessibility = Modifier("noAccessibility")
-        }
-
-        public static func == (lhs: Typography, rhs: Typography) -> Bool {
-            return lhs.style == rhs.style
-        }
-
-        public static func ==== (lhs: Typography, rhs: Typography) -> Bool {
-            guard lhs == rhs else { return false }
-            guard lhs.modifiers.count == rhs.modifiers.count else { return false }
-            for mod in lhs.modifiers { guard rhs.modifiers.contains(mod) else { return false } }
-            return true
-        }
-
-        public static var allCases: [Typography] {
-            let basicCases = [.xxsmall, .xsmall, .small, .medium, large, xlarge, xxlarge]
-            return basicCases
-        }
-
-        public init(_ style: Style, _ modifiers: [Modifier] = []) {
-            self.style = style
-            self.modifiers = modifiers
-        }
-
-        public var name: String {
-            var string = style.rawValue
-            if modifiers.contains(.strong) { string += " \(Modifier.strong.rawValue)" }
-            if modifiers.contains(.noAccessibility) { string += " \(Modifier.noAccessibility.rawValue)" }
-            return string
-        }
-
-        public var font: UIFont {
-            let name = BrandingManager.brand.fontName(for: self)
-            let defaultFont: UIFont = .systemFont(ofSize: fontSize, weight: fontWeight)
-            guard let fontName = name else { return defaultFont }
-            return UIFont(name: fontName, size: fontSize) ?? defaultFont
-        }
-
-        // Apple font weights
-        // ultraLight, thin, light, regular, medium, semibold, bold, heavy, strong, black
-        public var fontWeight: UIFont.Weight {
-            return BrandingManager.brand.fontWeight(for: self)
-        }
-
-        public var useAccessibility: Bool { return !modifiers.contains(.noAccessibility) }
-
-        public var isStrong: Bool { return modifiers.contains(.strong) }
-
-        public var fontSize: CGFloat { return BrandingManager.brand.fontSize(for: self) }
-
-        public var lineHeight: CGFloat { return font.lineHeight }
-
-        public var defaultColor: UIColor { return .text } // TODO: put inside brand
     }
 
     public static func set(brand: Brand) {
@@ -235,47 +103,125 @@ public class BrandingManager {
     }
 }
 
-public extension BrandingManager.Typography {
+public struct Typography: CaseIterable, Equatable {
 
-    static let xxsmall = BrandingManager.Typography(.xxsmall)
-    static let xsmall = BrandingManager.Typography(.xsmall)
-    static let small = BrandingManager.Typography(.small)
-    static let medium = BrandingManager.Typography(.medium)
-    static let large = BrandingManager.Typography(.large)
-    static let xlarge = BrandingManager.Typography(.xlarge)
-    static let xxlarge = BrandingManager.Typography(.xxlarge)
+    public struct Key: Equatable, RawRepresentable {
+        public let rawValue: String
 
-    static func xxsmall(_ modifier: Modifier) -> BrandingManager.Typography { return BrandingManager.Typography(.xxsmall, [modifier]) }
-    static func xsmall(_ modifier: Modifier)  -> BrandingManager.Typography { return BrandingManager.Typography(.xsmall, [modifier]) }
-    static func small(_ modifier: Modifier)   -> BrandingManager.Typography { return BrandingManager.Typography(.small, [modifier]) }
-    static func medium(_ modifier: Modifier)  -> BrandingManager.Typography { return BrandingManager.Typography(.medium, [modifier]) }
-    static func large(_ modifier: Modifier)   -> BrandingManager.Typography { return BrandingManager.Typography(.large, [modifier]) }
-    static func xlarge(_ modifier: Modifier)  -> BrandingManager.Typography { return BrandingManager.Typography(.xlarge, [modifier]) }
-    static func xxlarge(_ modifier: Modifier) -> BrandingManager.Typography { return BrandingManager.Typography(.xxlarge, [modifier]) }
+        public init(_ value: String) {
+            self.rawValue = value
+        }
 
-    static func xxsmall(_ modifiers: [Modifier]) -> BrandingManager.Typography { return BrandingManager.Typography(.xxsmall, modifiers) }
-    static func xsmall(_ modifiers: [Modifier])  -> BrandingManager.Typography { return BrandingManager.Typography(.xsmall, modifiers) }
-    static func small(_ modifiers: [Modifier])   -> BrandingManager.Typography { return BrandingManager.Typography(.small, modifiers) }
-    static func medium(_ modifiers: [Modifier])  -> BrandingManager.Typography { return BrandingManager.Typography(.medium, modifiers) }
-    static func large(_ modifiers: [Modifier])   -> BrandingManager.Typography { return BrandingManager.Typography(.large, modifiers) }
-    static func xlarge(_ modifiers: [Modifier])  -> BrandingManager.Typography { return BrandingManager.Typography(.xlarge, modifiers) }
-    static func xxlarge(_ modifiers: [Modifier]) -> BrandingManager.Typography { return BrandingManager.Typography(.xxlarge, modifiers) }
+        public init(rawValue: String) {
+            self.rawValue = rawValue
+        }
+
+        public static func ==(lhs: Key, rhs: Key) -> Bool {
+            return lhs.rawValue == rhs.rawValue
+        }
+    }
+
+    // Key + Modifier determines the actual font properties under the hood in your brand
+
+    public let key: Key
+    public var modifiers: [Modifier]
+
+    public struct Modifier: Equatable, RawRepresentable {
+        public let rawValue: String
+
+        public init(_ value: String) {
+            self.rawValue = value
+        }
+
+        public init(rawValue: String) {
+            self.rawValue = rawValue
+        }
+
+        public static func ==(lhs: Modifier, rhs: Modifier) -> Bool {
+            return lhs.rawValue == rhs.rawValue
+        }
+
+        public static let strong = Modifier("strong")
+        public static let noAccessibility = Modifier("noAccessibility")
+    }
+
+    public static func == (lhs: Typography, rhs: Typography) -> Bool {
+        return lhs.name == rhs.name
+    }
+
+    public static func ==== (lhs: Typography, rhs: Typography) -> Bool {
+        guard lhs == rhs else { return false }
+        guard lhs.modifiers.count == rhs.modifiers.count else { return false }
+        for mod in lhs.modifiers { guard rhs.modifiers.contains(mod) else { return false } }
+        return true
+    }
+
+    public static var allCases: [Typography] {
+        let basicCases = [.xxsmall, .xsmall, .small, .medium, large, xlarge, xxlarge]
+        return basicCases
+    }
+
+    public init(_ key: Key, _ modifiers: [Modifier] = []) {
+        self.key = key
+        self.modifiers = modifiers
+    }
+
+    public var name: String {
+        var string = key.rawValue
+        if modifiers.contains(.strong) { string += " \(Modifier.strong.rawValue)" }
+        if modifiers.contains(.noAccessibility) { string += " \(Modifier.noAccessibility.rawValue)" }
+        return string
+    }
+
+    public var font: UIFont {
+        let name = BrandingManager.brand.fontName(for: self)
+        let defaultFont: UIFont = .systemFont(ofSize: fontSize, weight: fontWeight)
+        guard let fontName = name else { return defaultFont }
+        return UIFont(name: fontName, size: fontSize) ?? defaultFont
+    }
+
+    // Apple font weights
+    // ultraLight, thin, light, regular, medium, semibold, bold, heavy, strong, black
+    public var fontWeight: UIFont.Weight {
+        return BrandingManager.brand.fontWeight(for: self)
+    }
+
+    public var useAccessibility: Bool { return !modifiers.contains(.noAccessibility) }
+
+    public var isStrong: Bool { return modifiers.contains(.strong) }
+
+    public var fontSize: CGFloat { return BrandingManager.brand.fontSize(for: self) }
+
+    public var lineHeight: CGFloat { return font.lineHeight }
+
+    public var defaultColor: UIColor { return .text } // TODO: put inside brand
 }
 
-public extension CGFloat { // Spacing and size
+public extension Typography {
 
-    static var xxsmall:  CGFloat { return BrandingManager.brand.value(for: .xxsmall) }
-    static var xsmall:   CGFloat { return BrandingManager.brand.value(for: .xsmall) }
-    static var small:    CGFloat { return BrandingManager.brand.value(for: .small) }
-    static var medium:   CGFloat { return BrandingManager.brand.value(for: .medium) }
-    static var large:    CGFloat { return BrandingManager.brand.value(for: .large) }
-    static var xlarge:   CGFloat { return BrandingManager.brand.value(for: .xlarge) }
-    static var xxlarge:  CGFloat { return BrandingManager.brand.value(for: .xxlarge) }
-    static var xxxlarge: CGFloat { return BrandingManager.brand.value(for: .xxxlarge) }
+    static let xxsmall = Typography(.xxsmall)
+    static let xsmall  = Typography(.xsmall)
+    static let small   = Typography(.small)
+    static let medium  = Typography(.medium)
+    static let large   = Typography(.large)
+    static let xlarge  = Typography(.xlarge)
+    static let xxlarge = Typography(.xxlarge)
 
-    static var padding:  CGFloat { return BrandingManager.brand.value(for: .padding) }
-    static var keyline:  CGFloat { return BrandingManager.brand.value(for: .keyline) }
-    static var divider:  CGFloat { return BrandingManager.brand.value(for: .divider) }
+    static func xxsmall(_ modifier: Modifier) -> Typography { return Typography(.xxsmall, [modifier]) }
+    static func xsmall(_ modifier: Modifier)  -> Typography { return Typography(.xsmall, [modifier]) }
+    static func small(_ modifier: Modifier)   -> Typography { return Typography(.small, [modifier]) }
+    static func medium(_ modifier: Modifier)  -> Typography { return Typography(.medium, [modifier]) }
+    static func large(_ modifier: Modifier)   -> Typography { return Typography(.large, [modifier]) }
+    static func xlarge(_ modifier: Modifier)  -> Typography { return Typography(.xlarge, [modifier]) }
+    static func xxlarge(_ modifier: Modifier) -> Typography { return Typography(.xxlarge, [modifier]) }
+
+    static func xxsmall(_ modifiers: [Modifier]) -> Typography { return Typography(.xxsmall, modifiers) }
+    static func xsmall(_ modifiers: [Modifier])  -> Typography { return Typography(.xsmall, modifiers) }
+    static func small(_ modifiers: [Modifier])   -> Typography { return Typography(.small, modifiers) }
+    static func medium(_ modifiers: [Modifier])  -> Typography { return Typography(.medium, modifiers) }
+    static func large(_ modifiers: [Modifier])   -> Typography { return Typography(.large, modifiers) }
+    static func xlarge(_ modifiers: [Modifier])  -> Typography { return Typography(.xlarge, modifiers) }
+    static func xxlarge(_ modifiers: [Modifier]) -> Typography { return Typography(.xxlarge, modifiers) }
 }
 
 public extension UIImageView {
@@ -284,8 +230,61 @@ public extension UIImageView {
     }
 }
 
-public extension UIImage {
+public extension CGFloat {
+    struct Key: Equatable, RawRepresentable {
+        public let rawValue: String
 
+        public init(_ value: String) {
+            self.rawValue = value
+        }
+
+        public init(rawValue: String) {
+            self.rawValue = rawValue
+        }
+
+        public static func ==(lhs: Key, rhs: Key) -> Bool {
+            return lhs.rawValue == rhs.rawValue
+        }
+    }
+}
+
+public extension CGSize {
+    struct Key: Equatable, RawRepresentable {
+        public let rawValue: String
+
+        public init(_ value: String) {
+            self.rawValue = value
+        }
+
+        public init(rawValue: String) {
+            self.rawValue = rawValue
+        }
+
+        public static func ==(lhs: Key, rhs: Key) -> Bool {
+            return lhs.rawValue == rhs.rawValue
+        }
+    }
+}
+
+public extension UIColor {
+    struct Key: Equatable, RawRepresentable {
+        public let rawValue: String
+
+        public init(_ value: String) {
+            self.rawValue = value
+        }
+
+        public init(rawValue: String) {
+            self.rawValue = rawValue
+        }
+
+        public static func ==(lhs: Key, rhs: Key) -> Bool {
+            return lhs.rawValue == rhs.rawValue
+        }
+    }
+}
+
+public extension UIImage {
     struct Key: Equatable, RawRepresentable {
         public let rawValue: String
 
@@ -323,39 +322,5 @@ public extension UIImage {
 
         print("Failed to find \(key.rawValue) in any bundle")
         return nil
-    }
-}
-
-public extension CGSize { // IconSize
-
-    static var xsmallIcon:  CGSize { return BrandingManager.brand.value(for: .xsmall) }
-    static var smallIcon:   CGSize { return BrandingManager.brand.value(for: .small) }
-    static var mediumIcon:  CGSize { return BrandingManager.brand.value(for: .medium) }
-    static var largeIcon:   CGSize { return BrandingManager.brand.value(for: .large) }
-    static var xlargeIcon:  CGSize { return BrandingManager.brand.value(for: .xlarge) }
-    static var xxlargeIcon: CGSize { return BrandingManager.brand.value(for: .xxlarge) }
-}
-
-public extension UIColor {
-
-    static var atom:       UIColor { return .atom(.primary) }
-    static var brand:      UIColor { return .brand(.primary) }
-    static var background: UIColor { return .background(.primary) }
-    static var text:       UIColor { return .text(.primary) }
-
-    static func atom(_ key: UIColor.Key = .primary) -> UIColor {
-        return BrandingManager.brand.atomColor(for: key)
-    }
-
-    static func brand(_ key: UIColor.Key = .primary) -> UIColor {
-        return BrandingManager.brand.brandColor(for: key)
-    }
-
-    static func background(_ key: UIColor.Key = .primary) -> UIColor {
-        return BrandingManager.brand.backgroundColor(for: key)
-    }
-
-    static func text(_ key: UIColor.Key = .primary) -> UIColor {
-        return BrandingManager.brand.textColor(for: key)
     }
 }

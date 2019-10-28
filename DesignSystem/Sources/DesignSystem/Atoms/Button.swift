@@ -107,7 +107,7 @@ final public class Button: UIButton {
         buttonBrand.configure(self, with: style)
     }
 
-    public func setTypography(_ typography: BrandingManager.Typography) {
+    public func setTypography(_ typography: Typography) {
         titleLabel?.font = typography.font
     }
 
