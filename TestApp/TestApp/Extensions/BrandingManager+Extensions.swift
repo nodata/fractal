@@ -17,16 +17,16 @@ extension UIColor.Key {
 
 public protocol BrandTest {
     var rawPalette: [BrandingManager.PaletteOption] { get }
-    var allTypographyCases: [BrandingManager.Typography] { get }
+    var allTypographyCases: [Typography] { get }
 }
 
 extension DefaultBrand: BrandTest {
-    public var allTypographyCases: [BrandingManager.Typography] {
+    public var allTypographyCases: [Typography] {
 
-        let basicCases = BrandingManager.Typography.allCases
-        let str = basicCases.map { BrandingManager.Typography($0.style, [.strong]) }
-        let noAcc = basicCases.map { BrandingManager.Typography($0.style, [.noAccessibility]) }
-        let strNoAcc = basicCases.map { BrandingManager.Typography($0.style, [.strong, .noAccessibility]) }
+        let basicCases = Typography.allCases
+        let str = basicCases.map { Typography($0.key, [.strong]) }
+        let noAcc = basicCases.map { Typography($0.key, [.noAccessibility]) }
+        let strNoAcc = basicCases.map { Typography($0.key, [.strong, .noAccessibility]) }
         return basicCases + str + noAcc + strNoAcc
     }
 

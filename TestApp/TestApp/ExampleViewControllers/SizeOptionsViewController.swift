@@ -37,11 +37,23 @@ class SizeOptionsViewController: UIViewController, SectionBuilder {
     }
 
     private var spacingOptions: [SizeOption] {
-
-        let options = BrandingManager.Spacing.allCases.map { (size) -> SizeOption in
-            let value = BrandingManager.brand.value(for: size)
+        
+        let keys: [CGFloat.Key] = [.xxsmall,
+                                  .xsmall,
+                                  .small,
+                                  .medium,
+                                  .large,
+                                  .xlarge,
+                                  .xxlarge,
+                                  .xxxlarge,
+                                  .padding,
+                                  .keyline,
+                                  .divider]
+        
+        let options = keys.map { (key) -> SizeOption in
+            let value = BrandingManager.brand.floatValue(for: key)
             let valueString = String(format: "%.0f", value)
-            let name = "\(size.rawValue) \(valueString)"
+            let name = "\(key.rawValue) \(valueString)"
             return Size(value: (name, CGSize(width: 0.0, height: value)))
         }
 
@@ -50,10 +62,17 @@ class SizeOptionsViewController: UIViewController, SectionBuilder {
 
     private var iconSizeOptions: [SizeOption] {
 
-        let options = BrandingManager.IconSize.allCases.map { (size) -> SizeOption in
-            let value = BrandingManager.brand.value(for: size)
+        let keys: [CGSize.Key] = [.iconxsmall,
+                                  .iconsmall,
+                                  .iconmedium,
+                                  .iconlarge,
+                                  .iconxlarge,
+                                  .iconxxlarge]
+        
+        let options = keys.map { (key) -> SizeOption in
+            let value = BrandingManager.brand.size(for: key)
             let valueString = String(format: "%.0fx%.0f", value.width, value.height)
-            let name = "\(size.rawValue) \(valueString)"
+            let name = "\(key.rawValue) \(valueString)"
             return Size(value: (name, value))
         }
 

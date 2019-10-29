@@ -27,7 +27,7 @@ public class NavigationOptionView: UIView {
         case information(constant: CGFloat)
     }
 
-    public static let typography: BrandingManager.Typography = .medium
+    public static let typography: Typography = .medium
     public static let detailDisclosureWidth: CGFloat = ImageView(.detailDisclosure).frame.size.width
 
     private let style: Style

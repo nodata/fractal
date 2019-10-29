@@ -11,7 +11,7 @@ import DesignSystem
 
 class TypographyViewModel {
 
-    private var options = [BrandingManager.Typography]() { didSet { didChange?([1]) }}
+    private var options = [Typography]() { didSet { didChange?([1]) }}
     var didChange: (([Int]) -> Void)?
     let isTesting: Observable<Bool> = Observable<Bool>(UserDefaults.standard.bool(forKey: BrandingManager.contentSizeOverrideKey))
 
@@ -73,7 +73,7 @@ class TypographyViewModel {
         }
     }
 
-    var optionsClosure: () -> ([BrandingManager.Typography]) {
+    var optionsClosure: () -> ([Typography]) {
         return { [weak self] in
             guard let `self` = self else { return [] }
             return self.options

@@ -23,7 +23,7 @@ public class TextViewView: UIView {
         autocapitalizationType(UITextAutocapitalizationType)
     }
 
-    public static let typography: BrandingManager.Typography = TextView.defaultTypography
+    public static let typography = TextView.defaultTypography
 
     public init() {
         super.init(frame: .zero)

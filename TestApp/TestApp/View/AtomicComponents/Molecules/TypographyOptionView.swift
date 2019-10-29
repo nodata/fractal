@@ -25,7 +25,7 @@ class TypographyOptionView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public func set(name: String, typography: BrandingManager.Typography) {
+    public func set(name: String, typography: Typography) {
         typeLabel.text = typography.name
         label.text = name
         label.apply(typography: typography) // Normally I'd say this probably isn't ideal... but for this purpose as it's not customer facing it's ok

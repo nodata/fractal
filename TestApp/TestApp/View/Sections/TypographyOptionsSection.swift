@@ -10,19 +10,19 @@ import Foundation
 import DesignSystem
 
 extension SectionBuilder {
-    public func typographyOptions(_ optionsClosure: @escaping () -> ([BrandingManager.Typography])) -> TypographyOptionSection {
+    public func typographyOptions(_ optionsClosure: @escaping () -> ([Typography])) -> TypographyOptionSection {
         return TypographyOptionSection(optionsClosure: optionsClosure)
     }
 }
 
 public class TypographyOptionSection {
-    let optionsClosure: () -> ([BrandingManager.Typography])
+    let optionsClosure: () -> ([Typography])
 
-    init(optionsClosure: @escaping () -> ([BrandingManager.Typography])) {
+    init(optionsClosure: @escaping () -> ([Typography])) {
         self.optionsClosure = optionsClosure
     }
 
-    fileprivate func name(for typography: BrandingManager.Typography) -> String {
+    fileprivate func name(for typography: Typography) -> String {
         return "\(typography.font.fontName) \(typography.fontSize)"
     }
 }
