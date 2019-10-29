@@ -26,8 +26,12 @@ class YogaBrand: Brand {
         }
     }
     
-    func value(for spacing: BrandingManager.Spacing) -> CGFloat {
-        switch spacing {
+    func cornerRadius(for key: CGFloat.Key) -> CGFloat {
+        return 0.0
+    }
+    
+    func floatValue(for key: CGFloat.Key) -> CGFloat {
+        switch key {
         case .xxsmall:
             return 1.0
         case .xsmall:
@@ -50,38 +54,42 @@ class YogaBrand: Brand {
             return 1.0
         case .padding:
             return 8.0
+        default:
+            return 0.0
         }
     }
     
-    func value(for size: BrandingManager.IconSize) -> CGSize {
-        switch size {
-        case .xsmall:
+    func size(for key: CGSize.Key) -> CGSize {
+        switch key {
+        case .iconxsmall:
             return CGSize(width: 20.0, height: 20.0)
-        case .small:
+        case .iconsmall:
             return CGSize(width: 28.0, height: 28.0)
-        case .medium:
+        case .iconmedium:
             return CGSize(width: 40.0, height: 40.0)
-        case .large:
+        case .iconlarge:
             return CGSize(width: 64.0, height: 64.0)
-        case .xlarge:
+        case .iconxlarge:
             return CGSize(width: 96.0, height: 96.0)
-        case .xxlarge:
+        case .iconxxlarge:
             return CGSize(width: 128.0, height: 128.0)
+        default:
+            return .zero
         }
     }
     
     // MARK: - Typography
     
-    func fontName(for typography: BrandingManager.Typography) -> String? {
+    func fontName(for typography: Typography) -> String? {
         return nil // Defaults to SF
     }
     
     // ultraLight, thin, light, regular, medium, semibold, bold, heavy, strong, black
-    func fontWeight(for typography: BrandingManager.Typography) -> UIFont.Weight {
+    func fontWeight(for typography: Typography) -> UIFont.Weight {
         return .bold
     }
     
-    public func fontSize(for typography: BrandingManager.Typography) -> CGFloat {
+    public func fontSize(for typography: Typography) -> CGFloat {
         var size: CGFloat
         
         switch typography {
@@ -110,7 +118,7 @@ class YogaBrand: Brand {
         return size
     }
     
-    private func fontSizeAdjustment(for typography: BrandingManager.Typography) -> CGFloat {
+    private func fontSizeAdjustment(for typography: Typography) -> CGFloat {
         switch (typography, BrandingManager.contentSizeCategory) {
         case (.xxsmall, .extraSmall),
              (.xxsmall, .small):
@@ -288,11 +296,11 @@ extension YogaBrand: NavigationControllerBrand {
     func applyBrand(to navigationBar: UINavigationBar) {
         
         let attributes: [NSAttributedString.Key: AnyObject] = [
-            NSAttributedString.Key.font: BrandingManager.Typography.large.font,
+            NSAttributedString.Key.font: Typography.large.font,
             NSAttributedString.Key.foregroundColor: UIColor.text(.secondary)]
         
         let largeAttributes: [NSAttributedString.Key: AnyObject] = [
-            NSAttributedString.Key.font: BrandingManager.Typography.xxlarge.font,
+            NSAttributedString.Key.font: Typography.xxlarge.font,
             NSAttributedString.Key.foregroundColor: UIColor.text(.secondary)]
         
         navigationBar.titleTextAttributes = attributes
@@ -313,11 +321,11 @@ extension YogaBrand: TabBarControllerBrand {
 }
 
 extension YogaBrand: BrandTest {
-    public var allTypographyCases: [BrandingManager.Typography] {
-        let basicCases = BrandingManager.Typography.allCases
-        let str = basicCases.map { BrandingManager.Typography($0.style, [.strong]) }
-        let noAcc = basicCases.map { BrandingManager.Typography($0.style, [.noAccessibility]) }
-        let strNoAcc = basicCases.map { BrandingManager.Typography($0.style, [.strong, .noAccessibility]) }
+    public var allTypographyCases: [Typography] {
+        let basicCases = Typography.allCases
+        let str = basicCases.map { Typography($0.key, [.strong]) }
+        let noAcc = basicCases.map { Typography($0.key, [.noAccessibility]) }
+        let strNoAcc = basicCases.map { Typography($0.key, [.strong, .noAccessibility]) }
         return basicCases + str + noAcc + strNoAcc
     }
     

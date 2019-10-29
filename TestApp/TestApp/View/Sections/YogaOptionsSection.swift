@@ -18,7 +18,7 @@ extension SectionBuilder {
 
     public func yogaEventsCarousel(with events: @autoclosure @escaping () -> [YogaSectionOption], selectionClosure:  @escaping (YogaSectionOption) -> Void) -> CarouselSection {
         let sections = [yogaEvents(events: events(), selectionClosure: selectionClosure)]
-        return carousel("Yoga_Events", sections: sections, height: YogaEventsSection.height, pagingEnabled: false)
+        return carousel("Yoga_Events", height: .custom(YogaEventsSection.height), pagingEnabled: false, sections: sections)
     }
 
     public func yogaEvents(events: @autoclosure @escaping () -> [YogaSectionOption], selectionClosure:  @escaping ( YogaSectionOption) -> Void) -> YogaEventsSection {

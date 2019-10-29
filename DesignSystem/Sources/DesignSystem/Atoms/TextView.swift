@@ -12,7 +12,7 @@ import UIKit
 final public class TextView: UITextView {
 
     public static let placeholderColor: UIColor = .text(.placeholder)
-    public static let defaultTypography: BrandingManager.Typography = .medium
+    public static let defaultTypography: Typography = .medium
 
     private var usingPlaceholder: Bool = false
     private var heldTextColor: UIColor?

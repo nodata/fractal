@@ -13,7 +13,7 @@ final public class TextField: UITextField {
     static public let placeholderColor: UIColor = .text(.placeholder)
     override public var placeholder: String? { didSet { setPlaceholder() }}
 
-    public var typography: BrandingManager.Typography = .medium
+    public var typography: Typography = .medium
     public var indexPath: IndexPath?
     public var willAutoClear: Bool = false
     public var key: String?

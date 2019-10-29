@@ -13,7 +13,7 @@ extension SectionBuilder {
     
     public func buttonCarousel(with titles: @autoclosure @escaping () -> [String], selectionClosure:  @escaping (Int) -> Void) -> CarouselSection {
         let sections = [buttonArray(titles: titles(), selectionClosure: selectionClosure)]
-        return carousel(sections: sections, height: ButtonArraySection.height, pagingEnabled: false)
+        return carousel(height: .custom(ButtonArraySection.height), pagingEnabled: false, sections: sections)
     }
     
     public func buttonArray(titles: @autoclosure @escaping () -> [String], selectionClosure:  @escaping (Int) -> Void) -> ButtonArraySection {

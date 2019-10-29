@@ -14,7 +14,7 @@ public class HeadlineView: UIView {
     public enum Style: String {
         case `default`, detail
 
-        public var typography: BrandingManager.Typography {
+        public var typography: Typography {
             switch self {
             case .default:
                 return .large

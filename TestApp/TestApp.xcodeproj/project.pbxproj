@@ -44,7 +44,6 @@
 		9228C5DF229CCE2200B8972B /* CheckboxOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C5CD229CCE2100B8972B /* CheckboxOptionsSection.swift */; };
 		9228C5E0229CCE2200B8972B /* NavigationGroupSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C5CE229CCE2100B8972B /* NavigationGroupSection.swift */; };
 		9228C5E1229CCE2200B8972B /* SliderSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C5CF229CCE2100B8972B /* SliderSection.swift */; };
-		9228C5E2229CCE2200B8972B /* CarouselSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C5D0229CCE2100B8972B /* CarouselSection.swift */; };
 		9228C5E4229CCE2200B8972B /* ButtonGroupSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C5D2229CCE2100B8972B /* ButtonGroupSection.swift */; };
 		9228C5E6229CCE2200B8972B /* LoadingSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C5D4229CCE2100B8972B /* LoadingSection.swift */; };
 		9228C5E7229CCE2200B8972B /* TextViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C5D5229CCE2100B8972B /* TextViewSection.swift */; };
@@ -56,7 +55,6 @@
 		9228C5ED229CCE2200B8972B /* InformationSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C5DB229CCE2200B8972B /* InformationSection.swift */; };
 		9228C5EE229CCE2200B8972B /* SegmentedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C5DC229CCE2200B8972B /* SegmentedOptionsSection.swift */; };
 		9228C5EF229CCE2200B8972B /* ReloadableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C5DD229CCE2200B8972B /* ReloadableSection.swift */; };
-		9228C5F4229CCE8100B8972B /* CarouselViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C5F2229CCE8100B8972B /* CarouselViewController.swift */; };
 		9228C5F5229CCE8100B8972B /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C5F3229CCE8100B8972B /* FilterViewController.swift */; };
 		9228C603229CCEE300B8972B /* CheckboxOptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C5F6229CCEE200B8972B /* CheckboxOptionView.swift */; };
 		9228C604229CCEE300B8972B /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C5F7229CCEE200B8972B /* DividerView.swift */; };
@@ -169,7 +167,6 @@
 		9228C5CD229CCE2100B8972B /* CheckboxOptionsSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckboxOptionsSection.swift; sourceTree = "<group>"; };
 		9228C5CE229CCE2100B8972B /* NavigationGroupSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationGroupSection.swift; sourceTree = "<group>"; };
 		9228C5CF229CCE2100B8972B /* SliderSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderSection.swift; sourceTree = "<group>"; };
-		9228C5D0229CCE2100B8972B /* CarouselSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselSection.swift; sourceTree = "<group>"; };
 		9228C5D2229CCE2100B8972B /* ButtonGroupSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonGroupSection.swift; sourceTree = "<group>"; };
 		9228C5D4229CCE2100B8972B /* LoadingSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingSection.swift; sourceTree = "<group>"; };
 		9228C5D5229CCE2100B8972B /* TextViewSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewSection.swift; sourceTree = "<group>"; };
@@ -181,7 +178,6 @@
 		9228C5DB229CCE2200B8972B /* InformationSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InformationSection.swift; sourceTree = "<group>"; };
 		9228C5DC229CCE2200B8972B /* SegmentedOptionsSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedOptionsSection.swift; sourceTree = "<group>"; };
 		9228C5DD229CCE2200B8972B /* ReloadableSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReloadableSection.swift; sourceTree = "<group>"; };
-		9228C5F2229CCE8100B8972B /* CarouselViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewController.swift; sourceTree = "<group>"; };
 		9228C5F3229CCE8100B8972B /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		9228C5F6229CCEE200B8972B /* CheckboxOptionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckboxOptionView.swift; sourceTree = "<group>"; };
 		9228C5F7229CCEE200B8972B /* DividerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
@@ -381,7 +377,6 @@
 			children = (
 				9228C5D8229CCE2200B8972B /* HeadlineSection.swift */,
 				9228C5D2229CCE2100B8972B /* ButtonGroupSection.swift */,
-				9228C5D0229CCE2100B8972B /* CarouselSection.swift */,
 				9228C5CD229CCE2100B8972B /* CheckboxOptionsSection.swift */,
 				9228C5D9229CCE2200B8972B /* GapSection.swift */,
 				9228C5DB229CCE2200B8972B /* InformationSection.swift */,
@@ -441,7 +436,6 @@
 		9228C5F1229CCE4600B8972B /* Organisms */ = {
 			isa = PBXGroup;
 			children = (
-				9228C5F2229CCE8100B8972B /* CarouselViewController.swift */,
 				9228C5F3229CCE8100B8972B /* FilterViewController.swift */,
 			);
 			path = Organisms;
@@ -699,7 +693,6 @@
 				9209629E226EFB2D00FC8E6F /* MainMenuPresenter.swift in Sources */,
 				9228C616229CD80800B8972B /* FractalBrand.swift in Sources */,
 				9228C603229CCEE300B8972B /* CheckboxOptionView.swift in Sources */,
-				9228C5E2229CCE2200B8972B /* CarouselSection.swift in Sources */,
 				9228C5E7229CCE2200B8972B /* TextViewSection.swift in Sources */,
 				9228C5EE229CCE2200B8972B /* SegmentedOptionsSection.swift in Sources */,
 				920962AE226EFB2D00FC8E6F /* SizeOptionsSection.swift in Sources */,
