@@ -84,7 +84,7 @@ public class DefaultBrand: NSObject, Brand {
 
     public func fontWeight(for typography: Typography) -> UIFont.Weight {
         if typography.isStrong {
-            switch typography {
+            switch typography.key {
             case .xxlarge, .xlarge, .large:
                 return .bold
             default:
@@ -97,7 +97,7 @@ public class DefaultBrand: NSObject, Brand {
     public func fontSize(for typography: Typography) -> CGFloat {
         var size: CGFloat
 
-        switch typography {
+        switch typography.key {
         case .xxlarge:
             size = 20.0
         case .xlarge:
@@ -124,7 +124,7 @@ public class DefaultBrand: NSObject, Brand {
     }
 
     private func fontSizeAdjustment(for typography: Typography) -> CGFloat {
-        switch (typography, BrandingManager.contentSizeCategory) {
+        switch (typography.key, BrandingManager.contentSizeCategory) {
         case (.xxsmall, .extraSmall),
              (.xxsmall, .small):
             return 0.0

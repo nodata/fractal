@@ -88,7 +88,7 @@ class YogaBrand: Brand {
     public func fontSize(for typography: Typography) -> CGFloat {
         var size: CGFloat
         
-        switch typography {
+        switch typography.key {
         case .xxlarge:
             size = 32.0
         case .xlarge:
@@ -115,7 +115,7 @@ class YogaBrand: Brand {
     }
     
     private func fontSizeAdjustment(for typography: Typography) -> CGFloat {
-        switch (typography, BrandingManager.contentSizeCategory) {
+        switch (typography.key, BrandingManager.contentSizeCategory) {
         case (.xxsmall, .extraSmall),
              (.xxsmall, .small):
             return 0.0

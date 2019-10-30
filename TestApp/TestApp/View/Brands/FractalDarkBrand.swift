@@ -88,7 +88,7 @@ class FractalDarkBrand: Brand {
 
     func fontName(for typography: Typography) -> String? {
         if typography.isStrong {
-            switch typography {
+            switch typography.key {
             case .xxlarge, .xlarge, .large:
                 return "Avenir-Black"
             default:
@@ -113,7 +113,7 @@ class FractalDarkBrand: Brand {
     public func fontSize(for typography: Typography) -> CGFloat {
         var size: CGFloat
 
-        switch typography {
+        switch typography.key {
         case .xxlarge:
             size = 32.0
         case .xlarge:
@@ -140,7 +140,7 @@ class FractalDarkBrand: Brand {
     }
 
     private func fontSizeAdjustment(for typography: Typography) -> CGFloat {
-        switch (typography, BrandingManager.contentSizeCategory) {
+        switch (typography.key, BrandingManager.contentSizeCategory) {
         case (.xxsmall, .extraSmall),
              (.xxsmall, .small):
             return 0.0
