@@ -25,10 +25,6 @@ public class DefaultBrand: NSObject, Brand {
     }
 
     // MARK: - Size / Spacing
-
-    public func cornerRadius(for key: CGFloat.Key) -> CGFloat {
-        return 0.0
-    }
     
     public func floatValue(for key: CGFloat.Key) -> CGFloat {
         switch key {

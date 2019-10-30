@@ -26,10 +26,6 @@ class YogaBrand: Brand {
         }
     }
     
-    func cornerRadius(for key: CGFloat.Key) -> CGFloat {
-        return 0.0
-    }
-    
     func floatValue(for key: CGFloat.Key) -> CGFloat {
         switch key {
         case .xxsmall:

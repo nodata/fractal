@@ -29,7 +29,6 @@ public protocol Brand {
     func imageName(for key: UIImage.Key) -> String?
 
     // Spacing and Sizing
-    func cornerRadius(for key: CGFloat.Key) -> CGFloat
     func floatValue(for key: CGFloat.Key) -> CGFloat
     func size(for key: CGSize.Key) -> CGSize
 
