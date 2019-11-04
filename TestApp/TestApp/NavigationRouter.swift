@@ -20,8 +20,10 @@ class NavigationRouter {
         selectionExample,
         filteringExample,
         cardExample,
+        settings,
+        
         yoga,
-        settings
+        newComponents
     }
 
     static var shared: NavigationRouter!
@@ -77,10 +79,12 @@ class NavigationRouter {
             pushFilteringExample()
         case .cardExample:
             presentCardExample()
-        case .yoga:
-            presentYogaExample()
         case .settings:
             presentSettings()
+        case .yoga:
+            presentYogaExample()
+        case .newComponents:
+            presentNewComponentsExample()
         }
     }
 
@@ -121,6 +125,11 @@ class NavigationRouter {
         viewController.cardHeight = max(500.0, 800.0 - (100.0 * CGFloat(cardViewController.cardViews.count)))
         let nav = NavigationController(rootViewController: viewController)
         cardViewController.present(nav, options: [.darkBackground, .isFullscreen])
+    }
+    
+    private func presentNewComponentsExample() {
+        let viewController = NewComponentsViewController()
+        currentNavigationController.present(viewController, animated: true)
     }
     
     private func presentYogaExample() {

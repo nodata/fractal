@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        BrandingManager.set(brand: FractalBrand())
+        BrandingManager.set(brand: LearningBrand())
         BrandingManager.subscribeToNotifications()
         return true
     }

@@ -75,6 +75,9 @@ public extension Button.Style {
     static let attention = Button.Style("attention")
     static let text      = Button.Style("text")
     static let toggle    = Button.Style("toggle")
+
+    static let primaryDisabled   = Button.Style("primaryDisabled")
+    static let secondaryDisabled = Button.Style("secondaryDisabled")
 }
 
 public extension Typography.Key {
@@ -87,6 +90,9 @@ public extension Typography.Key {
     static let xlarge   = Typography.Key("xlarge")
     static let xxlarge  = Typography.Key("xxlarge")
     static let xxxlarge = Typography.Key("xxxlarge")
+    static let x4large  = Typography.Key("x4large")
+    static let x5large  = Typography.Key("x4large")
+    static let x6large  = Typography.Key("x4large")
 }
 
 public extension CGFloat.Key {

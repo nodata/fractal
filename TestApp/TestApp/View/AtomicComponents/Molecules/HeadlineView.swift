@@ -12,21 +12,38 @@ import DesignSystem
 public class HeadlineView: UIView {
 
     public enum Style: String {
-        case `default`, detail
+        case `default`,
+             detail,
+             header,
+             headerLarge,
+             headerLargeAccent,
+             secondary,
+             secondaryAccent
 
         public var typography: Typography {
             switch self {
+            case .header:
+                return .large
+            case .headerLarge, .headerLargeAccent:
+                return .xlarge
+            case .secondary, .secondaryAccent:
+                return .medium
             case .default:
                 return .large
-            default:
+            default: //detail
                 return .medium
             }
         }
 
         public var color: UIColor {
             switch self {
-            case .default:
-                return .text(.information)
+            case .headerLargeAccent:
+                return .text(.tertiary)
+            case .secondary:
+                return .text(.secondary)
+            case .secondaryAccent:
+                return .text(.secondaryDark)
+            case .header, .headerLarge, .default: fallthrough
             default:
                 return .text
             }
@@ -44,14 +61,22 @@ public class HeadlineView: UIView {
 
     private let style: Style
 
-    public init(style: Style = .default) {
+    public init(style: Style = .default, alignment: NSTextAlignment? = nil) {
         self.style = style
         super.init(frame: .zero)
         addSubview(label)
+        
+        var widthPin = Pin.width(-.keyline*2, options: [.relation(.lessThanOrEqual)])
+        
+        if let alignment = alignment {
+            widthPin = Pin.width(-.keyline*2)
+            label.textAlignment = alignment
+        }
+        
         label.pin(to: self, [.leading(.keyline),
                              .bottom(-.small),
                              .top(style.topPadding),
-                             .width(-.keyline*2, options: [.relation(.lessThanOrEqual)])])
+                             widthPin])
     }
 
     @available(*, unavailable)
@@ -64,7 +89,6 @@ public class HeadlineView: UIView {
     }
 
     // MARK: - Properties
-
     private lazy var label: Label = {
         let label = Label()
         label.apply(typography: self.style.typography, color: self.style.color)

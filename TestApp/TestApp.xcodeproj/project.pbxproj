@@ -90,6 +90,15 @@
 		92810CB322D70AAB00F8F0DE /* IconSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92810CB222D70AAB00F8F0DE /* IconSelectView.swift */; };
 		92810CB522D7309C00F8F0DE /* IconSelectionCarouselSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92810CB422D7309C00F8F0DE /* IconSelectionCarouselSection.swift */; };
 		92810CB722D86B0700F8F0DE /* ImageSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92810CB622D86B0700F8F0DE /* ImageSection.swift */; };
+		A98D1A462370DE1B00EF04AF /* VariableSizeLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98D1A3F2370DE1B00EF04AF /* VariableSizeLabelView.swift */; };
+		A98D1A472370DE1B00EF04AF /* TwoButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98D1A402370DE1B00EF04AF /* TwoButtonView.swift */; };
+		A98D1A482370DE1B00EF04AF /* VariableSizeLabelSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98D1A442370DE1B00EF04AF /* VariableSizeLabelSection.swift */; };
+		A98D1A492370DE1B00EF04AF /* TwoButtonSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98D1A452370DE1B00EF04AF /* TwoButtonSection.swift */; };
+		A98D1A4B2370DE6F00EF04AF /* LearningBrand.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98D1A4A2370DE6F00EF04AF /* LearningBrand.swift */; };
+		A98D1A512370DF2F00EF04AF /* TypeAliases.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98D1A502370DF2F00EF04AF /* TypeAliases.swift */; };
+		A98D1A532370DF9200EF04AF /* Numbers+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98D1A522370DF9200EF04AF /* Numbers+extensions.swift */; };
+		A98D1A562370E09100EF04AF /* NewComponentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98D1A552370E09100EF04AF /* NewComponentsViewController.swift */; };
+		A98D1A582370E16600EF04AF /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98D1A572370E16600EF04AF /* String+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -212,6 +221,15 @@
 		92810CB222D70AAB00F8F0DE /* IconSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSelectView.swift; sourceTree = "<group>"; };
 		92810CB422D7309C00F8F0DE /* IconSelectionCarouselSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSelectionCarouselSection.swift; sourceTree = "<group>"; };
 		92810CB622D86B0700F8F0DE /* ImageSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSection.swift; sourceTree = "<group>"; };
+		A98D1A3F2370DE1B00EF04AF /* VariableSizeLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VariableSizeLabelView.swift; sourceTree = "<group>"; };
+		A98D1A402370DE1B00EF04AF /* TwoButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoButtonView.swift; sourceTree = "<group>"; };
+		A98D1A442370DE1B00EF04AF /* VariableSizeLabelSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VariableSizeLabelSection.swift; sourceTree = "<group>"; };
+		A98D1A452370DE1B00EF04AF /* TwoButtonSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoButtonSection.swift; sourceTree = "<group>"; };
+		A98D1A4A2370DE6F00EF04AF /* LearningBrand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LearningBrand.swift; sourceTree = "<group>"; };
+		A98D1A502370DF2F00EF04AF /* TypeAliases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeAliases.swift; sourceTree = "<group>"; };
+		A98D1A522370DF9200EF04AF /* Numbers+extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Numbers+extensions.swift"; sourceTree = "<group>"; };
+		A98D1A552370E09100EF04AF /* NewComponentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewComponentsViewController.swift; sourceTree = "<group>"; };
+		A98D1A572370E16600EF04AF /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -278,6 +296,7 @@
 				9264750523245E7300F51DBD /* Phases */,
 				9228C61A229E1DEC00B8972B /* Extensions */,
 				9228C612229CCF3F00B8972B /* View */,
+				A98D1A3C2370DDE600EF04AF /* CustomViews */,
 				92096284226EFB2D00FC8E6F /* ExampleViewControllers */,
 				9209626A226EFB2400FC8E6F /* Helpers.swift */,
 				92096184226EE6FD00FC8E6F /* AppDelegate.swift */,
@@ -356,6 +375,7 @@
 				9209627F226EFB2D00FC8E6F /* TypographyOptions */,
 				92810CAB22D5E8B100F8F0DE /* Settings */,
 				9202FFC12313C55A006A8E92 /* Yoga */,
+				A98D1A542370E07500EF04AF /* NewComponents */,
 				92096285226EFB2D00FC8E6F /* SizeOptionsViewController.swift */,
 				92096286226EFB2D00FC8E6F /* ColorPaletteViewController.swift */,
 			);
@@ -472,6 +492,9 @@
 			isa = PBXGroup;
 			children = (
 				9228C61F229F934200B8972B /* BrandingManager+Extensions.swift */,
+				A98D1A502370DF2F00EF04AF /* TypeAliases.swift */,
+				A98D1A522370DF9200EF04AF /* Numbers+extensions.swift */,
+				A98D1A572370E16600EF04AF /* String+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -500,6 +523,66 @@
 				92810CAC22D5E8C500F8F0DE /* SettingsViewController.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		A98D1A3C2370DDE600EF04AF /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				A98D1A3D2370DE1B00EF04AF /* AtomicComponents */,
+				A98D1A422370DE1B00EF04AF /* Brands */,
+				A98D1A432370DE1B00EF04AF /* Sections */,
+			);
+			path = CustomViews;
+			sourceTree = "<group>";
+		};
+		A98D1A3D2370DE1B00EF04AF /* AtomicComponents */ = {
+			isa = PBXGroup;
+			children = (
+				A98D1A3E2370DE1B00EF04AF /* Molecules */,
+				A98D1A412370DE1B00EF04AF /* Organisms */,
+			);
+			path = AtomicComponents;
+			sourceTree = "<group>";
+		};
+		A98D1A3E2370DE1B00EF04AF /* Molecules */ = {
+			isa = PBXGroup;
+			children = (
+				A98D1A3F2370DE1B00EF04AF /* VariableSizeLabelView.swift */,
+				A98D1A402370DE1B00EF04AF /* TwoButtonView.swift */,
+			);
+			path = Molecules;
+			sourceTree = "<group>";
+		};
+		A98D1A412370DE1B00EF04AF /* Organisms */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Organisms;
+			sourceTree = "<group>";
+		};
+		A98D1A422370DE1B00EF04AF /* Brands */ = {
+			isa = PBXGroup;
+			children = (
+				A98D1A4A2370DE6F00EF04AF /* LearningBrand.swift */,
+			);
+			path = Brands;
+			sourceTree = "<group>";
+		};
+		A98D1A432370DE1B00EF04AF /* Sections */ = {
+			isa = PBXGroup;
+			children = (
+				A98D1A442370DE1B00EF04AF /* VariableSizeLabelSection.swift */,
+				A98D1A452370DE1B00EF04AF /* TwoButtonSection.swift */,
+			);
+			path = Sections;
+			sourceTree = "<group>";
+		};
+		A98D1A542370E07500EF04AF /* NewComponents */ = {
+			isa = PBXGroup;
+			children = (
+				A98D1A552370E09100EF04AF /* NewComponentsViewController.swift */,
+			);
+			path = NewComponents;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -635,7 +718,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9264750923245E8B00F51DBD /* Phase2.swift in Sources */,
-				9228C5F4229CCE8100B8972B /* CarouselViewController.swift in Sources */,
+				A98D1A4B2370DE6F00EF04AF /* LearningBrand.swift in Sources */,
 				9228C609229CCEE300B8972B /* SegmentedControlView.swift in Sources */,
 				9264750B23245E9400F51DBD /* Phase3.swift in Sources */,
 				9228C5EF229CCE2200B8972B /* ReloadableSection.swift in Sources */,
@@ -646,12 +729,14 @@
 				9228C605229CCEE300B8972B /* HeadlineView.swift in Sources */,
 				9228C606229CCEE300B8972B /* NavigationOptionView.swift in Sources */,
 				9202FFCD231D0599006A8E92 /* YogaPresenter.swift in Sources */,
+				A98D1A482370DE1B00EF04AF /* VariableSizeLabelSection.swift in Sources */,
 				9228C60B229CCEE300B8972B /* BounceScaleImageView.swift in Sources */,
 				92096187226EE6FD00FC8E6F /* ViewController.swift in Sources */,
 				926095CC2320D66700BF2A85 /* EventDetailSection.swift in Sources */,
 				920962B3226EFB4700FC8E6F /* NavigationRouter.swift in Sources */,
 				920962A5226EFB2D00FC8E6F /* MainMenuViewController.swift in Sources */,
 				9228C5ED229CCE2200B8972B /* InformationSection.swift in Sources */,
+				A98D1A472370DE1B00EF04AF /* TwoButtonView.swift in Sources */,
 				9228C5EA229CCE2200B8972B /* HeadlineSection.swift in Sources */,
 				92810CB722D86B0700F8F0DE /* ImageSection.swift in Sources */,
 				9202FFC72313C72E006A8E92 /* YogaBrand.swift in Sources */,
@@ -661,10 +746,12 @@
 				9228C5E6229CCE2200B8972B /* LoadingSection.swift in Sources */,
 				920962AD226EFB2D00FC8E6F /* ColorPaletteOptionView.swift in Sources */,
 				92096296226EFB2D00FC8E6F /* ButtonExampleViewController.swift in Sources */,
+				A98D1A492370DE1B00EF04AF /* TwoButtonSection.swift in Sources */,
 				92096295226EFB2D00FC8E6F /* ButtonExamplePresenter.swift in Sources */,
 				9228C5DE229CCE2200B8972B /* SingleButtonSection.swift in Sources */,
 				926095CE2320D67300BF2A85 /* CommentsSection.swift in Sources */,
 				9228C60E229CCEE300B8972B /* TextFieldView.swift in Sources */,
+				A98D1A512370DF2F00EF04AF /* TypeAliases.swift in Sources */,
 				9264750423240BDD00F51DBD /* HeroImageView.swift in Sources */,
 				920962B4226EFB4700FC8E6F /* DependencyRegistry.swift in Sources */,
 				92810CAD22D5E8C500F8F0DE /* SettingsViewController.swift in Sources */,
@@ -677,7 +764,9 @@
 				9209626B226EFB2400FC8E6F /* Helpers.swift in Sources */,
 				9202FFCF231D05F5006A8E92 /* YogaDetailPresenter.swift in Sources */,
 				92810CB122D70A5200F8F0DE /* IconSelectionSection.swift in Sources */,
+				A98D1A462370DE1B00EF04AF /* VariableSizeLabelView.swift in Sources */,
 				926095C623209DB600BF2A85 /* HeroImageSection.swift in Sources */,
+				A98D1A532370DF9200EF04AF /* Numbers+extensions.swift in Sources */,
 				926095C4231F95A400BF2A85 /* ButtonCarouselSection.swift in Sources */,
 				920962AF226EFB2D00FC8E6F /* TypographyOptionsSection.swift in Sources */,
 				9209629D226EFB2D00FC8E6F /* SelectionAndInfoViewController.swift in Sources */,
@@ -689,6 +778,7 @@
 				9228C5EC229CCE2200B8972B /* NavigationSection.swift in Sources */,
 				920962AC226EFB2D00FC8E6F /* SizeOptionView.swift in Sources */,
 				9228C5E1229CCE2200B8972B /* SliderSection.swift in Sources */,
+				A98D1A562370E09100EF04AF /* NewComponentsViewController.swift in Sources */,
 				9228C5DF229CCE2200B8972B /* CheckboxOptionsSection.swift in Sources */,
 				9209629E226EFB2D00FC8E6F /* MainMenuPresenter.swift in Sources */,
 				9228C616229CD80800B8972B /* FractalBrand.swift in Sources */,
@@ -707,6 +797,7 @@
 				9228C608229CCEE300B8972B /* SliderView.swift in Sources */,
 				9228C607229CCEE300B8972B /* InformationView.swift in Sources */,
 				920962A3226EFB2D00FC8E6F /* SizeOptionsViewController.swift in Sources */,
+				A98D1A582370E16600EF04AF /* String+Extensions.swift in Sources */,
 				9228C60A229CCEE300B8972B /* TextViewView.swift in Sources */,
 				9228C5E0229CCE2200B8972B /* NavigationGroupSection.swift in Sources */,
 				920962A0226EFB2D00FC8E6F /* TypographyOptionsViewController.swift in Sources */,
