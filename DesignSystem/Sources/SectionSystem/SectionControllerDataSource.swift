@@ -12,19 +12,23 @@ open class SectionControllerDataSource: NSObject {
 
     public private(set) var newSections: Bool = false
     private weak var viewController: UIViewController?
+    private var initialContentOffset: CGPoint = .zero
+    private var currentIndexPath: IndexPath = IndexPath(item: 0, section: 0)
+    
     public var sections: [Section] = [] {
         willSet { decoupleVisible() }
         didSet { newSections = true }
     }
     public var offset: CGFloat = 0.0 // TODO: Look at changing sections, potentially find current cell and keep hold of it, creating non moving section reloading if needed
     public var didScroll: ((UIScrollView) -> Void)?
-
+    public var willEndDrag: ((_ scrollView: UIScrollView, _ velocity: CGPoint, _ initialOffset: CGPoint, _ targetContentOffset: CGPoint) -> CGPoint?)?
+    
     public init(viewController: UIViewController) {
         self.viewController = viewController
         super.init()
     }
 
-    private func bedrock(in section: Section, index: Int) -> (BedrockSection, Int)? {
+    func bedrock(in section: Section, index: Int) -> (BedrockSection, Int)? {
 
         if let nestedSection = section as? NestedSection {
             guard let givenSectionIndex = nestedSection.givenSectionIndex(from: index) else { return nil }
@@ -153,6 +157,16 @@ extension SectionControllerDataSource: UIScrollViewDelegate {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         offset = scrollView.contentOffset.x
         didScroll?(scrollView)
+    }
+    
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        initialContentOffset = scrollView.contentOffset
+    }
+    
+    public func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        if let newTarget = willEndDrag?(scrollView, velocity, initialContentOffset, targetContentOffset.pointee) {
+            targetContentOffset.pointee = newTarget
+        }
     }
 }
 
@@ -383,9 +397,9 @@ extension SectionControllerDataSource: UICollectionViewDataSource, UICollectionV
             viewSection.set(visibleView: nil, at: index)
         }
     }
-
+    
     // MARK: - UICollectionViewDelegateFlowLayout
-
+    
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         guard sections.count > section else { return .zero }
         return sections[section].sectionInsets

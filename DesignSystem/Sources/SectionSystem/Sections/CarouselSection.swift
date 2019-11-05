@@ -9,29 +9,31 @@
 import Foundation
 
 extension SectionBuilder {
-    public func carousel(_ reuseIdentifier: String = UUID().uuidString, height: CarouselSection.HeightType = .full, pagingEnabled: Bool = false, sections: @autoclosure @escaping () -> [Section]) -> CarouselSection {
-        return CarouselSection(id: reuseIdentifier, heightType: height, pagingEnabled: pagingEnabled, sectionsClosure: sections)
+    public func carousel(_ reuseIdentifier: String = UUID().uuidString, height: CarouselSection.HeightType = .full, pagingType: CarouselViewController.PagingType = .false, layout: UICollectionViewLayout? = nil, sections: @autoclosure @escaping () -> [Section]) -> CarouselSection {
+        return CarouselSection(id: reuseIdentifier, heightType: height, pagingType: pagingType, layout: layout, sectionsClosure: sections)
     }
 }
 
 public class CarouselSection {
 
     public enum HeightType {
-        case full, multiplier(CGFloat), custom(CGFloat)
+        case full, width, multiplier(CGFloat), custom(CGFloat)
     }
     
     private let id: String
     private let heightType: HeightType
-    private let pagingEnabled: Bool
+    private let pagingType: CarouselViewController.PagingType
     private let sectionsClosure: () -> [Section]
     private var staticSections: [Section]
+    private let layout: UICollectionViewLayout?
 
-    fileprivate init(id: String, heightType: HeightType, pagingEnabled: Bool, sectionsClosure: @escaping () -> [Section]) {
+    fileprivate init(id: String, heightType: HeightType, pagingType: CarouselViewController.PagingType, layout: UICollectionViewLayout?, sectionsClosure: @escaping () -> [Section]) {
         self.id = id
         self.heightType = heightType
-        self.pagingEnabled = pagingEnabled
+        self.pagingType = pagingType
         self.sectionsClosure = sectionsClosure
         self.staticSections = sectionsClosure()
+        self.layout = layout
     }
 }
 
@@ -55,21 +57,24 @@ extension CarouselSection: ViewControllerSection {
     }
 
     public func size(in view: UIView, at index: Int) -> SectionCellSize {
-        
+
+        let width = view.bounds.size.width
         switch heightType {
         case .full:
-            return SectionCellSize(width: view.bounds.size.width, height: view.bounds.size.height)
+            return SectionCellSize(width: width, height: view.bounds.size.height)
+        case .width:
+            return SectionCellSize(width: width, height: width)
         case .custom(let value):
-            return SectionCellSize(width: view.bounds.size.width, height: value)
+            return SectionCellSize(width: width, height: value)
         case .multiplier(let value):
-            return SectionCellSize(width: view.bounds.size.width, height: view.bounds.size.height * value)
+            return SectionCellSize(width: width, height: view.bounds.size.height * value)
         }
     }
 
     public func configure(_ viewController: UIViewController, at index: Int) {
 
         guard let vc = viewController as? CarouselViewController else { return }
-        vc.collectionView.isPagingEnabled = self.pagingEnabled
+        vc.pagingType = pagingType
         vc.dataSource.sections = staticSections
         vc.reload()
         

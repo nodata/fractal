@@ -31,9 +31,13 @@ extension SectionTableViewController: SectionController {
             guard self.useRefreshControl else {
 
                 if indexes.count > 0 {
-                    UIView.performWithoutAnimation { self.tableView.reloadSections(IndexSet(indexes), with: .none) }
+                    UIView.performWithoutAnimation {
+                        self.tableView.reloadSections(IndexSet(indexes), with: .none)
+                        self.reloadDidFinish()
+                    }
                 } else {
                     self.tableView.reloadData()
+                    self.reloadDidFinish()
                 }
 
                 return
@@ -44,17 +48,26 @@ extension SectionTableViewController: SectionController {
             } else {
 
                 if indexes.count > 0 {
-                    UIView.performWithoutAnimation { self.tableView.reloadSections(IndexSet(indexes), with: .none) }
+                    UIView.performWithoutAnimation {
+                        self.tableView.reloadSections(IndexSet(indexes), with: .none)
+                        self.reloadDidFinish()
+                    }
                 } else {
                     self.tableView.reloadData()
+                    self.reloadDidFinish()
                 }
             }
         }
     }
-
+    
     @objc private func reloadRefresh() {
         tableView.reloadData()
         refreshControl?.perform(#selector(refreshControl?.endRefreshing), with: nil, afterDelay: 0.1, inModes: [RunLoop.Mode.common])
+        perform(#selector(reloadDidFinish), with: nil, afterDelay: 0.1, inModes: [RunLoop.Mode.common])
+    }
+    
+    @objc open func reloadDidFinish() {
+        
     }
 }
 

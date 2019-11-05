@@ -31,10 +31,13 @@ extension SectionCollectionViewController: SectionController {
             guard self.useRefreshControl else {
 
                 if indexes.count > 0 {
-                    UIView.performWithoutAnimation { self.collectionView.reloadSections(IndexSet(indexes)) }
+                    UIView.performWithoutAnimation { self.collectionView.reloadSections(IndexSet(indexes))
+                        self.reloadDidFinish()
+                    }
                 } else {
                     self.collectionView.reloadData()
                     self.collectionView.layoutIfNeeded()
+                    self.reloadDidFinish()
                 }
 
                 return
@@ -45,24 +48,32 @@ extension SectionCollectionViewController: SectionController {
             } else {
 
                 if indexes.count > 0 {
-                    UIView.performWithoutAnimation { self.collectionView.reloadSections(IndexSet(indexes)) }
+                    UIView.performWithoutAnimation { self.collectionView.reloadSections(IndexSet(indexes))
+                        self.reloadDidFinish()
+                    }
                 } else {
                     self.collectionView.reloadData()
                     self.collectionView.layoutIfNeeded()
+                    self.reloadDidFinish()
                 }
             }
         }
     }
-
+    
     @objc private func reloadRefresh() {
         collectionView.reloadData()
         collectionView.layoutIfNeeded()
         collectionView.refreshControl?.perform(#selector(collectionView.refreshControl?.endRefreshing), with: nil, afterDelay: 0.2, inModes: [RunLoop.Mode.common])
+        perform(#selector(reloadDidFinish), with: nil, afterDelay: 0.2, inModes: [RunLoop.Mode.common])
+    }
+    
+    @objc open func reloadDidFinish() {
+        
     }
 }
 
 open class SectionCollectionViewController: UICollectionViewController {
-
+    
     private let useRefreshControl: Bool
     private var data: SectionControllerDataSource!
     private var registeredReuseIdentifiers: Set<String> = []
@@ -154,10 +165,6 @@ open class SectionCollectionViewController: UICollectionViewController {
         
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = direction
-//        flowLayout.minimumInteritemSpacing = 0.0
-//        flowLayout.minimumLineSpacing = 0.0
-//        flowLayout.sectionInset = .zero
-//        flowLayout.headerReferenceSize = .zero
         flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         
         return flowLayout
