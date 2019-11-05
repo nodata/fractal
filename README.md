@@ -7,13 +7,13 @@ An iOS Design System based on Atomic Design Theory and Declarative UI
 ### Carthage
 
 ```
-github "mercari/fractal"
+github "nodata/fractal"
 ```
 
 ### CocoaPods
 
 ```
-pod 'Fractal', :git => 'https://github.com/mercari/fractal.git'
+pod 'Fractal', :git => 'https://github.com/nodata/fractal.git'
 ```
 
 ## Usage
@@ -83,14 +83,6 @@ http://atomicdesign.bradfrost.com/
 
 [musbaalbaki](https://github.com/musbaalbaki)
 
-## Contribution
-
-Please read the CLA carefully before submitting your contribution to Mercari.
-Under any circumstances, by submitting your contribution, you are deemed to accept and agree to be bound by the terms and conditions of the CLA.
-
-https://www.mercari.com/cla/
-
 ## License
 
-Copyright 2019 Mercari, Inc.
-Licensed under the MIT License.
+Copyright 2019 Anthony Smith, Mercari, Inc. Licensed under the MIT License. 
