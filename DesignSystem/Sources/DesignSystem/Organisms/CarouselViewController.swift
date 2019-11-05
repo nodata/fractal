@@ -92,7 +92,8 @@ public class CarouselViewController: SectionCollectionViewController, BrandUpdat
         
         //TODO: also vertical scrolling
                 
-        guard pagingType != .false && pagingType != .true else { return initialOffset }
+        guard pagingType != .false && pagingType != .true else { return targetOffset }
+
         guard abs(scrollView.contentOffset.x - initialOffset.x) > 30.0 else { return initialOffset }
                 
         let target = targetForNext(in: scrollView, from: initialOffset.x, up: velocity.x > 0.0)
