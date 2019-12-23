@@ -9,8 +9,18 @@
 import Foundation
 
 extension SectionBuilder {
-    public func carousel(_ reuseIdentifier: String = UUID().uuidString, height: CarouselSection.HeightType = .full, pagingType: CarouselViewController.PagingType = .false, layout: UICollectionViewLayout? = nil, sections: @autoclosure @escaping () -> [Section]) -> CarouselSection {
-        return CarouselSection(id: reuseIdentifier, heightType: height, pagingType: pagingType, layout: layout, sectionsClosure: sections)
+    public func carousel(_ reuseIdentifier: String = UUID().uuidString,
+                         height: CarouselSection.HeightType = .full,
+                         pagingType: CarouselViewController.PagingType = .false,
+                         layout: UICollectionViewLayout? = nil,
+                         didScrollClosure: ((UIScrollView) -> Void)? = nil,
+                         sections: @autoclosure @escaping () -> [Section]) -> CarouselSection {
+        return CarouselSection(id: reuseIdentifier,
+                               heightType: height,
+                               pagingType: pagingType,
+                               layout: layout,
+                               didScrollClosure: didScrollClosure,
+                               sectionsClosure: sections)
     }
 }
 
@@ -26,13 +36,20 @@ public class CarouselSection {
     private let sectionsClosure: () -> [Section]
     private var staticSections: [Section]
     private let layout: UICollectionViewLayout?
+    private var didScrollClosure: ((UIScrollView) -> Void)?
 
-    fileprivate init(id: String, heightType: HeightType, pagingType: CarouselViewController.PagingType, layout: UICollectionViewLayout?, sectionsClosure: @escaping () -> [Section]) {
+    fileprivate init(id: String,
+                     heightType: HeightType,
+                     pagingType: CarouselViewController.PagingType,
+                     layout: UICollectionViewLayout?,
+                     didScrollClosure: ((UIScrollView) -> Void)?,
+                     sectionsClosure: @escaping () -> [Section]) {
         self.id = id
         self.heightType = heightType
         self.pagingType = pagingType
         self.sectionsClosure = sectionsClosure
         self.staticSections = sectionsClosure()
+        self.didScrollClosure = didScrollClosure
         self.layout = layout
     }
 }
@@ -53,7 +70,9 @@ extension CarouselSection: ViewControllerSection {
     }
     
     public func createViewController() -> UIViewController {
-        return CarouselViewController()
+        let vc = CarouselViewController()
+        vc.didScrollClosure = didScrollClosure
+        return vc
     }
 
     public func size(in view: UIView, at index: Int) -> SectionCellSize {

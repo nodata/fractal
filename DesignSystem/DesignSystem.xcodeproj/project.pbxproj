@@ -34,7 +34,6 @@
 		9228C562229CB21600B8972B /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C559229CB21600B8972B /* ImageView.swift */; };
 		9228C563229CB21600B8972B /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C55A229CB21600B8972B /* Button.swift */; };
 		9228C564229CB21600B8972B /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C55B229CB21600B8972B /* Switch.swift */; };
-		9228C565229CB21600B8972B /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C55C229CB21600B8972B /* SegmentedControl.swift */; };
 		9228C566229CB21600B8972B /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C55D229CB21600B8972B /* TextView.swift */; };
 		9228C567229CB21600B8972B /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C55E229CB21600B8972B /* Label.swift */; };
 		9228C598229CC31200B8972B /* Section+InputChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9228C596229CC31200B8972B /* Section+InputChain.swift */; };
@@ -94,7 +93,6 @@
 		9228C559229CB21600B8972B /* ImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		9228C55A229CB21600B8972B /* Button.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		9228C55B229CB21600B8972B /* Switch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Switch.swift; sourceTree = "<group>"; };
-		9228C55C229CB21600B8972B /* SegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		9228C55D229CB21600B8972B /* TextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		9228C55E229CB21600B8972B /* Label.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		9228C596229CC31200B8972B /* Section+InputChain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Section+InputChain.swift"; sourceTree = "<group>"; };
@@ -169,7 +167,6 @@
 				9228C556229CB21600B8972B /* GradientView.swift */,
 				9228C559229CB21600B8972B /* ImageView.swift */,
 				9228C55E229CB21600B8972B /* Label.swift */,
-				9228C55C229CB21600B8972B /* SegmentedControl.swift */,
 				9228C557229CB21600B8972B /* Slider.swift */,
 				9228C55B229CB21600B8972B /* Switch.swift */,
 				9228C558229CB21600B8972B /* TextField.swift */,
@@ -442,7 +439,6 @@
 				92AC189E22F6AB8B0002376E /* ViewControllersSection.swift in Sources */,
 				920963592271518E00FC8E6F /* Section+DefaultValues.swift in Sources */,
 				92AC188222E9F69B0002376E /* GroupSection.swift in Sources */,
-				9228C565229CB21600B8972B /* SegmentedControl.swift in Sources */,
 				9228C562229CB21600B8972B /* ImageView.swift in Sources */,
 				728D057E2282996000B44543 /* BrandingManager+String.swift in Sources */,
 				9228C561229CB21600B8972B /* TextField.swift in Sources */,

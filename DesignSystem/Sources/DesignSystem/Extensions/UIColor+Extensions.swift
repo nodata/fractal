@@ -42,6 +42,19 @@ extension UIColor {
         return String(format: "#%06x", rgb)
     }
 
+    public func hexString(noHashSymbol: Bool = false) -> String {
+        var r: CGFloat = 0.0
+        var g: CGFloat = 0.0
+        var b: CGFloat = 0.0
+        var a: CGFloat = 0.0
+
+        getRed(&r, green: &g, blue: &b, alpha: &a)
+
+        let rgb: Int = (Int)(r * UIColor.hexDivide) << 16 | (Int)(g * UIColor.hexDivide) << 8 | (Int)(b * UIColor.hexDivide) << 0
+        let hash = noHashSymbol ? "" : "#"
+        return String(format: "%@%06x", hash, rgb)
+    }
+    
     public func lighter(_ brightness: CGFloat = 0.25) -> UIColor {
         return colorWithAppendingBrightness(1 + brightness)
     }

@@ -44,6 +44,21 @@ extension CALayer {
         shadowOpacity = 0.16
     }
     
+    public func addHardInnerShadow(to sublayer: CALayer?, color: UIColor, size: CGFloat = 2.0, direction: ShadowDirection = .down) {
+        
+        guard let layer = sublayer else {
+            let new = CALayer()
+            addSublayer(new)
+            addHardInnerShadow(to: new, color: color, size: size, direction: direction)
+            return
+        }
+        
+        layer.frame = CGRect(x: 0.0, y: direction == .down ? size : -size, width: bounds.size.width, height: bounds.size.height)
+        layer.cornerRadius = cornerRadius
+        layer.backgroundColor = backgroundColor
+        backgroundColor = color.cgColor
+    }
+
     public func addInnerShadow(to sublayer: CALayer?) {
         guard let layer = sublayer else {
             let new = CALayer()

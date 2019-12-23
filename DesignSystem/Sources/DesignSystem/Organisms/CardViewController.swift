@@ -241,7 +241,8 @@ extension CardViewController: CardViewDelegate {
         return { [weak self] in
             
             guard let `self` = self else { return }
-
+            guard self.cardViews.count > 0 else { return }
+            
             if self.cardViews.count == 1 {
                 self.topLevelViewController?.view.superview?.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
                 self.topLevelViewController?.view.superview?.layer.cornerRadius = 0.0
