@@ -238,16 +238,20 @@ public class DefaultBrand: NSObject, Brand {
 }
 
 extension DefaultBrand: ButtonBrand {
-
-    public func widthPin(for size: Button.Size) -> Pin {
-        return .width(-.keyline*2)
+    
+    public func typography(for size: Button.Size) -> Typography {
+        return .medium
     }
 
-    public func heightPin(for size: Button.Size) -> Pin {
-        return .height(asConstant: height(for: size.height))
+    public func contentInset(for size: Button.Size) -> UIEdgeInsets {
+        return UIEdgeInsets(top: .medium, left: .medium, bottom: .medium, right: .medium)
     }
-
-    public func height(for size: Button.Size.Height) -> CGFloat {
+    
+    public func widthPadding(for size: Button.Size) -> CGFloat {
+        return -.keyline*2
+    }
+    
+    public func height(for size: Button.Size) -> CGFloat {
         return 52.0
     }
     

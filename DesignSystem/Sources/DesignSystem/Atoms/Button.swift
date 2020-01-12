@@ -15,6 +15,14 @@ extension UIControl.State: Hashable {
     }
 }
 
+public protocol ButtonBrand {
+    func typography(for size: Button.Size) -> Typography
+    func widthPadding(for size: Button.Size) -> CGFloat
+    func contentInset(for size: Button.Size) -> UIEdgeInsets
+    func height(for size: Button.Size) -> CGFloat
+    func configure(_ button: Button, with style: Button.Style)
+}
+
 private class ButtonLayer: CAGradientLayer {
 
     var borderColors: [UIControl.State: CGColor] = [:]
@@ -74,12 +82,29 @@ final public class Button: UIButton {
             }
         }
         
-        public enum Height: String {
-            case small, medium, large, natural
+        public enum Height {
+            case small, medium, large, natural, custom(CGFloat)
+            
+            public var rawValue: String {
+                switch self {
+                case .small:
+                    return "small"
+                case .medium:
+                    return "medium"
+                case .large:
+                    return "large"
+                case .natural:
+                    return "natural"
+                case .custom(let constant):
+                    return "custom_\(constant)"
+                }
+            }
         }
     }
     
     private var backgroundColors: [UIControl.State: UIColor] = [:]
+    private let style: Style
+    private let size: Size
 
     override public var backgroundColor: UIColor? { didSet { backgroundColors[.normal] = backgroundColor } }
     override public var isSelected: Bool { didSet { updateBackground() } }
@@ -98,19 +123,39 @@ final public class Button: UIButton {
         return layer as? CAGradientLayer
     }
 
-    public convenience init(style: Button.Style) {
-        self.init()
-        guard let buttonBrand = BrandingManager.brand as? ButtonBrand else {
-            Assert("BrandingManager.brand does not conform to protocol ButtonBrand");
-            return
+    public init(style: Style, size: Size) {
+        self.size = size
+        self.style = style
+        super.init(frame: .zero)
+        setup()
+    }
+    
+    public init(_ style: Style, _ sizeTuple: (width: Size.Width, height: Size.Height)) {
+        self.size = Size(width: sizeTuple.width, height: sizeTuple.height)
+        self.style = style
+        super.init(frame: .zero)
+        setup()
+    }
+    
+    private func setup() {
+        if let buttonBrand = BrandingManager.brand as? ButtonBrand {
+            contentEdgeInsets = buttonBrand.contentInset(for: size)
+            titleLabel?.font = buttonBrand.typography(for: size).font
+            buttonBrand.configure(self, with: style)
+        } else {
+            print("BrandingManager.brand does not conform to protocol ButtonBrand")
         }
-        buttonBrand.configure(self, with: style)
     }
-
-    public func setTypography(_ typography: Typography) {
-        titleLabel?.font = typography.font
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
-
+    
+    @discardableResult public func pin(sizeIn view: UIView) -> [NSLayoutConstraint] {
+        pin(to: view, [.width(for: size, brand: BrandingManager.brand as? ButtonBrand),
+                       .height(for: size, brand: BrandingManager.brand as? ButtonBrand)])
+    }
+    
     public func setBackgroundColor(_ color: UIColor?, for state: UIControl.State) {
         backgroundColors[state] = color
         updateBackground()
@@ -154,5 +199,42 @@ final public class Button: UIButton {
         default:
             return normal
         }
+    }
+}
+
+extension Pin {
+
+    fileprivate static func width(for size: Button.Size, brand: ButtonBrand? = nil) -> Pin {
+        switch size.width {
+        case .custom(let value):
+            return .width(asConstant: value)
+        case .full:
+            return .width(brand?.widthPadding(for: size) ?? -.keyline*2)
+        case .half:
+            return .width(options: [.multiplier(0.5)])
+        case .natural:
+            return .none
+        }
+    }
+    
+    fileprivate static func height(for size: Button.Size, brand: ButtonBrand? = nil) -> Pin {
+        
+        guard let brand = brand else {
+            switch size.height {
+            case .natural:
+                return .none
+            case .small:
+                return .height(asConstant: 32.0)
+            case .medium:
+                return .height(asConstant: 44.0)
+            case .large:
+                return .height(asConstant: 52.0)
+            case .custom(let value):
+                return .height(asConstant: value)
+            }
+        }
+        
+        let floatValue = brand.height(for: size)
+        return floatValue == 0.0 ? .none : .height(asConstant: floatValue)
     }
 }

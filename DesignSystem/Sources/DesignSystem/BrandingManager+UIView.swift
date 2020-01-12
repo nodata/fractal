@@ -14,7 +14,7 @@ public protocol Highlightable {
 }
 
 public enum ShadowDirection {
-    case up, down
+    case up, down, left, right
 }
 
 extension CGColor {
@@ -24,24 +24,63 @@ extension CGColor {
 extension CALayer {
     
     public func addShortShadow(_ direction: ShadowDirection = .down) {
+        
+        let size: CGFloat = 2.0
+        
+        switch direction {
+        case .down:
+            shadowOffset = CGSize(width: 0.0, height: size)
+        case .up:
+            shadowOffset = CGSize(width: 0.0, height: -size)
+        case .left:
+            shadowOffset = CGSize(width: -size, height: 0.0)
+        case .right:
+            shadowOffset = CGSize(width: size, height: 0.0)
+        }
+        
         shadowColor = CGColor.shadowColor
-        shadowOffset = CGSize(width: 0.0, height: direction == .up ? -1.0 : 1.0)
         shadowRadius = 2.0
-        shadowOpacity = 0.1
+        shadowOpacity = 0.2
     }
 
     public func addMediumShadow(_ direction: ShadowDirection = .down) {
+        
+        let size: CGFloat = 4.0
+        
+        switch direction {
+        case .down:
+            shadowOffset = CGSize(width: 0.0, height: size)
+        case .up:
+            shadowOffset = CGSize(width: 0.0, height: -size)
+        case .left:
+            shadowOffset = CGSize(width: -size, height: 0.0)
+        case .right:
+            shadowOffset = CGSize(width: size, height: 0.0)
+        }
+        
         shadowColor = CGColor.shadowColor
-        shadowOffset = CGSize(width: 0.0, height: direction == .up ? -4.0 : 4.0)
-        shadowRadius = 3.0
-        shadowOpacity = 0.06
+        shadowRadius = 2.0
+        shadowOpacity = 0.2
     }
     
     public func addLongShadow(_ direction: ShadowDirection = .down) {
+        
+        let size: CGFloat = 6.0
+        
+        switch direction {
+        case .down:
+            shadowOffset = CGSize(width: 0.0, height: size)
+        case .up:
+            shadowOffset = CGSize(width: 0.0, height: -size)
+        case .left:
+            shadowOffset = CGSize(width: -size, height: 0.0)
+        case .right:
+            shadowOffset = CGSize(width: size, height: 0.0)
+        }
+        
         shadowColor = CGColor.shadowColor
-        shadowOffset = CGSize(width: 0.0, height: direction == .up ? -8.0 : 8.0)
-        shadowRadius = 6.0
-        shadowOpacity = 0.16
+        shadowRadius = 3.0
+        shadowOpacity = 0.2
     }
     
     public func addHardInnerShadow(to sublayer: CALayer?, color: UIColor, size: CGFloat = 2.0, direction: ShadowDirection = .down) {

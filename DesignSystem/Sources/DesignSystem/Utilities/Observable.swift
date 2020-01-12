@@ -33,10 +33,14 @@ open class Observable<V> {
     public func addObserver(_ observingObject: AnyObject, skipFirst: Bool = true, closure: @escaping (V) -> Void) {
         
         let wrapper = ClosureWrapper(closure)
-        let reference = "observer\(UUID().uuidString)".replacingOccurrences(of: "-", with: "")
+        //let reference = "observer\(UUID().uuidString)".replacingOccurrences(of: "-", with: "")
         
         // Giving the closure back to the object that is observing allows ClosureWrapper to die at the same time as observing object
-        objc_setAssociatedObject(observingObject, reference, wrapper, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        
+        var wrappers = objc_getAssociatedObject(observingObject, &AssociatedKeys.reference) as? [Any] ?? [Any]()
+        wrappers.append(wrapper)
+        
+        objc_setAssociatedObject(observingObject, &AssociatedKeys.reference, wrappers, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         
         observers.setObject(wrapper, forKey: observingObject)
         if !skipFirst { closure(value) }
@@ -50,4 +54,8 @@ open class Observable<V> {
         let enumerator = observers.objectEnumerator()
         while let wrapper = enumerator?.nextObject() { (wrapper as? ClosureWrapper<V>)?.closure(value) }
     }
+}
+
+private struct AssociatedKeys {
+    static var reference = "reference"
 }
