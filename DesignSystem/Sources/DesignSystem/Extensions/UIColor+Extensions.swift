@@ -29,6 +29,17 @@ extension UIColor {
 
     private static let hexDivide: CGFloat = 255.0
 
+    public var isVeryLight: Bool {
+        var r: CGFloat = 0.0
+        var g: CGFloat = 0.0
+        var b: CGFloat = 0.0
+        var a: CGFloat = 0.0
+
+        getRed(&r, green: &g, blue: &b, alpha: &a)
+        let value = ((r * 299.0) + (g * 587.0) + (b * 114.0)) / 1000.0
+        return value > 0.85
+    }
+
     public var isLight: Bool {
         var r: CGFloat = 0.0
         var g: CGFloat = 0.0

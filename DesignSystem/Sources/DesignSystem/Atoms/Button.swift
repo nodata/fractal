@@ -105,6 +105,7 @@ final public class Button: UIButton {
     private var backgroundColors: [UIControl.State: UIColor] = [:]
     private let style: Style
     private let size: Size
+    private var notificationObject: NSObjectProtocol?
 
     override public var backgroundColor: UIColor? { didSet { backgroundColors[.normal] = backgroundColor } }
     override public var isSelected: Bool { didSet { updateBackground() } }
@@ -138,6 +139,19 @@ final public class Button: UIButton {
     }
     
     private func setup() {
+        notificationObject = NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: BrandingManager.didChange), object: nil, queue: nil) { [weak self] (_) in
+            self?.setForBrand()
+        }
+        setForBrand()
+    }
+    
+    deinit {
+        if let observer = notificationObject {
+            NotificationCenter.default.removeObserver(observer)
+        }
+    }
+    
+    private func setForBrand() {
         if let buttonBrand = BrandingManager.brand as? ButtonBrand {
             contentEdgeInsets = buttonBrand.contentInset(for: size)
             titleLabel?.font = buttonBrand.typography(for: size).font

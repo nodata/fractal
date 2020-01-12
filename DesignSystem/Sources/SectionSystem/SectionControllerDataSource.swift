@@ -140,6 +140,9 @@ open class SectionControllerDataSource: NSObject {
     func tearDownCellSubviews() {
 
         func tearDown(in section: Section) {
+            
+            guard !section.avoidTeardown else { return }
+            
             if let section = section as? NestedSection {
                 for s in section.allSections { tearDown(in: s) }
             } else if let section = section as? ViewSection {

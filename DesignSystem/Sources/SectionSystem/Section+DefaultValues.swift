@@ -13,7 +13,8 @@ extension Section {
     public func pullData() { }
     public var itemCount: Int { return 0 }
     public var hasInputs: Bool { return false }
-
+    public var avoidTeardown: Bool { return false }
+    
     public var sectionInsets: UIEdgeInsets { return .zero }
     public var minimumLineSpacing: CGFloat { return 0.0 }
     public var minimumInteritemSpacing: CGFloat { return 0.0 }

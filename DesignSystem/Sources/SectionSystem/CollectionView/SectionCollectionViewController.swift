@@ -138,7 +138,7 @@ open class SectionCollectionViewController: UICollectionViewController {
         dataSource.tearDownCellSubviews()
         reload()
         guard let ip = indexPath else { return }
-        collectionView.scrollToItem(at: ip, at: .centeredHorizontally, animated: false)
+        collectionView.scrollToItem(at: ip, at: [.centeredHorizontally, .centeredVertically], animated: false)
     }
 
     private func testLargeTitleSanity() {

@@ -120,6 +120,7 @@ public extension UIColor.Key {
     static let detail             = UIColor.Key("detail")
     static let information        = UIColor.Key("information")
     static let light              = UIColor.Key("light")
+    static let lightDetail        = UIColor.Key("lightDetail")
     static let divider            = UIColor.Key("divider")
     static let shadow             = UIColor.Key("shadow")
     static let placeholder        = UIColor.Key("placeholder")

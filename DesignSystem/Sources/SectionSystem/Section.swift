@@ -24,7 +24,8 @@ public protocol Section: class { // Base for NestedSection and BedrockSection
 
     var itemCount: Int { get }
     var hasInputs: Bool { get }
-
+    var avoidTeardown: Bool { get }
+    
     // CollectionView specific
     // Section level only sadly
 
