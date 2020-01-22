@@ -205,6 +205,10 @@ public extension Typography {
     static let large   = Typography(.large)
     static let xlarge  = Typography(.xlarge)
     static let xxlarge = Typography(.xxlarge)
+    static let xxxlarge = Typography(.xxxlarge)
+    static let x4large = Typography(.x4large)
+    static let x5large = Typography(.x5large)
+    static let x6large = Typography(.x6large)
 
     static func xxsmall(_ modifier: Modifier) -> Typography { return Typography(.xxsmall, [modifier]) }
     static func xsmall(_ modifier: Modifier)  -> Typography { return Typography(.xsmall, [modifier]) }
@@ -213,7 +217,11 @@ public extension Typography {
     static func large(_ modifier: Modifier)   -> Typography { return Typography(.large, [modifier]) }
     static func xlarge(_ modifier: Modifier)  -> Typography { return Typography(.xlarge, [modifier]) }
     static func xxlarge(_ modifier: Modifier) -> Typography { return Typography(.xxlarge, [modifier]) }
-
+    static func xxxlarge(_ modifier: Modifier) -> Typography { return Typography(.xxxlarge, [modifier]) }
+    static func x4large(_ modifier: Modifier) -> Typography { return Typography(.x4large, [modifier]) }
+    static func x5large(_ modifier: Modifier) -> Typography { return Typography(.x5large, [modifier]) }
+    static func x6large(_ modifier: Modifier) -> Typography { return Typography(.x6large, [modifier]) }
+    
     static func xxsmall(_ modifiers: [Modifier]) -> Typography { return Typography(.xxsmall, modifiers) }
     static func xsmall(_ modifiers: [Modifier])  -> Typography { return Typography(.xsmall, modifiers) }
     static func small(_ modifiers: [Modifier])   -> Typography { return Typography(.small, modifiers) }
@@ -221,8 +229,11 @@ public extension Typography {
     static func large(_ modifiers: [Modifier])   -> Typography { return Typography(.large, modifiers) }
     static func xlarge(_ modifiers: [Modifier])  -> Typography { return Typography(.xlarge, modifiers) }
     static func xxlarge(_ modifiers: [Modifier]) -> Typography { return Typography(.xxlarge, modifiers) }
+    static func xxxlarge(_ modifiers: [Modifier]) -> Typography { return Typography(.xxxlarge, modifiers) }
+    static func x4large(_ modifiers: [Modifier]) -> Typography { return Typography(.x4large, modifiers) }
+    static func x5large(_ modifiers: [Modifier]) -> Typography { return Typography(.x5large, modifiers) }
+    static func x6large(_ modifiers: [Modifier]) -> Typography { return Typography(.x6large, modifiers) }
 }
-
 public extension UIImageView {
     convenience init(_ key: UIImage.Key, in bundle: Bundle? = nil, renderingMode: UIImage.RenderingMode = .alwaysOriginal) {
         self.init(image: UIImage.with(key, in: bundle)?.withRenderingMode(renderingMode))

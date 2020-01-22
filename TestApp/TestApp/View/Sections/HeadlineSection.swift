@@ -10,25 +10,27 @@ import Foundation
 import DesignSystem
 
 extension SectionBuilder {
-    public func headline(_ title: String, style: HeadlineView.Style = .default) -> HeadlineSection {
-        return HeadlineSection(style).enumerate({ [title] }) as! HeadlineSection
+    public func headline(_ title: String, style: HeadlineView.Style = .default, alignment: NSTextAlignment? = nil) -> HeadlineSection {
+        return HeadlineSection(style, alignment).enumerate({ [title] }) as! HeadlineSection
     }
 
-    public func headline(_ style: HeadlineView.Style = .default) -> HeadlineSection {
-        return HeadlineSection(style)
+    public func headline(_ style: HeadlineView.Style = .default, alignment: NSTextAlignment? = nil) -> HeadlineSection {
+        return HeadlineSection(style, alignment)
     }
 
-    public func headline(_ data: @escaping () -> [String], _ style: HeadlineView.Style = .default) -> HeadlineSection {
-        return HeadlineSection(style).enumerate(data) as! HeadlineSection
+    public func headline(_ data: @escaping () -> [String], _ style: HeadlineView.Style = .default, alignment: NSTextAlignment? = nil) -> HeadlineSection {
+        return HeadlineSection(style, alignment).enumerate(data) as! HeadlineSection
     }
 }
 
 public class HeadlineSection {
 
     fileprivate let style: HeadlineView.Style
-
-    public init(_ style: HeadlineView.Style = .default) {
+    fileprivate let alignment: NSTextAlignment?
+    
+    public init(_ style: HeadlineView.Style = .default, _ alignment: NSTextAlignment?) {
         self.style = style
+        self.alignment = alignment
     }
 }
 
@@ -39,7 +41,7 @@ extension HeadlineSection: ViewSection {
     }
 
     public func createView() -> UIView {
-        return HeadlineView(style: style)
+        return HeadlineView(style: style, alignment: alignment)
     }
 
     public func size(in view: UIView, at index: Int) -> SectionCellSize {
