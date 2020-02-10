@@ -12,16 +12,15 @@ import DesignSystem
 public class SingleButtonView: UIView {
 
     private let style: Button.Style
+    private let size = Button.Size(width: .full, height: .large)
     private var closure: (() -> Void)?
 
     public init(style: Button.Style) {
         self.style = style
         super.init(frame: .zero)
-        guard let buttonBrand = BrandingManager.brand as? ButtonBrand else { Assert("BrandingManager.brand does not conform to ButtonBrand"); return }
         addSubview(button)
-        let size = Button.Size(width: .full, height: .large)
-        button.pin(to: self, [.top(.xxsmall), .bottom(-.xxsmall), .centerX, buttonBrand.widthPin(for: size), buttonBrand.heightPin(for: size)])
-        // Potentially change this widthPin / heightPin setup
+        button.pin(to: self, [.top(.xxsmall), .bottom(-.xxsmall), .centerX])
+        button.pin(sizeIn: self)
     }
 
     @available(*, unavailable)
@@ -42,7 +41,7 @@ public class SingleButtonView: UIView {
     // MARK: - Properties
 
     public lazy var button: Button = {
-        let button = Button(style: self.style)
+        let button = Button(style: self.style, size: self.size)
         button.addTarget(self, action: #selector(tapped), for: .touchUpInside)
         return button
     }()

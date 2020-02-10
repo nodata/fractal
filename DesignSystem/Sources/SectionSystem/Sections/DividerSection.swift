@@ -28,11 +28,12 @@ public class DividerSection {
 
 extension DividerSection: ViewSection {
     public var reuseIdentifier: String {
+        if let height = height { return "Divider_\(style.name)_\(height)" }
         return "Divider_\(style.name)"
     }
 
     public func createView() -> UIView {
-        return DividerView(style: style)
+        return DividerView(style: style, overrideHeight: height)
     }
 
     public func size(in superview: UIView, at index: Int) -> SectionCellSize {

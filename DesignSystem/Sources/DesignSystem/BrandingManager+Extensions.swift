@@ -60,6 +60,10 @@ public extension CGFloat { // Spacing and size
     static var padding:  CGFloat { return BrandingManager.brand.floatValue(for: .padding) }
     static var keyline:  CGFloat { return BrandingManager.brand.floatValue(for: .keyline) }
     static var divider:  CGFloat { return BrandingManager.brand.floatValue(for: .divider) }
+    
+    static var smallCornerRadius: CGFloat { return BrandingManager.brand.floatValue(for: .cornersmall) }
+    static var mediumCornerRadius: CGFloat { return BrandingManager.brand.floatValue(for: .cornermedium) }
+    static var largeCornerRadius: CGFloat { return BrandingManager.brand.floatValue(for: .cornerlarge) }
 }
 
 public extension Button.Style {
@@ -83,17 +87,20 @@ public extension Typography.Key {
 }
 
 public extension CGFloat.Key {
-    static let xxsmall  = CGFloat.Key("xxsmall")
-    static let xsmall   = CGFloat.Key("xsmall")
-    static let small    = CGFloat.Key("small")
-    static let medium   = CGFloat.Key("medium")
-    static let large    = CGFloat.Key("large")
-    static let xlarge   = CGFloat.Key("xlarge")
-    static let xxlarge  = CGFloat.Key("xxlarge")
-    static let xxxlarge = CGFloat.Key("xxxlarge")
-    static let keyline  = CGFloat.Key("keyline")
-    static let padding  = CGFloat.Key("padding")
-    static let divider  = CGFloat.Key("divider")
+    static let xxsmall      = CGFloat.Key("xxsmall")
+    static let xsmall       = CGFloat.Key("xsmall")
+    static let small        = CGFloat.Key("small")
+    static let medium       = CGFloat.Key("medium")
+    static let large        = CGFloat.Key("large")
+    static let xlarge       = CGFloat.Key("xlarge")
+    static let xxlarge      = CGFloat.Key("xxlarge")
+    static let xxxlarge     = CGFloat.Key("xxxlarge")
+    static let keyline      = CGFloat.Key("keyline")
+    static let padding      = CGFloat.Key("padding")
+    static let divider      = CGFloat.Key("divider")
+    static let cornersmall  = CGFloat.Key("cornersmall")
+    static let cornermedium = CGFloat.Key("cornermedium")
+    static let cornerlarge  = CGFloat.Key("cornerlarge")
 }
 
 public extension CGSize.Key {
@@ -112,25 +119,28 @@ public extension UIImage.Key {
 }
 
 public extension UIColor.Key {
-    static let primary            = UIColor.Key("primary")
-    static let secondary          = UIColor.Key("secondary")
-    static let tertiary           = UIColor.Key("tertiary")
-    static let cell               = UIColor.Key("cell")
-    static let cellSelected       = UIColor.Key("cellSelected")
-    static let detail             = UIColor.Key("detail")
-    static let information        = UIColor.Key("information")
-    static let light              = UIColor.Key("light")
-    static let lightDetail        = UIColor.Key("lightDetail")
-    static let divider            = UIColor.Key("divider")
-    static let shadow             = UIColor.Key("shadow")
-    static let placeholder        = UIColor.Key("placeholder")
-    static let refreshControl     = UIColor.Key("refreshControl")
-    static let detailDisclosure   = UIColor.Key("detailDisclosure")
-    static let switchPositiveTint = UIColor.Key("switchPositiveTint")
-    static let switchNegativeTint = UIColor.Key("switchNegativeTint")
-    static let sliderPositiveTint = UIColor.Key("sliderPositiveTint")
-    static let sliderNegativeTint = UIColor.Key("sliderNegativeTint")
-    static let warning            = UIColor.Key("warning")
-    static let clear              = UIColor.Key("clear")
-    static let missing            = UIColor.Key("missing")
+    static let primary                       = UIColor.Key("primary")
+    static let secondary                     = UIColor.Key("secondary")
+    static let tertiary                      = UIColor.Key("tertiary")
+    static let cell                          = UIColor.Key("cell")
+    static let cellSelected                  = UIColor.Key("cellSelected")
+    static let detail                        = UIColor.Key("detail")
+    static let information                   = UIColor.Key("information")
+    static let light                         = UIColor.Key("light")
+    static let lightDetail                   = UIColor.Key("lightDetail")
+    static let divider                       = UIColor.Key("divider")
+    static let selectedTab                   = UIColor.Key("selectedTab")
+    static let unselectedTab                 = UIColor.Key("unselectedTab")
+    static let shadow                        = UIColor.Key("shadow")
+    static let placeholder                   = UIColor.Key("placeholder")
+    static let refreshControl                = UIColor.Key("refreshControl")
+    static let detailDisclosure              = UIColor.Key("detailDisclosure")
+    static let switchPositiveTint            = UIColor.Key("switchPositiveTint")
+    static let switchNegativeTint            = UIColor.Key("switchNegativeTint")
+    static let sliderPositiveTint            = UIColor.Key("sliderPositiveTint")
+    static let sliderNegativeTint            = UIColor.Key("sliderNegativeTint")
+    static let warning                       = UIColor.Key("warning")
+    static let clear                         = UIColor.Key("clear")
+    static let missing                       = UIColor.Key("missing")
+    static let segmentedControlSelectedColor = UIColor.Key("segmentedControlSelectedColor")
 }

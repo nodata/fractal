@@ -10,45 +10,45 @@ import Foundation
 import DesignSystem
 
 extension SectionBuilder {
-    public func segmentedControl(_ items: [Any], observedIndex: Observable<Int?>, backgroundColor: UIColor = .background) -> SegmentedOptionsSection {
-        return SegmentedOptionsSection(items: items, observedIndex: observedIndex, backgroundColor: backgroundColor)
+    public func segmentedControl(_ titles: [String], selectedIndex: Observable<Int>) -> SegmentedControlSection {
+        return SegmentedControlSection(titles, selectedIndex)
     }
 }
 
-public class SegmentedOptionsSection {
-    fileprivate let items: [Any]
-    fileprivate let observedIndex: Observable<Int?>?
-    fileprivate var suppressUpdate: Bool = false
-    fileprivate let backgroundColor: UIColor
-    init(items: [Any], observedIndex: Observable<Int?>, backgroundColor: UIColor) {
-        self.items = items
-        self.observedIndex = observedIndex
-        self.backgroundColor = backgroundColor
-        observedIndex.addObserver(self) { [weak self] (value) in
-            guard let self = self else { return }
-            guard !self.suppressUpdate else { self.suppressUpdate = false; return }
-            (self.visibleView as? SegmentedControlView)?.set(value: value)
-        }
-    }
-}
-
-extension SegmentedOptionsSection: ViewSection {
-    public func createView() -> UIView {
-        return SegmentedControlView(items: items)
-    }
-
-    public func configure(_ view: UIView, at index: Int) {
-        guard let segmentedControl = view as? SegmentedControlView else { return }
-        segmentedControl.backgroundColor = backgroundColor
-        segmentedControl.set(value: observedIndex?.value, didChangeClosure: { [weak self] (value) in
+public class SegmentedControlSection {
+    
+    fileprivate let titles: [String]
+    fileprivate weak var observedInt: Observable<Int>?
+    fileprivate var selfTriggered = false
+    
+    public init(_ titles: [String], _ observedInt: Observable<Int>) {
+        self.titles = titles
+        observedInt.addObserver(self) { [weak self] (i) in
             guard let `self` = self else { return }
-            self.suppressUpdate = true
-            self.observedIndex?.value = value
-        })
-        segmentedControl.set(value: observedIndex?.value)
+            guard !self.selfTriggered else { return }
+            self.selfTriggered = false
+            (self.visibleView as? SegmentedControlView)?.set(selectedIndex: i)
+        }
+        self.observedInt = observedInt
     }
+}
 
-    public func size(in view: UIView, at index: Int) -> SectionCellSize {
-        return SectionCellSize(width: view.bounds.size.width, height: nil)
+extension SegmentedControlSection: ViewSection, SegmentedControlViewDelegate {
+
+    public var reuseIdentifier: String {
+        return "SegmentedControlSection_\(titles.count)"
+    }
+    
+    public func createView() -> UIView {
+        return SegmentedControlView()
+    }
+    
+    public func configure(_ view: UIView, at index: Int) {
+        (view as? SegmentedControlView)?.set(titles: titles, selectedIndex: observedInt?.value ?? 0, delegate: self)
+    }
+    
+    func selected(_ index: Int) {
+        selfTriggered = true
+        observedInt?.value = index
     }
 }

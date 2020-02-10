@@ -54,6 +54,12 @@ class FractalBrand: Brand {
             return 1.0
         case .padding:
             return 8.0
+        case .cornersmall:
+            return 2.0
+        case .cornermedium:
+            return 4.0
+        case .cornerlarge:
+            return 8.0
         default:
             return 0.0
         }
@@ -243,22 +249,17 @@ fileprivate extension UIColor {
 
 extension FractalBrand: ButtonBrand {
 
-    func widthPin(for size: Button.Size) -> Pin {
-        return .width(-.keyline*2)
-    }
+    func typography(for size: Button.Size) -> Typography { .large }
     
-    func heightPin(for size: Button.Size) -> Pin {
-        return .height(asConstant: height(for: size.height))
-    }
+    func widthPadding(for size: Button.Size) -> CGFloat { -.keyline*2 }
     
-    func height(for size: Button.Size.Height) -> CGFloat {
-        return 48.0
-    }
+    func contentInset(for size: Button.Size) -> UIEdgeInsets { .zero }
+    
+    func height(for size: Button.Size) -> CGFloat { 48.0 }
     
     func configure(_ button: Button, with style: Button.Style) {
 
         button.layer.cornerRadius = 3.0
-        button.setTypography(.large)
         button.contentEdgeInsets = UIEdgeInsets(top: 0.0, left: .keyline, bottom: 0.0, right: .keyline)
         button.imageEdgeInsets = UIEdgeInsets(top: 0.0, left: -.keyline/2, bottom: 0.0, right: .keyline * 1.5)
 

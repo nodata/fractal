@@ -50,6 +50,12 @@ class YogaBrand: Brand {
             return 1.0
         case .padding:
             return 8.0
+        case .cornersmall:
+            return 4.0
+        case .cornermedium:
+            return 6.0
+        case .cornerlarge:
+            return 10.0
         default:
             return 0.0
         }
@@ -228,18 +234,21 @@ fileprivate extension UIColor {
 }
 
 extension YogaBrand: ButtonBrand {
-    
-    func widthPin(for size: Button.Size) -> Pin {
-        return .width(-.keyline*2)
+   
+    func typography(for size: Button.Size) -> Typography {
+        switch size.height {
+        case .small:
+            return .small
+        default:
+            return .medium
+        }
     }
     
-    func heightPin(for size: Button.Size) -> Pin {
-        return .height(asConstant: 48.0)
-    }
+    func widthPadding(for size: Button.Size) -> CGFloat { -.keyline*2 }
     
-    func height(for size: Button.Size.Height) -> CGFloat {
-        return 48.0
-    }
+    func contentInset(for size: Button.Size) -> UIEdgeInsets { .zero }
+    
+    func height(for size: Button.Size) -> CGFloat { 48.0 }
     
     func configure(_ button: Button, with style: Button.Style) {
         
@@ -248,7 +257,6 @@ extension YogaBrand: ButtonBrand {
         
         switch style {
         case .primary:
-            button.setTypography(.medium)
             button.layer.cornerRadius = 24.0
             button.setTitleColor(.text, for: .normal)
             button.setBackgroundColor(.background(.secondary), for: .normal)
@@ -256,21 +264,18 @@ extension YogaBrand: ButtonBrand {
             button.layer.borderWidth = 1.0
             button.layer.borderColor = UIColor.brand.cgColor
         case .secondary:
-            button.setTypography(.small)
             button.layer.cornerRadius = 8.0
             button.setTitleColor(.text, for: .normal)
             button.setBackgroundColor(.clear, for: .normal)
             button.layer.borderWidth = 1.0
             button.layer.borderColor = UIColor.background(.tertiary).cgColor
         case .attention:
-            button.setTypography(.medium)
             button.layer.cornerRadius = 24.0
             button.setTitleColor(.text(.light), for: .normal)
             button.setBackgroundColor(.atom(.warning), for: .normal)
             button.setBackgroundColor(UIColor.atom(.warning).lighter(), for: .highlighted)
             button.layer.borderWidth = 0.0
         case .toggle:
-            button.setTypography(.medium)
             button.layer.cornerRadius = 24.0
             button.setTitleColor(.text(.light), for: .normal)
             button.setBackgroundColor(.brand, for: .normal)
@@ -278,7 +283,6 @@ extension YogaBrand: ButtonBrand {
             button.setBackgroundColor(UIColor.brand.lighter(0.1), for: .selected)
             button.layer.borderWidth = 0.0
         default:
-            button.setTypography(.medium)
             button.layer.cornerRadius = 8.0
             button.setTitleColor(.text(.light), for: .normal)
             button.setBackgroundColor(.text, for: .normal)

@@ -51,7 +51,8 @@ protocol BrandTest {
 
 public class BrandingManager {
 
-    public static let didChange = "BrandingManager_BrandDidChange"
+    public static let didChangeNotification = "BrandingManager_BrandDidChange"
+    public static let buttonsRerenderNotification = "BrandingManager_ButtonsRerender"
     public static let contentSizeOverrideKey = "BrandingManager_contentSizeCategory_override"
     public static let contentSizeOverrideValueKey = "BrandingManager_contentSizeCategory_value"
 
@@ -73,7 +74,7 @@ public class BrandingManager {
         
         currentBrand = brand
         print("Setting Brand:", brand.id)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: BrandingManager.didChange), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: BrandingManager.didChangeNotification), object: nil)
     }
 
     public static var brand: Brand {
@@ -90,7 +91,7 @@ public class BrandingManager {
 
     public static func subscribeToNotifications() {
         notificationObject = NotificationCenter.default.addObserver(forName: UIContentSizeCategory.didChangeNotification, object: nil, queue: nil) { (_) in
-            NotificationCenter.default.post(name: Notification.Name(rawValue: BrandingManager.didChange), object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: BrandingManager.didChangeNotification), object: nil)
         }
     }
 

@@ -44,7 +44,7 @@ public protocol CardViewDelegate: class {
 public extension CardViewContentDelegate {
     
     var contentScrollView: UIScrollView? { return nil }
-    var isBackgroundDismissable: Bool { return false }
+    var isBackgroundDismissable: Bool { return true }
     var isDraggable: Bool { return true }
     
     var cardHandleColor: UIColor? { return nil }
@@ -67,7 +67,7 @@ public class CardView: UIView {
     static let iPadWidth: CGFloat = 500.0
     static let bottomPadding: CGFloat = CardView.cornerRadius + 40.0
     static let topPadding: CGFloat = UIApplication.shared.statusBarFrame.size.height + 15.0
-    static let handlePaddingHeight: CGFloat = 32.0
+    public static let handlePaddingHeight: CGFloat = 32.0
     
     private static let handleThreshold: CGFloat = 8.0
     private static let cardDragThreshold: CGFloat = 36.0

@@ -76,4 +76,11 @@ public extension UIViewController {
         view.removeFromSuperview()
         removeFromParent()
     }
+    
+    static func uncontain(_ viewController: UIViewController?) {
+        viewController?.willMove(toParent: nil)
+        viewController?.view.superview?.removeFromSuperview()
+        viewController?.view.removeFromSuperview()
+        viewController?.removeFromParent()
+    }
 }

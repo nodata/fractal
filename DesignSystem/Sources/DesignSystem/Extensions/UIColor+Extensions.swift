@@ -29,26 +29,71 @@ extension UIColor {
 
     private static let hexDivide: CGFloat = 255.0
 
-    public var isVeryLight: Bool {
+    public convenience init?(red: Int, green: Int, blue: Int) {
+        guard red >= 0 && red <= 255 else { return nil }
+        guard green >= 0 && green <= 255 else { return nil }
+        guard blue >= 0 && blue <= 255 else { return nil }
+
+        self.init(red: CGFloat(red) / UIColor.hexDivide,
+                  green: CGFloat(green) / UIColor.hexDivide,
+                  blue: CGFloat(blue) / UIColor.hexDivide,
+                  alpha: 1.0)
+    }
+
+    public convenience init?(rgb: Int) {
+        self.init(red: (rgb >> 16) & 0xFF, green: (rgb >> 8) & 0xFF, blue: rgb & 0xFF)
+    }
+    
+    public convenience init?(hex: String?) {
+        guard let hex = hex else { return nil }
+        let string = hex.replacingOccurrences(of: "#", with: "").trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        var rgbValue: UInt64 = 0
+        Scanner(string: string).scanHexInt64(&rgbValue)
+        let rgb = Int(rgbValue)
+        self.init(red: (rgb >> 16) & 0xFF, green: (rgb >> 8) & 0xFF, blue: rgb & 0xFF)
+    }
+    
+    public var luminosity: CGFloat {
         var r: CGFloat = 0.0
         var g: CGFloat = 0.0
         var b: CGFloat = 0.0
         var a: CGFloat = 0.0
 
         getRed(&r, green: &g, blue: &b, alpha: &a)
-        let value = ((r * 299.0) + (g * 587.0) + (b * 114.0)) / 1000.0
-        return value > 0.85
+        return ((r * 299.0) + (g * 587.0) + (b * 114.0)) / 1000.0
+    }
+    
+    public func firstNonClashing(from colors: [UIColor]) -> UIColor? {
+        for c in colors { if !clashes(with: c) { return c } }
+        return nil
+    }
+    
+    public func best(from colors: [UIColor]) -> UIColor {
+        guard colors.count > 0 else { Assert("No colors passed to best(from colors)"); return self }
+        var best: UIColor = colors[0]
+        var luminosityDelta = abs(colors[0].luminosity - luminosity)
+        
+        for i in 1..<colors.count {
+            let c = colors[i]
+            let delta = abs(c.luminosity - luminosity)
+            guard delta > luminosityDelta else { continue }
+            best = c
+            luminosityDelta = delta
+        }
+        
+        return best
+    }
+    
+    public func clashes(with color: UIColor, tolerance: CGFloat = 0.2) -> Bool {
+        return abs(luminosity - color.luminosity) < tolerance
+    }
+    
+    public var isVeryLight: Bool {
+        return luminosity > 0.85
     }
 
     public var isLight: Bool {
-        var r: CGFloat = 0.0
-        var g: CGFloat = 0.0
-        var b: CGFloat = 0.0
-        var a: CGFloat = 0.0
-
-        getRed(&r, green: &g, blue: &b, alpha: &a)
-        let value = ((r * 299.0) + (g * 587.0) + (b * 114.0)) / 1000.0
-        return value > 0.7
+        return luminosity > 0.7
     }
     
     public var inverse: UIColor {

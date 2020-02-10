@@ -54,9 +54,11 @@ public class DividerView: UIView {
     private var lConstraint: NSLayoutConstraint?
     private var tConstraint: NSLayoutConstraint?
     private let style: Style
+    private let overrideHeight: CGFloat?
 
-    public init(style: Style) {
+    public init(style: Style, overrideHeight: CGFloat? = nil) {
         self.style = style
+        self.overrideHeight = overrideHeight
         super.init(frame: .zero)
 
         addSubview(divider)
@@ -73,13 +75,12 @@ public class DividerView: UIView {
     }
 
     private func setForStyle() {
-        divider.pin([.height(asConstant: style.height)])
+        let givenHeight = overrideHeight ?? style.height
+        divider.pin([.height(asConstant: givenHeight)])
         divider.backgroundColor = style.color
         lConstraint?.constant = style.leadPadding
         tConstraint?.constant = -style.trailingPadding
-
-        // Potentially all cells need this... in a collectionview, small clear gaps will appear if setting a value of less than 1.0
-        pin([.height(1.0, options: [.relation(.greaterThanOrEqual)])])
+        pin([.height(ceil(givenHeight), options: [.relation(.greaterThanOrEqual)])])
     }
 
     // MARK: - Properties

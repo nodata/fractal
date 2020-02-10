@@ -9,44 +9,47 @@
 import Foundation
 import DesignSystem
 
-public class SegmentedControlView: UIView {
+protocol SegmentedControlViewDelegate: class {
+    func selected(_ index: Int)
+}
 
-    private var didChange: ((Int?) -> Void)?
-
-    public init(items: [Any]) {
-        segmentedControl = SegmentedControl(items: items)
+class SegmentedControlView: UIView {
+    
+    private weak var delegate: SegmentedControlViewDelegate?
+    
+    init() {
         super.init(frame: .zero)
-        segmentedControl.addTarget(self, action: #selector(changeSelected), for: .valueChanged)
-        setupForDesign()
+        addSubview(segmentedControl)
+        segmentedControl.pin(to: self, [.centerY,
+                                        .leading(.keyline),
+                                        .trailing(-.keyline),
+                                        .height(asConstant: SegmentedControl.height)])
     }
-
-    @available(*, unavailable)
-    required public init?(coder aDecoder: NSCoder) {
+    
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    private func setupForDesign() {
-        backgroundColor = .background
-        segmentedControl.tintColor = .brand
-        addSubview(segmentedControl)
-        segmentedControl.pin(to: self, [.leading(.keyline), .trailing(-.keyline), .centerY])
-        pin([.height(asConstant: BrandingManager.brand.defaultCellHeight)])
+    
+    func set(titles: [String], selectedIndex: Int, delegate: SegmentedControlViewDelegate) {
+        segmentedControl.set(titles, selectedIndex: selectedIndex)
+        self.delegate = delegate
     }
-
-    public func set(value: Int?, didChangeClosure: @escaping (Int?) -> Void) {
-        set(value: value)
-        didChange = didChangeClosure
+    
+    func set(selectedIndex: Int) {
+        guard selectedIndex >= 0 && selectedIndex < segmentedControl.numberOfSegments else { return }
+        segmentedControl.selectedSegmentIndex = selectedIndex
     }
-
-    public func set(value: Int?) {
-        segmentedControl.selectedSegmentIndex = value ?? UISegmentedControl.noSegment
+    
+    @objc private func selected() {
     }
-
-    @objc private func changeSelected() {
-        didChange?(segmentedControl.selectedSegmentIndex)
-    }
-
+    
     // MARK: - Properties
-
-    private let segmentedControl: SegmentedControl
+    
+    private lazy var segmentedControl: SegmentedControl = {
+        let control = SegmentedControl()
+        control.valueChangedClosure = { [weak self] (index) in
+            self?.delegate?.selected(index)
+        }
+        return control
+    }()
 }

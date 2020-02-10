@@ -85,6 +85,7 @@
 		9264750723245E8200F51DBD /* Phase1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9264750623245E8200F51DBD /* Phase1.swift */; };
 		9264750923245E8B00F51DBD /* Phase2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9264750823245E8B00F51DBD /* Phase2.swift */; };
 		9264750B23245E9400F51DBD /* Phase3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9264750A23245E9400F51DBD /* Phase3.swift */; };
+		927C6C3323F1197200B7B8F8 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C6C3223F1197200B7B8F8 /* SegmentedControl.swift */; };
 		92810CAD22D5E8C500F8F0DE /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92810CAC22D5E8C500F8F0DE /* SettingsViewController.swift */; };
 		92810CB122D70A5200F8F0DE /* IconSelectionSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92810CB022D70A5200F8F0DE /* IconSelectionSection.swift */; };
 		92810CB322D70AAB00F8F0DE /* IconSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92810CB222D70AAB00F8F0DE /* IconSelectView.swift */; };
@@ -207,6 +208,7 @@
 		9264750623245E8200F51DBD /* Phase1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phase1.swift; sourceTree = "<group>"; };
 		9264750823245E8B00F51DBD /* Phase2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phase2.swift; sourceTree = "<group>"; };
 		9264750A23245E9400F51DBD /* Phase3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Phase3.swift; sourceTree = "<group>"; };
+		927C6C3223F1197200B7B8F8 /* SegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		92810CAC22D5E8C500F8F0DE /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		92810CB022D70A5200F8F0DE /* IconSelectionSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSelectionSection.swift; sourceTree = "<group>"; };
 		92810CB222D70AAB00F8F0DE /* IconSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconSelectView.swift; sourceTree = "<group>"; };
@@ -415,6 +417,7 @@
 				9228C5FA229CCEE200B8972B /* InformationView.swift */,
 				9228C5FF229CCEE200B8972B /* LoadingView.swift */,
 				9228C5F9229CCEE200B8972B /* NavigationOptionView.swift */,
+				927C6C3223F1197200B7B8F8 /* SegmentedControl.swift */,
 				9228C5FC229CCEE200B8972B /* SegmentedControlView.swift */,
 				9228C602229CCEE300B8972B /* SingleButtonView.swift */,
 				9228C5FB229CCEE200B8972B /* SliderView.swift */,
@@ -635,8 +638,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				9264750923245E8B00F51DBD /* Phase2.swift in Sources */,
-				9228C5F4229CCE8100B8972B /* CarouselViewController.swift in Sources */,
 				9228C609229CCEE300B8972B /* SegmentedControlView.swift in Sources */,
+				927C6C3323F1197200B7B8F8 /* SegmentedControl.swift in Sources */,
 				9264750B23245E9400F51DBD /* Phase3.swift in Sources */,
 				9228C5EF229CCE2200B8972B /* ReloadableSection.swift in Sources */,
 				92810CB322D70AAB00F8F0DE /* IconSelectView.swift in Sources */,

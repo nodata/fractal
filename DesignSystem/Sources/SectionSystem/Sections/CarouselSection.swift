@@ -12,12 +12,14 @@ extension SectionBuilder {
     public func carousel(_ reuseIdentifier: String = UUID().uuidString,
                          height: CarouselSection.HeightType = .full,
                          pagingType: CarouselViewController.PagingType = .false,
+                         backgroundColor: UIColor = .clear,
                          layout: UICollectionViewLayout? = nil,
                          didScrollClosure: ((UIScrollView) -> Void)? = nil,
                          sections: @autoclosure @escaping () -> [Section]) -> CarouselSection {
         return CarouselSection(id: reuseIdentifier,
                                heightType: height,
                                pagingType: pagingType,
+                               backgroundColor: backgroundColor,
                                layout: layout,
                                didScrollClosure: didScrollClosure,
                                sectionsClosure: sections)
@@ -37,21 +39,32 @@ public class CarouselSection {
     private var staticSections: [Section]
     private let layout: UICollectionViewLayout?
     private var didScrollClosure: ((UIScrollView) -> Void)?
-
+    private let backgroundColor: UIColor
+    
     fileprivate init(id: String,
                      heightType: HeightType,
                      pagingType: CarouselViewController.PagingType,
+                     backgroundColor: UIColor,
                      layout: UICollectionViewLayout?,
                      didScrollClosure: ((UIScrollView) -> Void)?,
                      sectionsClosure: @escaping () -> [Section]) {
         self.id = id
         self.heightType = heightType
         self.pagingType = pagingType
+        self.backgroundColor = backgroundColor
         self.sectionsClosure = sectionsClosure
         self.staticSections = sectionsClosure()
         self.didScrollClosure = didScrollClosure
         self.layout = layout
     }
+    
+    public func currentIndexAt() -> Int? {
+        
+        guard let vc = visibleViewController as? CarouselViewController else { return nil }
+        //TODO: get the index at say, the middle, the left, the right
+        return 0
+    }
+
 }
 
 extension CarouselSection: ViewControllerSection {
@@ -95,6 +108,7 @@ extension CarouselSection: ViewControllerSection {
         guard let vc = viewController as? CarouselViewController else { return }
         vc.pagingType = pagingType
         vc.dataSource.sections = staticSections
+        vc.view.backgroundColor = backgroundColor
         vc.reload()
         
         // move offset logic into section collectionviewcontroller

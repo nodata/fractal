@@ -20,7 +20,7 @@ class TypographyViewModel {
             guard let `self` = self else { return }
             // TODO: probably wrap below up in the DesignSystem and don't expose the keys directly
             UserDefaults.standard.set(testing, forKey: BrandingManager.contentSizeOverrideKey)
-            NotificationCenter.default.post(name: Notification.Name(rawValue: BrandingManager.didChange), object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: BrandingManager.didChangeNotification), object: nil)
             self.didChange?([1])
         }
     }
@@ -63,7 +63,7 @@ class TypographyViewModel {
             guard let `self` = self else { return }
             // TODO: probably wrap below up in the DesignSystem and don't expose the keys directly
             UserDefaults.standard.set(self.accessibilityOptions[Int(value)].rawValue, forKey: BrandingManager.contentSizeOverrideValueKey)
-            NotificationCenter.default.post(name: Notification.Name(rawValue: BrandingManager.didChange), object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: BrandingManager.didChangeNotification), object: nil)
 
             if self.isTesting.value == false {
                 self.isTesting.value = true

@@ -13,7 +13,7 @@ extension SectionBuilder {
     
     public func buttonCarousel(with titles: @autoclosure @escaping () -> [String], selectionClosure:  @escaping (Int) -> Void) -> CarouselSection {
         let sections = [buttonArray(titles: titles(), selectionClosure: selectionClosure)]
-        return carousel(height: .custom(ButtonArraySection.height), pagingEnabled: false, sections: sections)
+        return carousel(height: .custom(ButtonArraySection.height), pagingType: .true, sections: sections)
     }
     
     public func buttonArray(titles: @autoclosure @escaping () -> [String], selectionClosure:  @escaping (Int) -> Void) -> ButtonArraySection {
@@ -28,16 +28,17 @@ extension ButtonArraySection: EnumeratableSection {
 public class ButtonArraySection {
     
     fileprivate static let tagInflate = 0xbeef
-    fileprivate static let buttonHeightType: Button.Size.Height = .medium
+    fileprivate static let size = Button.Size(width: .full, height: .medium)
     fileprivate static var height: CGFloat {
-        
-        guard let height = (BrandingManager.brand as? ButtonBrand)?.height(for: ButtonArraySection.buttonHeightType) else {
+                
+        guard let height = (BrandingManager.brand as? ButtonBrand)?.height(for: size) else {
             print("BrandingManager.brand does not conform to ButtonBrand")
             return 44.0
         }
         
         return height
     }
+    
     fileprivate let selectionClosure: (Int) -> Void
     
     public init(selectionClosure: @escaping (Int) -> Void) {
@@ -48,7 +49,7 @@ public class ButtonArraySection {
 extension ButtonArraySection: ViewSection {
     
     public func createView() -> UIView {
-        let button = Button.init(style: .secondary)
+        let button = Button.init(style: .secondary, size: ButtonArraySection.size)
         button.addTarget(self, action: #selector(tapped), for: .touchUpInside)
         return button
     }

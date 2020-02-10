@@ -277,7 +277,7 @@ extension CardViewController: CardViewDelegate {
         if cardViews.count == 0 {
             view.superview?.alpha = 0.0
             snapshots.removeAllObjects()
-        }
+        }        
     }
 }
 

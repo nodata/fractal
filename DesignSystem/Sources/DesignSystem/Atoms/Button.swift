@@ -102,10 +102,12 @@ final public class Button: UIButton {
         }
     }
     
+    public let style: Style
+    public let size: Size
+    
     private var backgroundColors: [UIControl.State: UIColor] = [:]
-    private let style: Style
-    private let size: Size
-    private var notificationObject: NSObjectProtocol?
+    private var designChangeNotificationObject: NSObjectProtocol?
+    private var rerenderNotificationObject: NSObjectProtocol?
 
     override public var backgroundColor: UIColor? { didSet { backgroundColors[.normal] = backgroundColor } }
     override public var isSelected: Bool { didSet { updateBackground() } }
@@ -139,14 +141,23 @@ final public class Button: UIButton {
     }
     
     private func setup() {
-        notificationObject = NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: BrandingManager.didChange), object: nil, queue: nil) { [weak self] (_) in
+        designChangeNotificationObject = NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: BrandingManager.didChangeNotification), object: nil, queue: nil) { [weak self] (_) in
             self?.setForBrand()
         }
+        
+        rerenderNotificationObject = NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: BrandingManager.buttonsRerenderNotification), object: nil, queue: nil) { [weak self] (_) in
+            self?.setForBrand()
+        }
+        
         setForBrand()
     }
     
     deinit {
-        if let observer = notificationObject {
+        if let observer = designChangeNotificationObject {
+            NotificationCenter.default.removeObserver(observer)
+        }
+
+        if let observer = rerenderNotificationObject {
             NotificationCenter.default.removeObserver(observer)
         }
     }

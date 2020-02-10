@@ -116,7 +116,7 @@ open class SectionTableViewController: UITableViewController {
 
         configureTableView?(tableView)
 
-        notificationObject = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: BrandingManager.didChange), object: nil, queue: nil) { [weak self] (_) in
+        notificationObject = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: BrandingManager.didChangeNotification), object: nil, queue: nil) { [weak self] (_) in
             guard let `self` = self else { return }
             guard self.tearDownOnBrandChange else { return }
             self.tearDownSections()

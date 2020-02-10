@@ -10,6 +10,8 @@ import UIKit
 
 public class Label: UILabel {
 
+    private var notificationObject: NSObjectProtocol?
+
     public var typography: Typography = .medium { didSet { lineHeight = numberOfLines == 1 ? 0.0 : typography.lineHeight } }
     public var actualLineHeight: CGFloat { return max(lineHeight, font.lineHeight) }
     public var underlineStyle: NSUnderlineStyle = [] { didSet { update() } }
@@ -30,8 +32,14 @@ public class Label: UILabel {
         setup()
     }
 
+    deinit {
+        if let observer = notificationObject {
+            NotificationCenter.default.removeObserver(observer)
+        }
+    }
+    
     private func setup() {
-        _ = NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: BrandingManager.didChange), object: nil, queue: nil) { [weak self] (_) in
+        notificationObject = NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: BrandingManager.didChangeNotification), object: nil, queue: nil) { [weak self] (_) in
             self?.update()
         }
     }
