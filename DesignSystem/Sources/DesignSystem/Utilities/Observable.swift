@@ -13,8 +13,10 @@ import Foundation
 
 open class Observable<V> {
     
-    private class ClosureWrapper<V> {
+    private class ClosureWrapper<V>: NSObject {
+
         var closure: (V) -> Void
+        
         public init(_ closure: @escaping (V) -> Void) {
             self.closure = closure
         }
@@ -36,33 +38,24 @@ open class Observable<V> {
         
         // Giving the closure back to the object that is observing allows ClosureWrapper to die at the same time as observing object
         
-        var wrappers = objc_getAssociatedObject(observingObject, &AssociatedKeys.reference) as? [Any] ?? [Any]()
+        var wrappers = objc_getAssociatedObject(observingObject, &AssociatedKeys.reference) as? [ClosureWrapper<V>] ?? [ClosureWrapper<V>]()
         wrappers.append(wrapper)
         objc_setAssociatedObject(observingObject, &AssociatedKeys.reference, wrappers, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         
         observers.setObject(wrapper, forKey: observingObject)
         if !skipFirst { closure(value) }
-        
-//        var didSet = false
-//
-//        for s in references {
-//            var string = s
-//            if objc_getAssociatedObject(observingObject, &string) == nil {
-//                objc_setAssociatedObject(observingObject, &string, wrapper, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-//                observers.setObject(wrapper, forKey: observingObject)
-//                if !skipFirst { closure(value) }
-//                didSet = true
-//                break
-//            }
-//        }
-//
-//        if !didSet {
-//            print("Maximum number of observers \(references.count) reached for \(observingObject)")
-//        }
     }
     
     public func removeObserver(_ object: AnyObject) {
-        // TODO: needs to search the array in the associated object now
+        
+        let wrapper = observers.object(forKey: object)
+        
+        if let wrappers = objc_getAssociatedObject(object, &AssociatedKeys.reference) as? [ClosureWrapper<V>] {
+            let removed = wrappers.filter { $0 != wrapper }
+            print("wrappers vs removed:", wrappers.count, removed.count)
+            objc_setAssociatedObject(object, &AssociatedKeys.reference, removed, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+
         observers.removeObject(forKey: object)
     }
     
@@ -70,32 +63,8 @@ open class Observable<V> {
         let enumerator = observers.objectEnumerator()
         while let wrapper = enumerator?.nextObject() { (wrapper as? ClosureWrapper<V>)?.closure(value) }
     }
-    
-//    private lazy var references: [String] = {
-//        let array = [AssociatedKeys.reference1,
-//                     AssociatedKeys.reference2,
-//                     AssociatedKeys.reference3,
-//                     AssociatedKeys.reference4,
-//                     AssociatedKeys.reference5,
-//                     AssociatedKeys.reference6,
-//                     AssociatedKeys.reference7,
-//                     AssociatedKeys.reference8,
-//                     AssociatedKeys.reference9,
-//                     AssociatedKeys.reference10]
-//        return array
-//    }()
 }
 
 private struct AssociatedKeys {
     static var reference = "reference"
-//    static var reference1 = "reference1"
-//    static var reference2 = "reference2"
-//    static var reference3 = "reference3"
-//    static var reference4 = "reference4"
-//    static var reference5 = "reference5"
-//    static var reference6 = "reference6"
-//    static var reference7 = "reference7"
-//    static var reference8 = "reference8"
-//    static var reference9 = "reference9"
-//    static var reference10 = "reference10"
 }
