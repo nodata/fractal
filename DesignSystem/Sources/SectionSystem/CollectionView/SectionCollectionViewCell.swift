@@ -9,14 +9,14 @@
 import Foundation
 import UIKit
 
-class SectionCollectionViewCell: UICollectionViewCell {
+public class SectionCollectionViewCell: UICollectionViewCell {
 
-    weak var section: BedrockSection?
-    weak var sectionView: UIView?
-    weak var sectionViewController: UIViewController?
-    var indexPath: IndexPath?
+    public internal(set) weak var section: BedrockSection?
+    public internal(set) weak var sectionView: UIView?
+    public internal(set) weak var sectionViewController: UIViewController?
+    public internal(set) var indexPath: IndexPath?
 
-    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+    override public func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
 
         let size: SectionCellSize
 
@@ -38,6 +38,6 @@ class SectionCollectionViewCell: UICollectionViewCell {
         return layoutAttributes
     }
 
-    override var isHighlighted: Bool { didSet { (sectionView as? Highlightable)?.set(for: isHighlighted, selected: isSelected) } }
-    override var isSelected: Bool { didSet { (sectionView as? Highlightable)?.set(for: isHighlighted, selected: isSelected) } }
+    override public var isHighlighted: Bool { didSet { (sectionView as? Highlightable)?.set(for: isHighlighted, selected: isSelected) } }
+    override public var isSelected: Bool { didSet { (sectionView as? Highlightable)?.set(for: isHighlighted, selected: isSelected) } }
 }

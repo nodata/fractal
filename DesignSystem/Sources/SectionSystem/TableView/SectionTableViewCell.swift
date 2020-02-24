@@ -9,10 +9,10 @@
 import Foundation
 import UIKit
 
-class SectionTableViewCell: UITableViewCell {
+public class SectionTableViewCell: UITableViewCell {
 
-    weak var sectionViewController: UIViewController?
-    weak var sectionView: UIView?
+    public internal(set) weak var sectionViewController: UIViewController?
+    public internal(set) weak var sectionView: UIView?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -25,7 +25,7 @@ class SectionTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+    override public func setHighlighted(_ highlighted: Bool, animated: Bool) {
         if animated {
             UIView.animate(withDuration: 0.3, delay: 0.0, options: highlighted || isSelected ? .curveEaseIn : .curveEaseOut, animations: {
                 self.update(for: highlighted, selected: self.isSelected)
@@ -35,7 +35,7 @@ class SectionTableViewCell: UITableViewCell {
         }
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
+    override public func setSelected(_ selected: Bool, animated: Bool) {
         if animated {
             UIView.animate(withDuration: 0.3, delay: 0.0, options: isHighlighted || selected ? .curveEaseIn : .curveEaseOut, animations: {
                 self.update(for: self.isHighlighted, selected: selected)
