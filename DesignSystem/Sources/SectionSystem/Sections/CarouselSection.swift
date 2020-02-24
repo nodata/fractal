@@ -28,6 +28,36 @@ extension SectionBuilder {
 
 public class CarouselSection {
 
+    public enum PositionType {
+        case left, right, center, top, bottom
+        
+        func point(in collectionView: UICollectionView) -> CGPoint {
+            switch self {
+            case .left:
+                return CGPoint(x: 1.0, y: collectionView.bounds.size.height/2)
+            case .right:
+                return CGPoint(x: collectionView.bounds.size.width-1.0, y: collectionView.bounds.size.height/2)
+            case .center:
+                return CGPoint(x: collectionView.bounds.size.width/2, y: collectionView.bounds.size.height/2)
+            case .top:
+                return CGPoint(x: collectionView.bounds.size.width/2, y: 1.0)
+            case .bottom:
+                return CGPoint(x: collectionView.bounds.size.width/2, y: collectionView.bounds.size.height - 1.0)
+            }
+        }
+        
+        var modifier: Int {
+            switch self {
+            case .left, .top:
+                return -1
+            case .right, .bottom:
+                return 1
+            case .center:
+                return 0
+            }
+        }
+    }
+
     public enum HeightType {
         case full, width, multiplier(CGFloat), custom(CGFloat)
     }
@@ -58,13 +88,28 @@ public class CarouselSection {
         self.layout = layout
     }
     
-    public func currentIndexAt() -> Int? {
-        
+    public func currentIndexPath(at position: PositionType) -> IndexPath? {
         guard let vc = visibleViewController as? CarouselViewController else { return nil }
-        //TODO: get the index at say, the middle, the left, the right
-        return 0
+        guard let indexPath = vc.collectionView.indexPathForItem(at: position.point(in: vc.collectionView)) else { return nil }
+        
+        // This won't work out of the box for peaking carousels as the gaps will count as indexes
+        if pagingType == .calculatedDoubleJump && indexPath.item % 2 != 0 {
+            // TODO: untested
+            return IndexPath(item: indexPath.item + position.modifier, section: indexPath.section)
+        }
+        
+        return indexPath
     }
-
+    
+    public func scroll(to indexPath: IndexPath, animated: Bool) {
+        guard let vc = visibleViewController as? CarouselViewController else { return }
+        vc.collectionView.scrollToItem(at: indexPath, at: [.centeredHorizontally, .centeredVertically], animated: animated)
+    }
+    
+    public var sections: [Section] {
+        guard let vc = visibleViewController as? CarouselViewController else { return [] }
+        return vc.dataSource.sections
+    }
 }
 
 extension CarouselSection: ViewControllerSection {

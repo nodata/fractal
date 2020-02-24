@@ -71,3 +71,12 @@ public extension UIView {
         return v as? V
     }
 }
+
+public extension Array {
+    func wrappedIndex(_ value: Int) -> Int {
+        var index = value
+        while index > count-1 { index -= count }
+        while index < 0 { index += count }
+        return index
+    }
+}

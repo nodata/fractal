@@ -38,7 +38,7 @@ open class Observable<V> {
         
         // Giving the closure back to the object that is observing allows ClosureWrapper to die at the same time as observing object
         
-        var wrappers = objc_getAssociatedObject(observingObject, &AssociatedKeys.reference) as? [ClosureWrapper<V>] ?? [ClosureWrapper<V>]()
+        var wrappers = objc_getAssociatedObject(observingObject, &AssociatedKeys.reference) as? [Any] ?? [Any]()
         wrappers.append(wrapper)
         objc_setAssociatedObject(observingObject, &AssociatedKeys.reference, wrappers, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         
@@ -47,15 +47,10 @@ open class Observable<V> {
     }
     
     public func removeObserver(_ object: AnyObject) {
-        
         let wrapper = observers.object(forKey: object)
-        
-        if let wrappers = objc_getAssociatedObject(object, &AssociatedKeys.reference) as? [ClosureWrapper<V>] {
-            let removed = wrappers.filter { $0 != wrapper }
-            print("wrappers vs removed:", wrappers.count, removed.count)
-            objc_setAssociatedObject(object, &AssociatedKeys.reference, removed, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        if let wrappers = objc_getAssociatedObject(object, &AssociatedKeys.reference) as? [NSObject] {
+            objc_setAssociatedObject(object, &AssociatedKeys.reference, wrappers.filter { $0 != wrapper }, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
-
         observers.removeObject(forKey: object)
     }
     
