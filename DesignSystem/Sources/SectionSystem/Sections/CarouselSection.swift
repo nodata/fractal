@@ -107,9 +107,7 @@ public class CarouselSection {
     }
     
     public func scroll(to indexPath: IndexPath, animated: Bool) {
-        print("Scroll To:", indexPath.item, indexPath.section)
         guard let vc = visibleViewController as? CarouselViewController else { return }
-        print("Scroll To2:", indexPath.item, indexPath.section)
         vc.collectionView.scrollToItem(at: indexPath, at: [.centeredHorizontally, .centeredVertically], animated: animated)
     }
     

@@ -73,7 +73,6 @@ public class CardView: UIView {
     private static let cardDragThreshold: CGFloat = 36.0
 
     private let animateInDuration: TimeInterval
-    private let showHandle: Bool
 
     private var cardDragStart: CGFloat = 0.0
     private var cardDragCurrent: CGFloat = 0.0
@@ -81,6 +80,7 @@ public class CardView: UIView {
     private var isTouchingScrollView: Bool = false
     private var animateAfterLayout: Bool = false
     
+    let showHandle: Bool
     var yConstraint: NSLayoutConstraint?
     var canLayDormant = false //TODO: like new message card on Mail app
     
@@ -102,12 +102,6 @@ public class CardView: UIView {
         isUserInteractionEnabled = true
         addGestureRecognizer(panGestureRecognizer)
 
-        if showHandle {
-            addSubview(handleBackgroundView)
-            handleBackgroundView.addSubview(handleView)
-            NSLayoutConstraint.activate(handleBackgroundView.handleBackgroundViewConstraints(in:self))
-            NSLayoutConstraint.activate(handleView.handleViewConstraints(in:handleBackgroundView))
-        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -131,7 +125,7 @@ public class CardView: UIView {
     
     // MARK: - Animations & Gestures
     
-    func animateIn() {
+    @objc func animateIn() {
         
         let vcBlock = (viewController as? CardViewDelegate)?.cardViewWillAppear(self)
         let block = delegate?.cardViewWillAppear(self)
@@ -140,19 +134,18 @@ public class CardView: UIView {
         superview?.layoutIfNeeded()
         
         yConstraint?.constant = CardView.bottomPadding
-        superview?.setNeedsLayout()
-        
+        superview?.setNeedsUpdateConstraints()
+
         contentScrollView?.bounces = true
         contentScrollView?.showsVerticalScrollIndicator = true
         
         if showHandle {
             handleView.set(state: .down, animated: true)
-            bringSubviewToFront(handleBackgroundView)
         }
         
         UIView.animate(withDuration: animateInDuration,
                        delay: 0.0,
-                       usingSpringWithDamping: 0.8,
+                       usingSpringWithDamping: 0.85,
                        initialSpringVelocity: 0.0,
                        options: [.beginFromCurrentState,.curveEaseOut],
                        animations:{
@@ -183,7 +176,7 @@ public class CardView: UIView {
         let block = delegate?.cardViewWillDismiss(self)
         
         yConstraint?.constant = bounds.size.height
-        superview?.setNeedsLayout()
+        superview?.setNeedsUpdateConstraints()
         
         UIView.animate(withDuration: 0.25,
                        delay: 0.0,
@@ -286,68 +279,30 @@ public class CardView: UIView {
     // MARK: - Properties
     
     private lazy var panGestureRecognizer: UIPanGestureRecognizer = {
-        
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panned))
         panGestureRecognizer.delegate = self
-        
+        return panGestureRecognizer
+    }()
+
+    lazy var coverPanGestureRecognizer: UIPanGestureRecognizer = {
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panned))
+        panGestureRecognizer.delegate = self
         return panGestureRecognizer
     }()
     
-    private lazy var tapGestureRecognizer: UITapGestureRecognizer = {
-       
-        let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(handleTapped))
-        return tapGestureRecogniser
-    }()
-    
-    private lazy var handleBackgroundView: UIView = {
-        
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.isExclusiveTouch = true
-        view.addGestureRecognizer(tapGestureRecognizer)
-
-        return view
-    }()
-
-    private lazy var handleView: DrawerHandleView = {
-        
+    lazy var handleView: DrawerHandleView = {
         let view = DrawerHandleView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        
-        if let handleColor = viewController?.cardViewContentDelegate?.cardHandleColor {
-            view.strokeColor = handleColor
-        }
-        
+        view.strokeColor = viewController?.cardViewContentDelegate?.cardHandleColor ?? .white
         return view
     }()
-}
-
-extension UIView {
-    
-    fileprivate func handleBackgroundViewConstraints(in superview: UIView) -> [NSLayoutConstraint] {
-        
-        let x = centerXAnchor.constraint(equalTo: superview.centerXAnchor)
-        let y = centerYAnchor.constraint(equalTo: superview.topAnchor, constant: CardView.handlePaddingHeight/2)
-        let w = widthAnchor.constraint(equalTo: superview.widthAnchor)
-        let h = heightAnchor.constraint(equalToConstant: CardView.handlePaddingHeight)
-        
-        return [x,y,w,h]
-    }
-
-    fileprivate func handleViewConstraints(in superview: UIView) -> [NSLayoutConstraint] {
-        
-        let x = centerXAnchor.constraint(equalTo: superview.centerXAnchor)
-        let y = centerYAnchor.constraint(equalTo: superview.topAnchor, constant: CardView.handlePaddingHeight/2)
-        
-        return [x,y]
-    }
 }
 
 extension CardView: UIGestureRecognizerDelegate {
 
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
      
-        guard gestureRecognizer == panGestureRecognizer, otherGestureRecognizer == contentScrollView?.panGestureRecognizer || otherGestureRecognizer == tapGestureRecognizer else {
+        guard gestureRecognizer == panGestureRecognizer, otherGestureRecognizer == contentScrollView?.panGestureRecognizer else {
             return false
         }
         

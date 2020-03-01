@@ -25,64 +25,10 @@ public class CardViewController: UIViewController {
         public static let showHandle = Option(rawValue: 1 << 2)
     }
     
-    private class Snapshot {
-        
-        private weak var view: UIView?
-        private var scrollViewSnapshots = [ScrollViewSnapshot]()
-        
-        private struct ScrollViewSnapshot {
-            
-            weak var scrollView: UIScrollView?
-            let adjustmentBehavior: UIScrollView.ContentInsetAdjustmentBehavior
-            let offsetY: CGFloat
-            
-            init(with scrollView: UIScrollView) {
-                self.scrollView = scrollView
-                adjustmentBehavior = scrollView.contentInsetAdjustmentBehavior
-                offsetY = scrollView.contentOffset.y
-                scrollView.contentInsetAdjustmentBehavior = .never
-            }
-        }
-        
-        init(of viewController: UIViewController) {
-            
-            if let snapshot = viewController.view.snapshotView(afterScreenUpdates: true) {
-                view = snapshot
-                viewController.view.addSubview(snapshot)
-                snapshot.pin(to: viewController.view, [.bottom, .centerX, .width, .height])
-            }
-            
-            func suspendContentInsetAdjustmentBehavior(in subviews: [UIView]) {
-                for view in subviews {
-                    if let scrollView = view as? UIScrollView {
-                        scrollViewSnapshots.append(ScrollViewSnapshot(with: scrollView))
-                    }
-                    suspendContentInsetAdjustmentBehavior(in: view.subviews)
-                }
-            }
-            
-            if let nvc = viewController as? UINavigationController, let subviews = nvc.viewControllers.last?.view.subviews {
-                suspendContentInsetAdjustmentBehavior(in: subviews)
-            } else {
-                suspendContentInsetAdjustmentBehavior(in: viewController.view.subviews)
-            }
-        }
-        
-        func reset() {
-            
-            view?.removeFromSuperview()
-            
-            for snapshot in scrollViewSnapshots {
-                snapshot.scrollView?.contentInsetAdjustmentBehavior = snapshot.adjustmentBehavior
-                snapshot.scrollView?.contentOffset.y = snapshot.offsetY
-            }
-        }
-    }
-    
     private static let scaleFactor: CGFloat = 0.05
     public private(set) var cardViews = [CardView]()
     private weak var topLevelViewController: UIViewController?
-    private var snapshots = NSMapTable<UIViewController, Snapshot>(keyOptions: [.weakMemory], valueOptions: [.strongMemory])
+    private var snapshots = NSMapTable<UIView, UIView>(keyOptions: [.weakMemory], valueOptions: [.strongMemory])
     
     public init(topLevelViewController: UIViewController? = nil) {
         self.topLevelViewController = topLevelViewController
@@ -109,16 +55,20 @@ public class CardViewController: UIViewController {
             view.superview?.alpha = 1.0
         }
         
-        let previousVC = cardViews.count == 0 ? topLevelViewController : cardViews.last?.viewController
-        
-        if let vc = previousVC {
-            snapshots.setObject(Snapshot(of: vc), forKey: vc)
+        let previousView = cardViews.count == 0 ? topLevelViewController?.view : cardViews.last
+        let showHandle = options.contains(.showHandle)
+
+        if let prev = previousView, let snapshot = prev.snapshotView(afterScreenUpdates: true) {
+            snapshots.setObject(snapshot, forKey: prev)
+            view.addSubview(snapshot)
+            snapshot.clipsToBounds = true
+            snapshot.layer.cornerRadius = CardView.cornerRadius
+            snapshot.pin(to: prev)
+            prev.isHidden = true
         }
         
         let coverView = newCoverView(dark: options.contains(.darkBackground))
-        let cardView = CardView(viewController: viewController,
-                                coverView: coverView,
-                                showHandle:options.contains(.showHandle))
+        let cardView = CardView(viewController: viewController, coverView: coverView, showHandle: showHandle)
         cardView.delegate = self
         
         let heightConstraint = viewController.cardViewContentDelegate?.heightConstraint(for: cardView.heightAnchor)
@@ -131,10 +81,18 @@ public class CardViewController: UIViewController {
         cardView.yConstraint = cardViewConstraints[1]
         
         view.addSubview(coverView)
+        view.addSubview(coverView)
         view.addSubview(cardView)
         
         NSLayoutConstraint.activate(cardViewConstraints)
         NSLayoutConstraint.activate(coverView.coverViewConstraints(in:view))
+        
+        coverView.addGestureRecognizer(cardView.coverPanGestureRecognizer)
+        
+        if showHandle {
+            view.addSubview(cardView.handleView)
+            NSLayoutConstraint.activate(cardView.handleView.handleViewConstraints(with: cardView))
+        }
         
         contain(viewController, constraintBlock:{ (childView) -> ([NSLayoutConstraint]) in
             cardView.addSubview(childView)
@@ -148,7 +106,9 @@ public class CardViewController: UIViewController {
         
         cardView.setBackgroundColor()
         cardView.yConstraint?.constant = cardView.bounds.size.height
-        cardView.animateIn()
+        cardView.setNeedsUpdateConstraints()
+        cardView.layoutIfNeeded()
+        cardView.perform(#selector(cardView.animateIn), with: nil, afterDelay: 0.01)
     }
 
     public func dismissModalCard(with viewController: UIViewController, completion: (() -> Void)? = nil) {
@@ -171,6 +131,14 @@ public class CardViewController: UIViewController {
 //            if let firstResponder = cardView.findFirstResponder() {
 //                firstResponder.resignFirstResponder()
 //            }
+            
+            if let prev = cardViews[safe: cardViews.count-2], prev.showHandle {
+                UIView.animate(withDuration: 0.25,
+                               delay: 0.0,
+                               options: [.beginFromCurrentState,.curveEaseInOut],
+                               animations:{ prev.handleView.alpha = 1.0 },
+                               completion:nil)
+            }
             
             cardView.animateOut(completion: completion)
             break
@@ -206,18 +174,28 @@ extension CardViewController: CardViewDelegate {
             
             guard let `self` = self else { return }
             guard self.cardViews.count > 0 else { return }
-
+            
             let scale = 1.0 - CardViewController.scaleFactor
             
             if self.cardViews.count == 1 {
-
-                self.topLevelViewController?.view.superview?.transform = CGAffineTransform(scaleX: scale, y: scale)
-                self.topLevelViewController?.view.superview?.layer.cornerRadius = CardView.cornerRadius
-
+                if let topVC = self.topLevelViewController, let snapshot = self.snapshots.object(forKey: topVC.view) {
+                    snapshot.transform = CGAffineTransform(scaleX: scale, y: scale)
+                    snapshot.layer.cornerRadius = CardView.cornerRadius
+                }
             } else {
-
                 let cardView = self.cardViews[self.cardViews.count - 2]
-                cardView.transform = CGAffineTransform(scaleX: scale, y: scale)
+                if let snapshot = self.snapshots.object(forKey: cardView) {
+                    snapshot.transform = CGAffineTransform(scaleX: scale, y: scale)
+                }
+                
+                if cardView.showHandle {
+                    
+                    UIView.animate(withDuration: 0.25,
+                                   delay: 0.0,
+                                   options: [.beginFromCurrentState,.curveEaseInOut],
+                                   animations:{ cardView.handleView.alpha = 0.0 },
+                                   completion:nil)
+                }
             }
         }
     }
@@ -228,11 +206,16 @@ extension CardViewController: CardViewDelegate {
         let scale = 1.0 - CardViewController.scaleFactor + (CardViewController.scaleFactor * percentage)
 
         if cardViews.count == 1 {
-            topLevelViewController?.view.superview?.transform = CGAffineTransform(scaleX: scale, y: scale)
-            topLevelViewController?.view.superview?.layer.cornerRadius = CardView.cornerRadius - (CardView.cornerRadius * percentage)
+            if let topVC = self.topLevelViewController, let snapshot = self.snapshots.object(forKey: topVC.view) {
+                snapshot.transform = CGAffineTransform(scaleX: scale, y: scale)
+                snapshot.layer.cornerRadius = CardView.cornerRadius - (CardView.cornerRadius * percentage)
+            }
         }
         else if cardViews.count > 1 {
-            cardViews[cardViews.count - 2].transform = CGAffineTransform(scaleX: scale, y: scale)
+            let cardView = self.cardViews[self.cardViews.count - 2]
+            if let snapshot = self.snapshots.object(forKey: cardView) {
+                snapshot.transform = CGAffineTransform(scaleX: scale, y: scale)
+            }
         }
     }
     
@@ -244,11 +227,26 @@ extension CardViewController: CardViewDelegate {
             guard self.cardViews.count > 0 else { return }
             
             if self.cardViews.count == 1 {
-                self.topLevelViewController?.view.superview?.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-                self.topLevelViewController?.view.superview?.layer.cornerRadius = 0.0
+                
+                if let topVC = self.topLevelViewController, let snapshot = self.snapshots.object(forKey: topVC.view) {
+                    snapshot.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                    snapshot.layer.cornerRadius = 0.0
+                }
+
             } else {
                 let cardView = self.cardViews[self.cardViews.count - 2]
-                cardView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                if let snapshot = self.snapshots.object(forKey: cardView) {
+                    snapshot.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                }
+                
+                if cardView.showHandle {
+                    
+                    UIView.animate(withDuration: 0.25,
+                                   delay: 0.0,
+                                   options: [.beginFromCurrentState,.curveEaseInOut],
+                                   animations:{ cardView.handleView.alpha = 1.0 },
+                                   completion:nil)
+                }
             }
         }
     }
@@ -268,10 +266,14 @@ extension CardViewController: CardViewDelegate {
         
         cardView.coverView?.removeFromSuperview()
         cardView.removeFromSuperview()
+        if cardView.showHandle {
+            cardView.handleView.removeFromSuperview()
+        }
         
-        if let previousVC = cardViews.count == 0 ? topLevelViewController : cardViews.last?.viewController {
-            snapshots.object(forKey: previousVC)?.reset()
-            snapshots.removeObject(forKey: previousVC)
+        if let prev = cardViews.count == 0 ? topLevelViewController?.view : cardViews.last {
+            snapshots.object(forKey: prev)?.removeFromSuperview()
+            snapshots.removeObject(forKey: prev)
+            prev.isHidden = false
         }
 
         if cardViews.count == 0 {
@@ -322,6 +324,14 @@ fileprivate extension UIView {
         let h = heightAnchor.constraint(equalTo: superview.heightAnchor)
         
         return [x,y,w,h]
+    }
+
+    func handleViewConstraints(with sibling: UIView) -> [NSLayoutConstraint] {
+        
+        let x = centerXAnchor.constraint(equalTo: sibling.centerXAnchor)
+        let y = bottomAnchor.constraint(equalTo: sibling.topAnchor, constant: -10.0)
+        
+        return [x,y]
     }
 }
 
