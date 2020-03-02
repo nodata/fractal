@@ -75,7 +75,7 @@ public class CardViewController: UIViewController {
         
         let heightConstraint = viewController.cardViewContentDelegate?.heightConstraint(for: cardView.heightAnchor)
         let topPadding = viewController.cardViewContentDelegate?.topPadding
-        let useCardTopPadding = !options.contains(.isFullscreen) || options.contains(.showHandle)
+        let useCardTopPadding = !options.contains(.isFullscreen) && heightConstraint == nil
         
         let cardViewConstraints = cardView.cardViewConstraints(in: view,
                                                                with: heightConstraint,
