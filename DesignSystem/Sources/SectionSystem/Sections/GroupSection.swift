@@ -9,8 +9,8 @@
 import Foundation
 
 extension SectionBuilder {
-    public func group(_ sections: [Section], middleDivider: BedrockSection? = nil) -> GroupSection {
-        return GroupSection(sections, middleDivider: middleDivider)
+    public func group(_ sections: [Section], middleDivider: BedrockSection? = nil, bookends: Bool = true) -> GroupSection {
+        return GroupSection(sections, middleDivider: middleDivider, bookends: bookends)
     }
 }
 
@@ -21,21 +21,23 @@ public class GroupSection: SectionBuilder {
 
     fileprivate let sections: [Section]
     fileprivate let middleDivider: BedrockSection?
+    fileprivate let bookends: Bool
 
-    public init(_ sections: [Section], middleDivider: BedrockSection?) {
+    public init(_ sections: [Section], middleDivider: BedrockSection?, bookends: Bool) {
         self.sections = sections
         self.middleDivider = middleDivider
+        self.bookends = bookends
     }
 
     private func saltedContentCount() -> Int {
         var count = 0
         for section in sections { count += section.itemCount }
         guard count > 0 else { return 0 }
-        return 1 + (count * 2)
+        return bookends ? 1 + (count * 2) : (count * 2) - 1
     }
 
     private func unsaltedIndex(from index: Int) -> Int {
-        return (index - 1)/2
+        return bookends ? (index - 1)/2 : index/2
     }
 
     // MARK: - Properties
@@ -67,15 +69,14 @@ extension GroupSection: NestedSection {
 
     public func section(at index: Int) -> Section {
 
-        if index == 0 {
-            return bookendTopDivider
+        if bookends {
+            if index == 0 { return bookendTopDivider }
+            if index == saltedContentCount() - 1 { return bookendBottomDivider }
         }
 
-        if index == saltedContentCount() - 1 {
-            return bookendBottomDivider
-        }
-
-        if index % 2 != 0 {
+        let isContentIndex = bookends ? index % 2 != 0 : index % 2 == 0
+        
+        if isContentIndex {
             var total = 0
             for section in sections {
                 let count = section.itemCount

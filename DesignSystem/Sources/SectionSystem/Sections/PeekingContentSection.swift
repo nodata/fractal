@@ -1,5 +1,5 @@
 //
-//  PeakingCarouselSection.swift
+//  PeekingContentSection.swift
 //  DesignSystem
 //
 //  Created by Anthony Smith on 19/01/2020.
@@ -9,12 +9,12 @@
 import Foundation
 
 extension SectionBuilder {
-    public func peakingCarousel(_ sections: [Section], padding: CGFloat = .keyline) -> PeakingCarouselSection {
-        return PeakingCarouselSection(sections, spacing: padding)
+    public func peekingContent(_ sections: [Section], padding: CGFloat = .keyline) -> PeekingContentSection {
+        return PeekingContentSection(sections, spacing: padding)
     }
 }
 
-public class PeakingCarouselSection: SectionBuilder {
+public class PeekingContentSection: SectionBuilder {
 
     fileprivate let sections: [Section]
     fileprivate let spacing: CGFloat
@@ -48,7 +48,7 @@ public class PeakingCarouselSection: SectionBuilder {
     }()
 }
 
-extension PeakingCarouselSection: NestedSection {
+extension PeekingContentSection: NestedSection {
     public var givenSections: [Section] {
         return sections
     }

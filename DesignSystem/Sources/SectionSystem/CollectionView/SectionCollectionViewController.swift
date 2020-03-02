@@ -166,7 +166,7 @@ open class SectionCollectionViewController: UICollectionViewController {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = direction
         flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        
+
         return flowLayout
     }
 

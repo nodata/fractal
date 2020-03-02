@@ -23,6 +23,7 @@ public class CardViewController: UIViewController {
         public static let darkBackground = Option(rawValue: 1 << 0)
         public static let isFullscreen = Option(rawValue: 1 << 1)
         public static let showHandle = Option(rawValue: 1 << 2)
+        public static let shouldScale = Option(rawValue: 1 << 3)
     }
     
     private static let scaleFactor: CGFloat = 0.05
@@ -57,8 +58,9 @@ public class CardViewController: UIViewController {
         
         let previousView = cardViews.count == 0 ? topLevelViewController?.view : cardViews.last
         let showHandle = options.contains(.showHandle)
+        let shouldScale = options.contains(.shouldScale)
 
-        if let prev = previousView, let snapshot = prev.snapshotView(afterScreenUpdates: true) {
+        if shouldScale, let prev = previousView, let snapshot = prev.snapshotView(afterScreenUpdates: true) {
             snapshots.setObject(snapshot, forKey: prev)
             view.addSubview(snapshot)
             snapshot.clipsToBounds = true
@@ -68,7 +70,7 @@ public class CardViewController: UIViewController {
         }
         
         let coverView = newCoverView(dark: options.contains(.darkBackground))
-        let cardView = CardView(viewController: viewController, coverView: coverView, showHandle: showHandle)
+        let cardView = CardView(viewController: viewController, coverView: coverView, showHandle: showHandle, shouldScale: shouldScale)
         cardView.delegate = self
         
         let heightConstraint = viewController.cardViewContentDelegate?.heightConstraint(for: cardView.heightAnchor)
@@ -80,7 +82,6 @@ public class CardViewController: UIViewController {
                                                                useTopPadding: useCardTopPadding)
         cardView.yConstraint = cardViewConstraints[1]
         
-        view.addSubview(coverView)
         view.addSubview(coverView)
         view.addSubview(cardView)
         
@@ -96,6 +97,7 @@ public class CardViewController: UIViewController {
         
         contain(viewController, constraintBlock:{ (childView) -> ([NSLayoutConstraint]) in
             cardView.addSubview(childView)
+            childView.layer.cornerRadius = cardView.layer.cornerRadius
             return childView.viewControllerConstraints(in:cardView, with:topPadding)
         })
 
@@ -172,6 +174,7 @@ extension CardViewController: CardViewDelegate {
     
         return { [weak self] in
             
+            guard cardView.shouldScale else { return }
             guard let `self` = self else { return }
             guard self.cardViews.count > 0 else { return }
             
@@ -202,6 +205,7 @@ extension CardViewController: CardViewDelegate {
     
     public func cardViewWasPanned(_ cardView: CardView, percentage: CGFloat) {
         
+        guard cardView.shouldScale else { return }
         guard percentage > 0.0 && percentage <= 1.0 else { return }
         let scale = 1.0 - CardViewController.scaleFactor + (CardViewController.scaleFactor * percentage)
 
@@ -223,6 +227,7 @@ extension CardViewController: CardViewDelegate {
         
         return { [weak self] in
             
+            guard cardView.shouldScale else { return }
             guard let `self` = self else { return }
             guard self.cardViews.count > 0 else { return }
             

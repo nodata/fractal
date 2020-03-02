@@ -21,13 +21,12 @@ public extension UIViewController {
         containerView.addSubview(viewController.view)
         containerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.clipsToBounds = true
-
+       
         let appliedConstraints: [NSLayoutConstraint]
 
         if let block = constraintBlock {
             appliedConstraints = block(containerView)
-        }
-        else {
+        } else {
 
             // Example of constraint block.
             // Note: `self.view.addSubview(cView)` also belongs in this block

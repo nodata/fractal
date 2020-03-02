@@ -42,11 +42,11 @@ public protocol CardViewDelegate: class {
 }
 
 public extension CardViewContentDelegate {
-    
+
     var contentScrollView: UIScrollView? { return nil }
     var isBackgroundDismissable: Bool { return true }
     var isDraggable: Bool { return true }
-    
+
     var cardHandleColor: UIColor? { return nil }
     var topPadding: CGFloat { return 0.0 }
     func heightConstraint(for cardViewHeightAnchor: NSLayoutDimension) -> NSLayoutConstraint? { return nil }
@@ -81,6 +81,7 @@ public class CardView: UIView {
     private var animateAfterLayout: Bool = false
     
     let showHandle: Bool
+    let shouldScale: Bool
     var yConstraint: NSLayoutConstraint?
     var canLayDormant = false //TODO: like new message card on Mail app
     
@@ -88,20 +89,22 @@ public class CardView: UIView {
     public private(set) weak var viewController: UIViewController?
     weak var delegate: CardViewDelegate?
 
-    public init(viewController: UIViewController, coverView: UIView, showHandle: Bool) {
+    public init(viewController: UIViewController, coverView: UIView, showHandle: Bool, shouldScale: Bool) {
         
         self.coverView = coverView
         self.viewController = viewController
         self.showHandle = showHandle
+        self.shouldScale = shouldScale
         animateInDuration = 0.5
 
         super.init(frame:.zero)
         translatesAutoresizingMaskIntoConstraints = false
-        clipsToBounds = true
+        clipsToBounds = false
         layer.cornerRadius = CardView.cornerRadius
         isUserInteractionEnabled = true
         addGestureRecognizer(panGestureRecognizer)
 
+        self.addLongShadow(.up)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -113,13 +116,12 @@ public class CardView: UIView {
     }
     
     func setBackgroundColor() {
-        
         if let bgColor = viewController?.view.backgroundColor, bgColor != .clear {
             backgroundColor = bgColor
         } else if let bgColor = contentScrollView?.backgroundColor, bgColor != .clear {
             backgroundColor = bgColor
         } else {
-            backgroundColor = .background
+            backgroundColor = .background(.card)
         }
     }
     
@@ -293,7 +295,8 @@ public class CardView: UIView {
     lazy var handleView: DrawerHandleView = {
         let view = DrawerHandleView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.strokeColor = viewController?.cardViewContentDelegate?.cardHandleColor ?? .white
+        let color = self.viewController?.cardViewContentDelegate?.cardHandleColor
+        view.strokeColor = color ?? .white //TODO: dark mode / dark cover
         return view
     }()
 }
@@ -308,4 +311,8 @@ extension CardView: UIGestureRecognizerDelegate {
         
         return true
     }
+}
+
+public extension UIColor.Key {
+    static let card = UIColor.Key("card")
 }

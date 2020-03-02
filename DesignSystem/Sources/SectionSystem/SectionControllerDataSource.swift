@@ -300,6 +300,19 @@ extension SectionControllerDataSource: UICollectionViewDataSource, UICollectionV
         let section = bedrock.0
         let index = bedrock.1
         let sectionSize = section.size(in: collectionView, at: index)
+        
+        if let height = sectionSize.height, (collectionViewLayout as? UICollectionViewFlowLayout)?.scrollDirection == .horizontal {
+            let maxHorizontal = collectionView.bounds.size.height - (collectionView.contentInset.top + collectionView.contentInset.bottom)
+            guard height <= maxHorizontal else {
+                return CGSize(width: sectionSize.width ?? defaultSize.width, height: maxHorizontal)
+            }
+        } else if let width = sectionSize.width, (collectionViewLayout as? UICollectionViewFlowLayout)?.scrollDirection == .vertical {
+            let maxVertical = collectionView.bounds.size.height - (collectionView.contentInset.right + collectionView.contentInset.left)
+            guard width <= maxVertical else {
+                return CGSize(width: maxVertical, height: sectionSize.height ?? defaultSize.height)
+            }
+        }
+        
         return CGSize(width: sectionSize.width ?? defaultSize.width, height: sectionSize.height ?? defaultSize.height)
     }
 

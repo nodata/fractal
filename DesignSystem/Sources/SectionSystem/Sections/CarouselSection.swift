@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension SectionBuilder {
     public func carousel(_ reuseIdentifier: String = UUID().uuidString,
@@ -163,5 +164,25 @@ extension CarouselSection: ViewControllerSection {
         
         // move offset logic into section collectionviewcontroller
         // vc.collectionView.setContentOffset(CGPoint(x: vc.collectionView.contentSize.width > self.dataSource.offset ? self.dataSource.offset : 0.0, y: 0.0), animated: false)
+    }
+}
+
+extension CarouselSection {
+    public static func cardPagingClosure(with viewControllerSection: ViewControllerSection) -> (UIScrollView) -> Void {
+        return { [unowned viewControllerSection] scrollView in
+            for vc in viewControllerSection.visibleViewControllers {
+                guard scrollView.isBeingManipulated else { return }
+                let position = vc.view.convert(vc.view.frame.origin, to: nil)
+                let percentage = position.x / scrollView.bounds.size.width
+                let absPercentage = abs(position.x) / scrollView.bounds.size.width
+                let excelPercentage = min(absPercentage * 10.0, 1.0)
+                let scale = 1.0 - (0.05 * absPercentage)
+                var transform = CGAffineTransform(scaleX: scale, y: scale)
+                transform = transform.rotated(by: (CGFloat.pi/100) * percentage)
+                vc.view.transform = transform
+                vc.view.layer.borderWidth = .divider * excelPercentage
+                vc.view.layer.cornerRadius = .mediumCornerRadius * excelPercentage
+            }
+        }
     }
 }

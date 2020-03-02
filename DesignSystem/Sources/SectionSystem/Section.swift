@@ -70,7 +70,7 @@ public protocol ViewSection: BedrockSection {
 public protocol ViewControllerSection: BedrockSection {
     func createViewController() -> UIViewController
     func configure(_ viewController: UIViewController, at index: Int)
-
+    
     // Done automatically for you
 
     // Returns a UIViewController for a section if it is visible on the screen and configured
