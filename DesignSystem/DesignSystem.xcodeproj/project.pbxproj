@@ -67,6 +67,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2256485A241233AF0081CAD5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		723609152282AD2100300065 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Resources/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		7244A0A9230D234F00C7EC28 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		728D05752282996000B44543 /* BrandingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BrandingManager.swift; path = Sources/DesignSystem/BrandingManager.swift; sourceTree = SOURCE_ROOT; };
@@ -88,7 +89,6 @@
 		9209630C2271518E00FC8E6F /* SectionControllerDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionControllerDataSource.swift; sourceTree = "<group>"; };
 		9209630E2271518E00FC8E6F /* SectionCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionCollectionViewCell.swift; sourceTree = "<group>"; };
 		9209630F2271518E00FC8E6F /* SectionCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionCollectionViewController.swift; sourceTree = "<group>"; };
-		920963602271527E00FC8E6F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9228C556229CB21600B8972B /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		9228C557229CB21600B8972B /* Slider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
 		9228C558229CB21600B8972B /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
@@ -157,8 +157,8 @@
 				92AC188E22EDB35E0002376E /* Molecules */,
 				922F554922BA1650005ABF39 /* Organisms */,
 				920962E12271518D00FC8E6F /* Helpers.swift */,
-				920963602271527E00FC8E6F /* Info.plist */,
 				920962E22271518D00FC8E6F /* DesignSystem.h */,
+				2256485A241233AF0081CAD5 /* Info.plist */,
 			);
 			name = DesignSystem;
 			path = Sources/DesignSystem;
@@ -251,13 +251,6 @@
 			path = Organisms;
 			sourceTree = "<group>";
 		};
-		9242BDD621E7312000756B72 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		92AC188022E9F68E0002376E /* Sections */ = {
 			isa = PBXGroup;
 			children = (
@@ -286,7 +279,6 @@
 				920962EE2271518D00FC8E6F /* SectionSystem */,
 				92BA39042179829900266383 /* DesignSystemTests */,
 				92BA38F82179829800266383 /* Products */,
-				9242BDD621E7312000756B72 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -629,7 +621,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = mercari.DesignSystem;
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.no-data.DesignSystem";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -656,7 +648,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = mercari.DesignSystem;
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.no-data.DesignSystem";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
