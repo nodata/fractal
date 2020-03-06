@@ -13,7 +13,7 @@ github "nodata/fractal"
 ### CocoaPods
 
 ```
-pod 'Fractal', :git => 'https://github.com/nodata/fractal.git'
+pod 'Fractal'
 ```
 
 ## Usage
