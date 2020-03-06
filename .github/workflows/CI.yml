@@ -12,8 +12,7 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - name: Checkout
-    - uses: actions/checkout@v2
     - name: Run CI
+    - uses: actions/checkout@v2
       run: xcodebuild clean test -workspace Fractal.xcworkspace -scheme DesignSystem -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 11,OS=latest'
       
