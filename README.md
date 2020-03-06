@@ -1,6 +1,8 @@
 # Fractal
 
-An iOS Design System based on Atomic Design Theory and Declarative UI
+[![Build Status](https://github.com/nodata/fractal/workflows/CI/badge.svg)](https://github.com/nodata/fractal/actions)
+
+An iOS Design System based on Atomic Design Theory and Declarative UI.
 
 ## Installation
 
