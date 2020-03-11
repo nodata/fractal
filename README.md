@@ -1,6 +1,13 @@
 # Fractal
 
-An iOS Design System based on Atomic Design Theory and Declarative UI
+[![Build Status](https://github.com/nodata/fractal/workflows/CI/badge.svg)](https://github.com/nodata/fractal/actions)
+[![CocoaPods Platform](https://img.shields.io/cocoapods/p/Fractal)](#)
+[![CocoaPods Version](https://img.shields.io/cocoapods/v/Fractal)](/releases)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![MIT License](https://img.shields.io/github/license/nodata/fractal?color=informational)](/LICENSE)
+
+
+An iOS Design System based on Atomic Design Theory and Declarative UI.
 
 ## Installation
 
@@ -13,7 +20,7 @@ github "nodata/fractal"
 ### CocoaPods
 
 ```
-pod 'Fractal', :git => 'https://github.com/nodata/fractal.git'
+pod 'Fractal'
 ```
 
 ## Usage

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2256487524123D1F0081CAD5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2256487424123D1F0081CAD5 /* main.m */; };
+		2256487C24123FA80081CAD5 /* DesignSystem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92BA38F72179829800266383 /* DesignSystem.framework */; };
+		2256487D24123FA80081CAD5 /* DesignSystem.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 92BA38F72179829800266383 /* DesignSystem.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		723609162282AD2100300065 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 723609152282AD2100300065 /* Images.xcassets */; };
 		7244A0AA230D234F00C7EC28 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7244A0A9230D234F00C7EC28 /* Observable.swift */; };
 		728D057A2282996000B44543 /* BrandingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728D05752282996000B44543 /* BrandingManager.swift */; };
@@ -57,6 +60,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		2256487924123E3A0081CAD5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92BA38EE2179829800266383 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2256485F24123D1E0081CAD5;
+			remoteInfo = DesignSystemTestHost;
+		};
+		2256487E24123FA80081CAD5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92BA38EE2179829800266383 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 92BA38F62179829800266383;
+			remoteInfo = DesignSystem;
+		};
 		92BA39022179829900266383 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 92BA38EE2179829800266383 /* Project object */;
@@ -66,7 +83,25 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		2256488024123FA80081CAD5 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2256487D24123FA80081CAD5 /* DesignSystem.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		2256485A241233AF0081CAD5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2256486024123D1E0081CAD5 /* FractalTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FractalTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2256487324123D1F0081CAD5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2256487424123D1F0081CAD5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		723609152282AD2100300065 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Resources/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		7244A0A9230D234F00C7EC28 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		728D05752282996000B44543 /* BrandingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BrandingManager.swift; path = Sources/DesignSystem/BrandingManager.swift; sourceTree = SOURCE_ROOT; };
@@ -88,7 +123,6 @@
 		9209630C2271518E00FC8E6F /* SectionControllerDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionControllerDataSource.swift; sourceTree = "<group>"; };
 		9209630E2271518E00FC8E6F /* SectionCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionCollectionViewCell.swift; sourceTree = "<group>"; };
 		9209630F2271518E00FC8E6F /* SectionCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionCollectionViewController.swift; sourceTree = "<group>"; };
-		920963602271527E00FC8E6F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9228C556229CB21600B8972B /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		9228C557229CB21600B8972B /* Slider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
 		9228C558229CB21600B8972B /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
@@ -120,6 +154,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2256485D24123D1E0081CAD5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2256487C24123FA80081CAD5 /* DesignSystem.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		92BA38F32179829800266383 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -138,6 +180,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2256486124123D1F0081CAD5 /* HostApp */ = {
+			isa = PBXGroup;
+			children = (
+				2256487324123D1F0081CAD5 /* Info.plist */,
+				2256487424123D1F0081CAD5 /* main.m */,
+			);
+			path = HostApp;
+			sourceTree = "<group>";
+		};
+		2256487B24123FA80081CAD5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		7244A0A8230D233D00C7EC28 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -157,8 +215,8 @@
 				92AC188E22EDB35E0002376E /* Molecules */,
 				922F554922BA1650005ABF39 /* Organisms */,
 				920962E12271518D00FC8E6F /* Helpers.swift */,
-				920963602271527E00FC8E6F /* Info.plist */,
 				920962E22271518D00FC8E6F /* DesignSystem.h */,
+				2256485A241233AF0081CAD5 /* Info.plist */,
 			);
 			name = DesignSystem;
 			path = Sources/DesignSystem;
@@ -251,13 +309,6 @@
 			path = Organisms;
 			sourceTree = "<group>";
 		};
-		9242BDD621E7312000756B72 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		92AC188022E9F68E0002376E /* Sections */ = {
 			isa = PBXGroup;
 			children = (
@@ -286,7 +337,7 @@
 				920962EE2271518D00FC8E6F /* SectionSystem */,
 				92BA39042179829900266383 /* DesignSystemTests */,
 				92BA38F82179829800266383 /* Products */,
-				9242BDD621E7312000756B72 /* Frameworks */,
+				2256487B24123FA80081CAD5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -295,6 +346,7 @@
 			children = (
 				92BA38F72179829800266383 /* DesignSystem.framework */,
 				92BA39002179829900266383 /* DesignSystemTests.xctest */,
+				2256486024123D1E0081CAD5 /* FractalTestApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -302,6 +354,7 @@
 		92BA39042179829900266383 /* DesignSystemTests */ = {
 			isa = PBXGroup;
 			children = (
+				2256486124123D1F0081CAD5 /* HostApp */,
 				92BA39052179829900266383 /* DesignSystemTests.swift */,
 				92BA39072179829900266383 /* Info.plist */,
 			);
@@ -322,6 +375,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		2256485F24123D1E0081CAD5 /* DesignSystemTestHost */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2256487624123D1F0081CAD5 /* Build configuration list for PBXNativeTarget "DesignSystemTestHost" */;
+			buildPhases = (
+				2256485C24123D1E0081CAD5 /* Sources */,
+				2256485D24123D1E0081CAD5 /* Frameworks */,
+				2256488024123FA80081CAD5 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2256487F24123FA80081CAD5 /* PBXTargetDependency */,
+			);
+			name = DesignSystemTestHost;
+			productName = DesignSystemTestHost;
+			productReference = 2256486024123D1E0081CAD5 /* FractalTestApp.app */;
+			productType = "com.apple.product-type.application";
+		};
 		92BA38F62179829800266383 /* DesignSystem */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 92BA390B2179829900266383 /* Build configuration list for PBXNativeTarget "DesignSystem" */;
@@ -352,6 +423,7 @@
 			);
 			dependencies = (
 				92BA39032179829900266383 /* PBXTargetDependency */,
+				2256487A24123E3A0081CAD5 /* PBXTargetDependency */,
 			);
 			name = DesignSystemTests;
 			productName = DesignSystemTests;
@@ -368,12 +440,16 @@
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = mercari;
 				TargetAttributes = {
+					2256485F24123D1E0081CAD5 = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
 					92BA38F62179829800266383 = {
 						CreatedOnToolsVersion = 9.4.1;
 						LastSwiftMigration = 1020;
 					};
 					92BA38FF2179829900266383 = {
 						CreatedOnToolsVersion = 9.4.1;
+						TestTargetID = 2256485F24123D1E0081CAD5;
 					};
 				};
 			};
@@ -392,6 +468,7 @@
 			targets = (
 				92BA38F62179829800266383 /* DesignSystem */,
 				92BA38FF2179829900266383 /* DesignSystemTests */,
+				2256485F24123D1E0081CAD5 /* DesignSystemTestHost */,
 			);
 		};
 /* End PBXProject section */
@@ -415,6 +492,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		2256485C24123D1E0081CAD5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2256487524123D1F0081CAD5 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		92BA38F22179829800266383 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -476,6 +561,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		2256487A24123E3A0081CAD5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2256485F24123D1E0081CAD5 /* DesignSystemTestHost */;
+			targetProxy = 2256487924123E3A0081CAD5 /* PBXContainerItemProxy */;
+		};
+		2256487F24123FA80081CAD5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 92BA38F62179829800266383 /* DesignSystem */;
+			targetProxy = 2256487E24123FA80081CAD5 /* PBXContainerItemProxy */;
+		};
 		92BA39032179829900266383 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 92BA38F62179829800266383 /* DesignSystem */;
@@ -484,6 +579,51 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		2256487724123D1F0081CAD5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_MODULES_DISABLE_PRIVATE_WARNING = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
+				INFOPLIST_FILE = DesignSystemTests/HostApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.no-data.DesignSystemTestHost";
+				PRODUCT_NAME = FractalTestApp;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		2256487824123D1F0081CAD5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_MODULES_DISABLE_PRIVATE_WARNING = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
+				INFOPLIST_FILE = DesignSystemTests/HostApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.no-data.DesignSystemTestHost";
+				PRODUCT_NAME = FractalTestApp;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 		92BA39092179829900266383 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -629,7 +769,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = mercari.DesignSystem;
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.no-data.DesignSystem";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -656,7 +796,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = mercari.DesignSystem;
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.no-data.DesignSystem";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -668,18 +808,21 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2CCV6DZ29E;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = DesignSystemTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = mercari.DesignSystemTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.no-data.DesignSystemTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FractalTestApp.app/FractalTestApp";
 			};
 			name = Debug;
 		};
@@ -687,24 +830,36 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 2CCV6DZ29E;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = DesignSystemTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = mercari.DesignSystemTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.no-data.DesignSystemTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FractalTestApp.app/FractalTestApp";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2256487624123D1F0081CAD5 /* Build configuration list for PBXNativeTarget "DesignSystemTestHost" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2256487724123D1F0081CAD5 /* Debug */,
+				2256487824123D1F0081CAD5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		92BA38F12179829800266383 /* Build configuration list for PBXProject "DesignSystem" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
