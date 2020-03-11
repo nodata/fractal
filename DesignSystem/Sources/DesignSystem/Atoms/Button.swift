@@ -133,6 +133,13 @@ final public class Button: UIButton {
         setup()
     }
     
+    public init(_ style: Style, _ size: Size) {
+        self.size = size
+        self.style = style
+        super.init(frame: .zero)
+        setup()
+    }
+    
     public init(_ style: Style, _ sizeTuple: (width: Size.Width, height: Size.Height)) {
         self.size = Size(width: sizeTuple.width, height: sizeTuple.height)
         self.style = style
@@ -229,7 +236,7 @@ final public class Button: UIButton {
 
 extension Pin {
 
-    fileprivate static func width(for size: Button.Size, brand: ButtonBrand? = nil) -> Pin {
+    static func width(for size: Button.Size, brand: ButtonBrand? = nil) -> Pin {
         switch size.width {
         case .custom(let value):
             return .width(asConstant: value)
@@ -242,9 +249,9 @@ extension Pin {
         }
     }
     
-    fileprivate static func height(for size: Button.Size, brand: ButtonBrand? = nil) -> Pin {
+    static func height(for size: Button.Size, brand: ButtonBrand? = nil) -> Pin {
         
-        guard let brand = brand else {
+        func defaultPin() -> Pin {
             switch size.height {
             case .natural:
                 return .none
@@ -259,7 +266,17 @@ extension Pin {
             }
         }
         
-        let floatValue = brand.height(for: size)
-        return floatValue == 0.0 ? .none : .height(asConstant: floatValue)
+        if let brand = brand {
+            let floatValue = brand.height(for: size)
+            return floatValue == 0.0 ? .none : .height(asConstant: floatValue)
+        }
+        
+        if let brand = BrandingManager.brand as? ButtonBrand {
+            let floatValue = brand.height(for: size)
+            return floatValue == 0.0 ? .none : .height(asConstant: floatValue)
+        }
+        
+        return defaultPin()
+
     }
 }

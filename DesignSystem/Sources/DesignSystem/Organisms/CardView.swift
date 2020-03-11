@@ -309,6 +309,11 @@ extension CardView: UIGestureRecognizerDelegate {
             return false
         }
         
+        if let pan = otherGestureRecognizer as? UIPanGestureRecognizer {
+            let v = pan.velocity(in: nil)
+            guard abs(v.x) < abs(v.y) + 100.0 else { return false }
+        }
+        
         return true
     }
 }
