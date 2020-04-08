@@ -180,6 +180,17 @@ public struct Typography: CaseIterable, Equatable {
         return UIFont(name: fontName, size: fontSize) ?? defaultFont
     }
 
+    public func font(overriddenPointSize: CGFloat) -> UIFont {
+        let name = BrandingManager.brand.fontName(for: self)
+        let defaultFont: UIFont = .systemFont(ofSize: overriddenPointSize, weight: fontWeight)
+        guard let fontName = name else { return defaultFont }
+        return UIFont(name: fontName, size: overriddenPointSize) ?? defaultFont
+    }
+    
+    public var strongVersion: Typography {
+        return Typography(self.key, [.strong])
+    }
+
     // Apple font weights
     // ultraLight, thin, light, regular, medium, semibold, bold, heavy, strong, black
     public var fontWeight: UIFont.Weight {
@@ -206,6 +217,7 @@ public extension Typography {
     static let large   = Typography(.large)
     static let xlarge  = Typography(.xlarge)
     static let xxlarge = Typography(.xxlarge)
+    static let xxxlarge = Typography(.xxxlarge)
 
     static func xxsmall(_ modifier: Modifier) -> Typography { return Typography(.xxsmall, [modifier]) }
     static func xsmall(_ modifier: Modifier)  -> Typography { return Typography(.xsmall, [modifier]) }
@@ -215,13 +227,13 @@ public extension Typography {
     static func xlarge(_ modifier: Modifier)  -> Typography { return Typography(.xlarge, [modifier]) }
     static func xxlarge(_ modifier: Modifier) -> Typography { return Typography(.xxlarge, [modifier]) }
 
-    static func xxsmall(_ modifiers: [Modifier]) -> Typography { return Typography(.xxsmall, modifiers) }
-    static func xsmall(_ modifiers: [Modifier])  -> Typography { return Typography(.xsmall, modifiers) }
-    static func small(_ modifiers: [Modifier])   -> Typography { return Typography(.small, modifiers) }
-    static func medium(_ modifiers: [Modifier])  -> Typography { return Typography(.medium, modifiers) }
-    static func large(_ modifiers: [Modifier])   -> Typography { return Typography(.large, modifiers) }
-    static func xlarge(_ modifiers: [Modifier])  -> Typography { return Typography(.xlarge, modifiers) }
-    static func xxlarge(_ modifiers: [Modifier]) -> Typography { return Typography(.xxlarge, modifiers) }
+    static func xxsmall(_ modifiers: [Modifier])  -> Typography { return Typography(.xxsmall, modifiers) }
+    static func xsmall(_ modifiers: [Modifier])   -> Typography { return Typography(.xsmall, modifiers) }
+    static func small(_ modifiers: [Modifier])    -> Typography { return Typography(.small, modifiers) }
+    static func medium(_ modifiers: [Modifier])   -> Typography { return Typography(.medium, modifiers) }
+    static func large(_ modifiers: [Modifier])    -> Typography { return Typography(.large, modifiers) }
+    static func xlarge(_ modifiers: [Modifier])   -> Typography { return Typography(.xlarge, modifiers) }
+    static func xxxlarge(_ modifiers: [Modifier]) -> Typography { return Typography(.xxxlarge, modifiers) }
 }
 
 public extension UIImageView {

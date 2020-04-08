@@ -63,10 +63,10 @@ public extension CardViewDelegate {
 
 public class CardView: UIView {
     
-    static let cornerRadius: CGFloat = 8.0
-    static let iPadWidth: CGFloat = 500.0
-    static let bottomPadding: CGFloat = CardView.cornerRadius + 40.0
-    static let topPadding: CGFloat = UIApplication.shared.statusBarFrame.size.height + 15.0
+    public static let cornerRadius: CGFloat = 8.0
+    public static let iPadWidth: CGFloat = 500.0
+    public static let bottomPadding: CGFloat = CardView.cornerRadius + 40.0
+    public static let topPadding: CGFloat = UIApplication.shared.statusBarFrame.size.height + 15.0
     public static let handlePaddingHeight: CGFloat = 32.0
     
     private static let handleThreshold: CGFloat = 8.0
@@ -297,6 +297,7 @@ public class CardView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         let color = self.viewController?.cardViewContentDelegate?.cardHandleColor
         view.strokeColor = color ?? .white //TODO: dark mode / dark cover
+        view.addShortShadow()
         return view
     }()
 }

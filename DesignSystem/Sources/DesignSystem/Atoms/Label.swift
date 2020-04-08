@@ -44,7 +44,7 @@ public class Label: UILabel {
         }
     }
 
-    public func apply(typography: Typography, color: UIColor? = nil) {
+    public func set(typography: Typography, color: UIColor? = nil) {
         self.typography = typography
         textColor = color ?? typography.defaultColor
     }
@@ -52,23 +52,36 @@ public class Label: UILabel {
     private func update() {
 
         guard let text = text else { attributedText = nil; return }
+        let attributedString = NSMutableAttributedString(string: text, attributes: attributes)
+        attributedText = attributedString
+    }
+
+    override public func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
+        update()
+    }
+    
+    public func addFont(_ font: UIFont, to substring: String) {
+        guard let t = text else { return }
+        let range = (t as NSString).range(of: substring)
+        let attributedString = NSMutableAttributedString(string: t, attributes: attributes)
+        attributedString.addAttribute(NSAttributedString.Key.font, value: font, range: range)
+        attributedText = attributedString
+    }
+    
+    private var attributes: [NSAttributedString.Key: Any] {
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = textAlignment
         paragraphStyle.lineBreakMode = .byTruncatingTail
-
+        
         var attr = [NSAttributedString.Key: Any]()
         attr[.font] = typography.font
         attr[.foregroundColor] = textColor
         attr[.paragraphStyle] = paragraphStyle
         attr[.underlineStyle] = underlineStyle.rawValue
         attr[.kern] = letterSpace
-
-        attributedText = NSAttributedString(string: text, attributes: attr)
-    }
-
-    override public func prepareForInterfaceBuilder() {
-        super.prepareForInterfaceBuilder()
-        update()
+        
+        return attr
     }
 }
