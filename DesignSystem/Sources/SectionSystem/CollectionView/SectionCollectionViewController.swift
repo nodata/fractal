@@ -88,7 +88,7 @@ open class SectionCollectionViewController: UICollectionViewController {
     }
 
     public var didScrollClosure: ((UIScrollView) -> Void)? {
-        get { return data.didScroll }
+        get { data.didScroll }
         set { data.didScroll = newValue }
     }
 
@@ -99,8 +99,11 @@ open class SectionCollectionViewController: UICollectionViewController {
         collectionView.backgroundColor = .clear
         collectionView.dataSource = data
         collectionView.delegate = data
+        collectionView.dragDelegate = data
+        collectionView.dropDelegate = data
+        collectionView.dragInteractionEnabled = true
         collectionView.keyboardDismissMode = .interactive
-
+        
         if useRefreshControl {
             testLargeTitleSanity()
             collectionView.alwaysBounceVertical = true

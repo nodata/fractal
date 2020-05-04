@@ -102,11 +102,14 @@ open class SectionTableViewController: UITableViewController {
         tableView.separatorStyle = .none
         tableView.dataSource = data
         tableView.delegate = data
+        tableView.dragDelegate = data
+        tableView.dropDelegate = data
+        tableView.dragInteractionEnabled = true
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.alwaysBounceVertical = true
         tableView.keyboardDismissMode = .interactive
-
+        
         if useRefreshControl {
             let control = UIRefreshControl()
             control.addTarget(self, action: #selector(refreshTriggered), for: .valueChanged)
@@ -132,7 +135,7 @@ open class SectionTableViewController: UITableViewController {
     @objc open func refreshTriggered() {
         didPullDownToRefreshClosure?()
     }
-
+    
     private func tearDownSections() {
         let indexPath = tableView.indexPathForRow(at: CGPoint(x: tableView.bounds.size.width/2, y: tableView.bounds.size.height/2))
         dataSource.tearDownCellSubviews()

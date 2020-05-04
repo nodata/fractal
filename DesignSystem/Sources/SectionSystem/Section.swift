@@ -32,6 +32,13 @@ public protocol Section: class { // Base for NestedSection and BedrockSection
     var sectionInsets: UIEdgeInsets { get }
     var minimumLineSpacing: CGFloat { get }
     var minimumInteritemSpacing: CGFloat { get }
+    
+    // Editing
+    
+    var editable: Bool { get }
+    var shouldIndent: Bool { get }
+    var editingStyle: UITableViewCell.EditingStyle { get }
+    func cellMoved(from: IndexPath, to: IndexPath)
 }
 
 public protocol NestedSection: Section {
@@ -47,6 +54,10 @@ public protocol NestedSection: Section {
 public protocol BedrockSection: Section { // Base for ViewSection and ViewControllerSection
 
     var reuseIdentifier: String { get }
+    var reuseIdentifiers: [String] { get }
+    // Add multiple reuseIdentifiers if you plan to have multiple cells
+    // that pivot on an internal value without rebuilding the section
+
     // Height automatically inherits from size.height
     // However you can override both for a different implementation on TableView and other SectionController types
     func size(in view: UIView, at index: Int) -> SectionCellSize
@@ -106,6 +117,3 @@ public struct SectionCellSize {
         return SectionCellSize(width: nil, height: nil)
     }
 }
-
-
-

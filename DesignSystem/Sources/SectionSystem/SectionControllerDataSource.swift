@@ -13,8 +13,8 @@ open class SectionControllerDataSource: NSObject {
     public private(set) var newSections: Bool = false
     private weak var viewController: UIViewController?
     private var initialContentOffset: CGPoint = .zero
-    private var currentIndexPath: IndexPath = IndexPath(item: 0, section: 0)
-    
+    private var currentIndexPath = IndexPath(item: 0, section: 0)
+
     public var sections: [Section] = [] {
         willSet { decoupleVisible() }
         didSet { newSections = true }
@@ -41,7 +41,7 @@ open class SectionControllerDataSource: NSObject {
         return nil
     }
 
-    fileprivate func bedrock(for indexPath: IndexPath) -> (BedrockSection, Int)? {
+    func bedrock(for indexPath: IndexPath) -> (section: BedrockSection, index: Int)? {
         guard indexPath.section < sections.count else { return nil }
         return bedrock(in: sections[indexPath.section], index: indexPath.item)
     }
@@ -87,10 +87,11 @@ open class SectionControllerDataSource: NSObject {
                     collectionView.register(SectionCollectionViewCell.self, forCellWithReuseIdentifier: id)
                 }
             } else if let bedrockSection = section as? BedrockSection {
-                let id = bedrockSection.reuseIdentifier
-                guard !registeredReuseIdentifiers.contains(id) else { continue }
-                registeredReuseIdentifiers.insert(id)
-                collectionView.register(SectionCollectionViewCell.self, forCellWithReuseIdentifier: id)
+                for id in bedrockSection.reuseIdentifiers {
+                    guard !registeredReuseIdentifiers.contains(id) else { continue }
+                    registeredReuseIdentifiers.insert(id)
+                    collectionView.register(SectionCollectionViewCell.self, forCellWithReuseIdentifier: id)
+                }
             }
         }
         newSections = false
@@ -111,10 +112,11 @@ open class SectionControllerDataSource: NSObject {
                     tableView.register(SectionTableViewCell.self, forCellReuseIdentifier: id)
                 }
             } else if let bedrockSection = section as? BedrockSection {
-                let id = bedrockSection.reuseIdentifier
-                guard !registeredReuseIdentifiers.contains(id) else { continue }
-                registeredReuseIdentifiers.insert(id)
-                tableView.register(SectionTableViewCell.self, forCellReuseIdentifier: id)
+                for id in bedrockSection.reuseIdentifiers {
+                    guard !registeredReuseIdentifiers.contains(id) else { continue }
+                    registeredReuseIdentifiers.insert(id)
+                    tableView.register(SectionTableViewCell.self, forCellReuseIdentifier: id)
+                }
             } else {
                 Assert("Section in array \(String(describing: section)) not Nested or Bedrock type")
             }
@@ -186,9 +188,7 @@ extension SectionControllerDataSource: UITableViewDataSource, UITableViewDelegat
 
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let bedrock = bedrock(for: indexPath) else { return 10.0 }
-        let section = bedrock.0
-        let index = bedrock.1
-        return section.height(in: tableView, at: index) ?? UITableView.automaticDimension
+        return bedrock.section.height(in: tableView, at: bedrock.index) ?? UITableView.automaticDimension
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -196,8 +196,8 @@ extension SectionControllerDataSource: UITableViewDataSource, UITableViewDelegat
             return defaultCell(at: indexPath, in: tableView)
         }
 
-        let section = bedrock.0
-        let index = bedrock.1
+        let section = bedrock.section
+        let index = bedrock.index
 
         guard let cell = tableView.dequeueReusableCell(withIdentifier: section.reuseIdentifier, for: indexPath) as? SectionTableViewCell else {
             print("TableView unable to dequeue cell for Section: \(String(describing: section)) ReuseId:\(section.reuseIdentifier)")
@@ -262,29 +262,46 @@ extension SectionControllerDataSource: UITableViewDataSource, UITableViewDelegat
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? SectionTableViewCell, let view = cell.sectionView else { return }
         guard let bedrock = bedrock(for: indexPath) else { return }
-        let section = bedrock.0
-        let index = bedrock.1
-        section.didSelect(view, at: index)
+        bedrock.section.didSelect(view, at: bedrock.index)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
     public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-
         guard let bedrock = bedrock(for: indexPath) else { return }
-
-        let section = bedrock.0
-        let index = bedrock.1
-
-        if let viewControllerSection = section as? ViewControllerSection {
-            viewControllerSection.set(visibleViewController: nil, at: index)
-        } else if let viewSection = section as? ViewSection {
-            viewSection.set(visibleView: nil, at: index)
+        if let viewControllerSection = bedrock.section as? ViewControllerSection {
+            viewControllerSection.set(visibleViewController: nil, at: bedrock.index)
+        } else if let viewSection = bedrock.section as? ViewSection {
+            viewSection.set(visibleView: nil, at: bedrock.index)
         }
+    }
+    
+    // MARK: - Editing
+    
+    public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        guard let bedrock = bedrock(for: indexPath) else { return .none }
+        return bedrock.section.editingStyle
+    }
+    
+    public func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        guard let bedrock = bedrock(for: indexPath) else { return false }
+        return bedrock.section.shouldIndent
+    }
+    
+    public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        guard let first = bedrock(for: sourceIndexPath) else { return }
+
+        if sourceIndexPath.section != destinationIndexPath.section {
+            guard let second = bedrock(for: destinationIndexPath) else { return }
+            second.section.cellMoved(from: sourceIndexPath, to: destinationIndexPath)
+            first.section.cellMoved(from: sourceIndexPath, to: destinationIndexPath)
+        }
+        
+        first.section.cellMoved(from: sourceIndexPath, to: destinationIndexPath)
     }
 }
 
 extension SectionControllerDataSource: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-
+    
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
         return sections.count
     }
@@ -297,8 +314,8 @@ extension SectionControllerDataSource: UICollectionViewDataSource, UICollectionV
     @objc public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let defaultSize = CGSize(width: collectionView.bounds.size.width, height: 44.0)
         guard let bedrock = bedrock(for: indexPath) else { return defaultSize }
-        let section = bedrock.0
-        let index = bedrock.1
+        let section = bedrock.section
+        let index = bedrock.index
         let sectionSize = section.size(in: collectionView, at: index)
         
         if let height = sectionSize.height, (collectionViewLayout as? UICollectionViewFlowLayout)?.scrollDirection == .horizontal {
@@ -322,8 +339,8 @@ extension SectionControllerDataSource: UICollectionViewDataSource, UICollectionV
             return defaultCell(at: indexPath, in: collectionView)
         }
 
-        let section = bedrock.0
-        let index = bedrock.1
+        let section = bedrock.section
+        let index = bedrock.index
 
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: section.reuseIdentifier, for: indexPath) as? SectionCollectionViewCell else {
             return defaultCell(at: indexPath, in: collectionView)
@@ -367,7 +384,7 @@ extension SectionControllerDataSource: UICollectionViewDataSource, UICollectionV
                         return containerView.pin(to: cell.contentView)
                     }
                 }
-
+                
                 cell.sectionViewController = newVC
                 viewControllerSection.set(visibleViewController: newVC, at: index)
                 viewControllerSection.configure(newVC, at: index)
@@ -394,23 +411,17 @@ extension SectionControllerDataSource: UICollectionViewDataSource, UICollectionV
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? SectionCollectionViewCell, let view = cell.sectionView else { return }
         guard let bedrock = bedrock(for: indexPath) else { return }
-        let section = bedrock.0
-        let index = bedrock.1
-        section.didSelect(view, at: index)
+        bedrock.section.didSelect(view, at: bedrock.index)
         collectionView.deselectItem(at: indexPath, animated: true)
     }
 
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 
         guard let bedrock = bedrock(for: indexPath) else { return }
-
-        let section = bedrock.0
-        let index = bedrock.1
-
-        if let viewControllerSection = section as? ViewControllerSection {
-            viewControllerSection.set(visibleViewController: nil, at: index)
-        } else if let viewSection = section as? ViewSection {
-            viewSection.set(visibleView: nil, at: index)
+        if let viewControllerSection = bedrock.section as? ViewControllerSection {
+            viewControllerSection.set(visibleViewController: nil, at: bedrock.index)
+        } else if let viewSection = bedrock.section as? ViewSection {
+            viewSection.set(visibleView: nil, at: bedrock.index)
         }
     }
     
@@ -431,3 +442,72 @@ extension SectionControllerDataSource: UICollectionViewDataSource, UICollectionV
         return sections[section].minimumInteritemSpacing
     }
 }
+
+extension SectionControllerDataSource: UITableViewDragDelegate, UITableViewDropDelegate, UICollectionViewDragDelegate, UICollectionViewDropDelegate {
+    
+    public func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        guard let bedrock = bedrock(for: indexPath) else { return false }
+        return bedrock.section.editable
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
+        guard let bedrock = bedrock(for: indexPath) else { return false }
+        return bedrock.section.editable
+    }
+    
+    public func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        return dragItems(for: indexPath)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        return dragItems(for: indexPath)
+    }
+  
+    public func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+        print("dropSessionDidUpdate")
+        var indexPath: IndexPath?
+        tableView.performUsingPresentationValues {
+            indexPath = tableView.indexPathForRow(at: session.location(in: tableView))
+        }
+        
+        let cancel = UITableViewDropProposal(operation: .cancel, intent: .unspecified)
+        guard let destination = indexPath else { print("c1"); return cancel }
+        guard let bedrock = bedrock(for: destination) else { print("c2"); return cancel }
+        guard bedrock.section.editable else { print("c3"); return cancel }
+        print("Insert")
+        return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
+                
+        var indexPath: IndexPath?
+        collectionView.performUsingPresentationValues {
+            indexPath = collectionView.indexPathForItem(at: session.location(in: collectionView))
+        }
+        
+        let cancel = UICollectionViewDropProposal(operation: .cancel, intent: .unspecified)
+        guard let destination = indexPath else { print("c1"); return cancel }
+        guard let bedrock = bedrock(for: destination) else { print("c2"); return cancel }
+        guard bedrock.section.editable else { print("c3"); return cancel }
+        return UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+    }
+    
+    public func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+        
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
+
+    }
+    
+    private func dragItems(for indexPath: IndexPath) -> [UIDragItem] {
+        print("dragItems", indexPath)
+        guard let bedrock = bedrock(for: indexPath) else { return [] }
+        guard bedrock.section.editable else { return [] }
+        print("Here", indexPath)
+        let provider = NSItemProvider(object: "\(indexPath.section)_\(indexPath.row)" as NSString)
+        return [UIDragItem(itemProvider: provider)]
+    }
+}
+
+

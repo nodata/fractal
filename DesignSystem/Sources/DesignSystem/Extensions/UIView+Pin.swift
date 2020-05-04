@@ -433,6 +433,7 @@ public struct Pin {
 
 extension UILayoutPriority {
     public static let almostRequired = UILayoutPriority(Float(UILayoutPriority.required.rawValue) - 1.0)
+    public static let veryLow = UILayoutPriority(Float(UILayoutPriority.defaultLow.rawValue) - 100.0)
     public static let flexible = UILayoutPriority(Float(UILayoutPriority.defaultHigh.rawValue) - 1.0)
     public static let veryFlexible = UILayoutPriority(Float(UILayoutPriority.defaultLow.rawValue) - 1.0)
 }

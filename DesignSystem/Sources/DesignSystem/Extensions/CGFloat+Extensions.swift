@@ -13,6 +13,10 @@ extension CGFloat {
         return CGSize(width: self, height: self)
     }
     
+    public func dpString(_ decimalPlaces: Int) -> String {
+        return String(format: "%.\(decimalPlaces)f", self)
+    }
+
     public var nodpString: String {
         return String(format: "%.0f", self)
     }

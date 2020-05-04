@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public class ImageView: UIImageView {
+open class ImageView: UIImageView {
     // Currently does nothing but wrapped to inherit future features
 }
 

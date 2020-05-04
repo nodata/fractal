@@ -94,13 +94,13 @@ extension GroupSection: NestedSection {
 
     public var reuseIdentifiers: [String]  {
 
-        let middle = middleDivider?.reuseIdentifier ?? defaultMiddleDivider.reuseIdentifier
-        var ids = [bookendTopDivider.reuseIdentifier, bookendBottomDivider.reuseIdentifier, middle]
+        let middle = middleDivider?.reuseIdentifiers ?? defaultMiddleDivider.reuseIdentifiers
+        var ids = bookendTopDivider.reuseIdentifiers + bookendBottomDivider.reuseIdentifiers + middle
         for section in sections {
             if let nestedSection = section as? NestedSection {
                 ids.append(contentsOf: nestedSection.reuseIdentifiers)
             } else if let bedrockSection = section as? BedrockSection {
-                ids.append(bedrockSection.reuseIdentifier)
+                ids.append(contentsOf: bedrockSection.reuseIdentifiers)
             }
         }
         return ids

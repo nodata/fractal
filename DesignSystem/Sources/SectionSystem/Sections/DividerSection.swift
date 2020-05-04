@@ -35,9 +35,10 @@ extension DividerSection: ViewSection {
     public func createView() -> UIView {
         return DividerView(style: style, overrideHeight: height)
     }
-
-    public func size(in superview: UIView, at index: Int) -> SectionCellSize {
-        return SectionCellSize(width: superview.bounds.size.width, height: self.height ?? self.style.height)
+    
+    public func size(in view: UIView, at index: Int) -> SectionCellSize {
+        let v = view.superview ?? view
+        return SectionCellSize(width: v.bounds.size.width, height: self.height ?? self.style.height)
     }
 
     public func configure(_ view: UIView, at index: Int) {

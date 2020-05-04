@@ -14,12 +14,13 @@ public extension Brand {
 
 public extension CGSize { // IconSize
 
-    static var xsmallIcon:  CGSize { return BrandingManager.brand.size(for: .iconxsmall) }
-    static var smallIcon:   CGSize { return BrandingManager.brand.size(for: .iconsmall) }
-    static var mediumIcon:  CGSize { return BrandingManager.brand.size(for: .iconmedium) }
-    static var largeIcon:   CGSize { return BrandingManager.brand.size(for: .iconlarge) }
-    static var xlargeIcon:  CGSize { return BrandingManager.brand.size(for: .iconxlarge) }
-    static var xxlargeIcon: CGSize { return BrandingManager.brand.size(for: .iconxxlarge) }
+    static var xxSmallIcon:  CGSize { return BrandingManager.brand.size(for: .xxsmall) }
+    static var xSmallIcon:  CGSize { return BrandingManager.brand.size(for: .xsmall) }
+    static var smallIcon:   CGSize { return BrandingManager.brand.size(for: .small) }
+    static var mediumIcon:  CGSize { return BrandingManager.brand.size(for: .medium) }
+    static var largeIcon:   CGSize { return BrandingManager.brand.size(for: .large) }
+    static var xLargeIcon:  CGSize { return BrandingManager.brand.size(for: .xlarge) }
+    static var xxLargeIcon: CGSize { return BrandingManager.brand.size(for: .xxlarge) }
 }
 
 public extension UIColor {
@@ -104,12 +105,13 @@ public extension CGFloat.Key {
 }
 
 public extension CGSize.Key {
-    static let iconxsmall   = CGSize.Key("iconxsmall")
-    static let iconsmall    = CGSize.Key("iconsmall")
-    static let iconmedium   = CGSize.Key("iconmedium")
-    static let iconlarge    = CGSize.Key("iconlarge")
-    static let iconxlarge   = CGSize.Key("iconxlarge")
-    static let iconxxlarge  = CGSize.Key("iconxxlarge")
+    static let xxsmall = CGSize.Key("xxsmall")
+    static let xsmall  = CGSize.Key("xsmall")
+    static let small   = CGSize.Key("small")
+    static let medium  = CGSize.Key("medium")
+    static let large   = CGSize.Key("iconlarge")
+    static let xlarge  = CGSize.Key("iconxlarge")
+    static let xxlarge = CGSize.Key("iconxxlarge")
 }
 
 public extension UIImage.Key {

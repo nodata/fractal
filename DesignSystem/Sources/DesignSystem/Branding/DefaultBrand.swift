@@ -58,17 +58,17 @@ public class DefaultBrand: NSObject, Brand {
 
     public func size(for key: CGSize.Key) -> CGSize {
         switch key {
-        case .iconxsmall:
+        case .xsmall:
             return CGSize(width: 20.0, height: 20.0)
-        case .iconsmall:
+        case .small:
             return CGSize(width: 28.0, height: 28.0)
-        case .iconmedium:
+        case .medium:
             return CGSize(width: 40.0, height: 40.0)
-        case .iconlarge:
+        case .large:
             return CGSize(width: 64.0, height: 64.0)
-        case .iconxlarge:
+        case .xlarge:
             return CGSize(width: 96.0, height: 96.0)
-        case .iconxxlarge:
+        case .xxlarge:
             return CGSize(width: 128.0, height: 128.0)
         default:
             print("No sizevalue for \(key.rawValue)")

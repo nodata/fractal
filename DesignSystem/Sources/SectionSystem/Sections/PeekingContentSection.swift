@@ -80,12 +80,12 @@ extension PeekingContentSection: NestedSection {
     }
 
     public var reuseIdentifiers: [String]  {
-        var ids = [bookendPaddingSection.reuseIdentifier, interItemPaddingSection.reuseIdentifier]
+        var ids = bookendPaddingSection.reuseIdentifiers + interItemPaddingSection.reuseIdentifiers
         for section in sections {
             if let nestedSection = section as? NestedSection {
                 ids.append(contentsOf: nestedSection.reuseIdentifiers)
             } else if let bedrockSection = section as? BedrockSection {
-                ids.append(bedrockSection.reuseIdentifier)
+                ids.append(contentsOf: bedrockSection.reuseIdentifiers)
             }
         }
         return ids

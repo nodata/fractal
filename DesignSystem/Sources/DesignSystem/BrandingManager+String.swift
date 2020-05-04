@@ -65,7 +65,8 @@ extension String {
         let lineHeight = typography.lineHeight
         let calculatedNumberOfLines = ceil(rect.size.height / lineHeight)
         let lines = maxLines > 0 && CGFloat(maxLines) < calculatedNumberOfLines ? CGFloat(maxLines) : calculatedNumberOfLines
-        return CGSize(width: ceil(rect.size.width), height: ceil(lineHeight * lines))
+        // very weird that you can't always rely on this width rendering correctly
+        return CGSize(width: ceil(rect.size.width) + 1.0, height: ceil(lineHeight * lines))
     }
 
     public func height(typography: Typography, width: CGFloat, maxLines: Int = 0) -> CGFloat {

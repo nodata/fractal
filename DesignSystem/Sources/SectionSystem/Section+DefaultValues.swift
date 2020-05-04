@@ -11,24 +11,35 @@ import Foundation
 extension Section {
     public func willReload() { }
     public func pullData() { }
-    public var itemCount: Int { return 0 }
-    public var hasInputs: Bool { return false }
-    public var avoidTeardown: Bool { return false }
+    public var itemCount: Int { 0 }
+    public var hasInputs: Bool { false }
+    public var avoidTeardown: Bool { false }
     
-    public var sectionInsets: UIEdgeInsets { return .zero }
-    public var minimumLineSpacing: CGFloat { return 0.0 }
-    public var minimumInteritemSpacing: CGFloat { return 0.0 }
+    public var sectionInsets: UIEdgeInsets { .zero }
+    public var minimumLineSpacing: CGFloat { 0.0 }
+    public var minimumInteritemSpacing: CGFloat { 0.0 }
+    
+    public var editable: Bool { false }
+    public var shouldIndent: Bool { false }
+    public var editingStyle: UITableViewCell.EditingStyle { .none }
+    public func cellMoved(from: IndexPath, to: IndexPath) { }
 }
 
 extension BedrockSection {
 
-    public var itemCount: Int { return 1 }
+    public var itemCount: Int { 1 }
 
-    public var reuseIdentifier: String { return String(describing: self) }
+    public var reuseIdentifiers: [String] { [reuseIdentifier] }
 
-    public func size(in view: UIView, at index: Int) -> SectionCellSize { return .automatic }
+    public var reuseIdentifier: String {
+        let id = String(describing: self)
+        let last = id.components(separatedBy: ".").last ?? id
+        return last
+    }
 
-    public func height(in view: UIView, at index: Int) -> CGFloat? { return self.size(in: view, at: index).height }
+    public func size(in view: UIView, at index: Int) -> SectionCellSize { .automatic }
+
+    public func height(in view: UIView, at index: Int) -> CGFloat? { self.size(in: view, at: index).height }
 
     public func didSelect(_ view: UIView, at index: Int) { }
 }
@@ -168,7 +179,7 @@ extension NestedSection {
             if let nestedSection = section as? NestedSection {
                 ids.append(contentsOf: nestedSection.reuseIdentifiers)
             } else if let bedrockSection = section as? BedrockSection {
-                ids.append(bedrockSection.reuseIdentifier)
+                ids.append(contentsOf: bedrockSection.reuseIdentifiers)
             }
         }
         return ids
