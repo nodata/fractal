@@ -274,30 +274,6 @@ extension SectionControllerDataSource: UITableViewDataSource, UITableViewDelegat
             viewSection.set(visibleView: nil, at: bedrock.index)
         }
     }
-    
-    // MARK: - Editing
-    
-    public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        guard let bedrock = bedrock(for: indexPath) else { return .none }
-        return bedrock.section.editingStyle
-    }
-    
-    public func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-        guard let bedrock = bedrock(for: indexPath) else { return false }
-        return bedrock.section.shouldIndent
-    }
-    
-    public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        guard let first = bedrock(for: sourceIndexPath) else { return }
-
-        if sourceIndexPath.section != destinationIndexPath.section {
-            guard let second = bedrock(for: destinationIndexPath) else { return }
-            second.section.cellMoved(from: sourceIndexPath, to: destinationIndexPath)
-            first.section.cellMoved(from: sourceIndexPath, to: destinationIndexPath)
-        }
-        
-        first.section.cellMoved(from: sourceIndexPath, to: destinationIndexPath)
-    }
 }
 
 extension SectionControllerDataSource: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -447,12 +423,12 @@ extension SectionControllerDataSource: UITableViewDragDelegate, UITableViewDropD
     
     public func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         guard let bedrock = bedrock(for: indexPath) else { return false }
-        return bedrock.section.editable
+        return bedrock.section.draggable // Will need to delegate more for specific rules in the future
     }
     
     public func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
         guard let bedrock = bedrock(for: indexPath) else { return false }
-        return bedrock.section.editable
+        return bedrock.section.draggable
     }
     
     public func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
@@ -464,17 +440,16 @@ extension SectionControllerDataSource: UITableViewDragDelegate, UITableViewDropD
     }
   
     public func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
-        print("dropSessionDidUpdate")
         var indexPath: IndexPath?
         tableView.performUsingPresentationValues {
             indexPath = tableView.indexPathForRow(at: session.location(in: tableView))
         }
+
         
         let cancel = UITableViewDropProposal(operation: .cancel, intent: .unspecified)
-        guard let destination = indexPath else { print("c1"); return cancel }
-        guard let bedrock = bedrock(for: destination) else { print("c2"); return cancel }
-        guard bedrock.section.editable else { print("c3"); return cancel }
-        print("Insert")
+        guard let destination = indexPath else { return cancel }
+        guard let bedrock = bedrock(for: destination) else { return cancel }
+        guard bedrock.section.draggable else { return cancel }
         return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
     }
     
@@ -486,27 +461,36 @@ extension SectionControllerDataSource: UITableViewDragDelegate, UITableViewDropD
         }
         
         let cancel = UICollectionViewDropProposal(operation: .cancel, intent: .unspecified)
-        guard let destination = indexPath else { print("c1"); return cancel }
-        guard let bedrock = bedrock(for: destination) else { print("c2"); return cancel }
-        guard bedrock.section.editable else { print("c3"); return cancel }
+        guard let destination = indexPath else { return cancel }
+        guard let bedrock = bedrock(for: destination) else { return cancel }
+        guard bedrock.section.draggable else { return cancel }
         return UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
     }
     
     public func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
-        
+        guard let original = coordinator.items[safe: 0]?.dragItem.localObject as? IndexPath else { return }
+        guard let destination = coordinator.destinationIndexPath else { return }
+        print("destination", destination.section, destination.row)
+        guard let bedrock = bedrock(for: destination) else { return }
+        guard bedrock.section.draggable else { return }
+        bedrock.section.cellDragged(from: original, to: destination)
     }
     
     public func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
-
+        guard let original = coordinator.items[safe: 0]?.dragItem.localObject as? IndexPath else { return }
+        guard let destination = coordinator.destinationIndexPath else { return }
+        guard let bedrock = bedrock(for: destination) else { return }
+        guard bedrock.section.draggable else { return }
+        bedrock.section.cellDragged(from: original, to: destination)
     }
     
     private func dragItems(for indexPath: IndexPath) -> [UIDragItem] {
-        print("dragItems", indexPath)
         guard let bedrock = bedrock(for: indexPath) else { return [] }
-        guard bedrock.section.editable else { return [] }
-        print("Here", indexPath)
+        guard bedrock.section.draggable else { return [] }
         let provider = NSItemProvider(object: "\(indexPath.section)_\(indexPath.row)" as NSString)
-        return [UIDragItem(itemProvider: provider)]
+        let item = UIDragItem(itemProvider: provider)
+        item.localObject = indexPath
+        return [item]
     }
 }
 

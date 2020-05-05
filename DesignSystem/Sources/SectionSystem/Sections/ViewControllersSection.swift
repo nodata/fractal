@@ -27,16 +27,12 @@ public class ViewControllersSection {
 
 extension ViewControllersSection: ViewControllerSection {
     
-    public var reuseIdentifier: String {
-        return "VC_\(id)"
-    }
+    public var reuseIdentifier: String { "VC_\(id)" }
     
-    public func createViewController() -> UIViewController {
-        return viewController
-    }
+    public func createViewController() -> UIViewController { viewController }
     
     public func size(in view: UIView, at index: Int) -> SectionCellSize {
-        return SectionCellSize(width: view.bounds.size.width, height: view.bounds.size.height)
+        SectionCellSize(width: view.bounds.size.width, height: view.bounds.size.height)
     }
     
     public func configure(_ viewController: UIViewController, at index: Int) { }

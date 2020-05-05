@@ -33,12 +33,10 @@ public protocol Section: class { // Base for NestedSection and BedrockSection
     var minimumLineSpacing: CGFloat { get }
     var minimumInteritemSpacing: CGFloat { get }
     
-    // Editing
+    // Reordering
     
-    var editable: Bool { get }
-    var shouldIndent: Bool { get }
-    var editingStyle: UITableViewCell.EditingStyle { get }
-    func cellMoved(from: IndexPath, to: IndexPath)
+    var draggable: Bool { get }
+    func cellDragged(from: IndexPath, to: IndexPath)
 }
 
 public protocol NestedSection: Section {

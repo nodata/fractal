@@ -19,10 +19,8 @@ extension Section {
     public var minimumLineSpacing: CGFloat { 0.0 }
     public var minimumInteritemSpacing: CGFloat { 0.0 }
     
-    public var editable: Bool { false }
-    public var shouldIndent: Bool { false }
-    public var editingStyle: UITableViewCell.EditingStyle { .none }
-    public func cellMoved(from: IndexPath, to: IndexPath) { }
+    public var draggable: Bool { false }
+    public func cellDragged(from: IndexPath, to: IndexPath) { }
 }
 
 extension BedrockSection {
