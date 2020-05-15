@@ -96,6 +96,10 @@ extension UIColor {
         return luminosity > 0.7
     }
     
+    public var isDark: Bool {
+        return luminosity < 0.2
+    }
+    
     public var inverse: UIColor {
         var r: CGFloat = 0.0
         var g: CGFloat = 0.0
