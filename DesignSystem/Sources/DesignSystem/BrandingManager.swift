@@ -226,6 +226,7 @@ public extension Typography {
     static func large(_ modifier: Modifier)   -> Typography { return Typography(.large, [modifier]) }
     static func xlarge(_ modifier: Modifier)  -> Typography { return Typography(.xlarge, [modifier]) }
     static func xxlarge(_ modifier: Modifier) -> Typography { return Typography(.xxlarge, [modifier]) }
+    static func xxxlarge(_ modifier: Modifier) -> Typography { return Typography(.xxxlarge, [modifier]) }
 
     static func xxsmall(_ modifiers: [Modifier])  -> Typography { return Typography(.xxsmall, modifiers) }
     static func xsmall(_ modifiers: [Modifier])   -> Typography { return Typography(.xsmall, modifiers) }
