@@ -32,6 +32,12 @@ public extension MutableCollection {
     }
 }
 
+extension Sequence where Element: Hashable {
+    var unique: [Element] {
+        NSOrderedSet(array: self as! [Any]).array as! [Element]
+    }
+}
+
 public extension Array where Element: Equatable {
     mutating func remove(_ object: Element) {
         guard let index = self.firstIndex(of: object) else { return }
