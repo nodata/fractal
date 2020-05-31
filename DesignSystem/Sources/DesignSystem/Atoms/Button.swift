@@ -188,6 +188,11 @@ final public class Button: UIButton {
                        .height(for: size, brand: BrandingManager.brand as? ButtonBrand)])
     }
     
+    @discardableResult public func pin(height view: UIView) -> [NSLayoutConstraint] {
+        pin(to: view, [.height(for: size, brand: BrandingManager.brand as? ButtonBrand)])
+    }
+    
+    
     public func setBackgroundColor(_ color: UIColor?, for state: UIControl.State) {
         backgroundColors[state] = color
         updateBackground()
