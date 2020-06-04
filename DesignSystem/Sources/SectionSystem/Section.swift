@@ -111,6 +111,11 @@ public struct SectionCellSize {
         self.height = height
     }
     
+    public init(_ view: UIView) {
+        self.width = view.bounds.size.width
+        self.height = view.bounds.size.height
+    }
+    
     public static var automatic: SectionCellSize {
         return SectionCellSize(width: nil, height: nil)
     }

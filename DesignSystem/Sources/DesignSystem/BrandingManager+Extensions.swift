@@ -141,6 +141,8 @@ public extension UIColor.Key {
     static let switchNegativeTint            = UIColor.Key("switchNegativeTint")
     static let sliderPositiveTint            = UIColor.Key("sliderPositiveTint")
     static let sliderNegativeTint            = UIColor.Key("sliderNegativeTint")
+    static let positive                      = UIColor.Key("positive")
+    static let negative                      = UIColor.Key("negative")
     static let warning                       = UIColor.Key("warning")
     static let clear                         = UIColor.Key("clear")
     static let missing                       = UIColor.Key("missing")

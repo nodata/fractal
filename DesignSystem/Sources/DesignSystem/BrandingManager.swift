@@ -142,6 +142,7 @@ public struct Typography: CaseIterable, Equatable {
         }
 
         public static let strong = Modifier("strong")
+        public static let condensed = Modifier("condensed")
         public static let noAccessibility = Modifier("noAccessibility")
     }
 
