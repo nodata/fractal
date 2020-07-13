@@ -32,7 +32,7 @@ public extension MutableCollection {
     }
 }
 
-extension Sequence where Element: Hashable {
+public extension Sequence where Element: Hashable {
     var unique: [Element] {
         NSOrderedSet(array: self as! [Any]).array as! [Element]
     }

@@ -19,21 +19,29 @@ extension SectionBuilder {
                         direction: GapSection.Direction = .vertical) -> GapSection {
         return GapSection(color: color, size: size, direction: direction)
     }
+    
+    public func padding(multiplier: CGFloat,
+                        color: UIColor = .init(red: 0, green: 0, blue: 0, alpha: 0),
+                        direction: GapSection.Direction = .vertical) -> GapSection {
+        return GapSection(color: color, size: multiplier, direction: direction, asMultiplier: true)
+    }
 }
 
 public class GapSection {
     fileprivate let color: UIColor?
     fileprivate let size: CGFloat
     fileprivate let direction: Direction
+    fileprivate let asMultiplier: Bool
 
     public enum Direction {
         case horiztonal, vertical
     }
     
-    init(color: UIColor, size: CGFloat, direction: Direction) {
+    init(color: UIColor, size: CGFloat, direction: Direction, asMultiplier: Bool = false) {
         self.color = color
         self.size = size
         self.direction = direction
+        self.asMultiplier = asMultiplier
     }
 }
 
@@ -46,9 +54,11 @@ extension GapSection: ViewSection {
     public func size(in view: UIView, at index: Int) -> SectionCellSize {
         switch direction {
         case .vertical:
-            return SectionCellSize(width: view.bounds.size.width, height: self.size)
+            return SectionCellSize(width: view.bounds.size.width,
+                                   height: asMultiplier ? view.bounds.size.height * size : size)
         case .horiztonal:
-            return SectionCellSize(width: self.size, height: view.bounds.size.height)
+            return SectionCellSize(width: asMultiplier ? view.bounds.size.width * size : size,
+                                   height: view.bounds.size.height)
         }
     }
     

@@ -139,8 +139,8 @@ open class SectionControllerDataSource: NSObject {
         for section in sections { decouple(in: section) }
     }
 
-    func tearDownCellSubviews() {
-
+    public func tearDownCellSubviews() {
+        
         func tearDown(in section: Section) {
             
             guard !section.avoidTeardown else { return }
@@ -292,7 +292,8 @@ extension SectionControllerDataSource: UICollectionViewDataSource, UICollectionV
         guard let bedrock = bedrock(for: indexPath) else { return defaultSize }
         let section = bedrock.section
         let index = bedrock.index
-        let sectionSize = section.size(in: collectionView, at: index)
+        let v = collectionView.superview ?? collectionView
+        let sectionSize = section.size(in: v, at: index)
         
         if let height = sectionSize.height, (collectionViewLayout as? UICollectionViewFlowLayout)?.scrollDirection == .horizontal {
             let maxHorizontal = collectionView.bounds.size.height - (collectionView.contentInset.top + collectionView.contentInset.bottom)

@@ -21,7 +21,7 @@ public class SectionCollectionViewCell: UICollectionViewCell {
         let size: SectionCellSize
 
         if let section = section, let indexPath = indexPath {
-            size = section.size(in: self, at: indexPath.item)
+            size = section.size(in: self.superview ?? self, at: indexPath.item)
         } else {
             size = .automatic
         }

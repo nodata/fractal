@@ -36,9 +36,7 @@ extension BedrockSection where Self: EnumeratableSection {
         objc_setAssociatedObject(self, &AssociatedKeys.dataStatic, closure(), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
 
-    public var itemCount: Int {
-        return data.count
-    }
+    public var itemCount: Int { data.count }
 }
 
 private struct AssociatedKeys {

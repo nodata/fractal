@@ -74,7 +74,7 @@ class MainMenuViewController: SectionTableViewController, SectionBuilder {
 extension MainMenuViewController: CardViewContentDelegate {
     var contentScrollView: UIScrollView? { return tableView }
     var isBackgroundDismissable: Bool { return true }
-    func heightConstraint(for cardViewHeightAnchor: NSLayoutDimension) -> NSLayoutConstraint? {
+    func heightConstraint(for cardViewHeightAnchor: NSLayoutDimension, superview: UIView) -> NSLayoutConstraint? {
         return cardViewHeightAnchor.constraint(equalToConstant: cardHeight)
     }
 }

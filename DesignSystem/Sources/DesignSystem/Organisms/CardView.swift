@@ -29,7 +29,7 @@ public protocol CardViewContentDelegate: CardViewDelegate {
     var topPadding: CGFloat { get }
     
     // Passing a constraint for the height layout dimension allows for any kind of dynamic height to be controlled by the viewcontroller... pass this around if you push to a different VC and want to change the constant
-    func heightConstraint(for cardViewHeightAnchor: NSLayoutDimension) -> NSLayoutConstraint?
+    func heightConstraint(for cardViewHeightAnchor: NSLayoutDimension, superview: UIView) -> NSLayoutConstraint?
 }
 
 public protocol CardViewDelegate: class {
@@ -49,7 +49,7 @@ public extension CardViewContentDelegate {
 
     var cardHandleColor: UIColor? { return nil }
     var topPadding: CGFloat { return 0.0 }
-    func heightConstraint(for cardViewHeightAnchor: NSLayoutDimension) -> NSLayoutConstraint? { return nil }
+    func heightConstraint(for cardViewHeightAnchor: NSLayoutDimension, superview: UIView) -> NSLayoutConstraint? { return nil }
 }
 
 public extension CardViewDelegate {

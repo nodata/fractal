@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class Label: UILabel {
+open class Label: UILabel {
 
     private var notificationObject: NSObjectProtocol?
 
@@ -22,12 +22,17 @@ public class Label: UILabel {
     override public var text: String? { didSet { update() } }
     override public var textAlignment: NSTextAlignment { didSet { update() } }
 
+    public init() {
+        super.init(frame: .zero)
+        setup()
+    }
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setup()
     }
@@ -50,7 +55,6 @@ public class Label: UILabel {
     }
 
     private func update() {
-
         guard let text = text else { attributedText = nil; return }
         let attributedString = NSMutableAttributedString(string: text, attributes: attributes)
         attributedText = attributedString

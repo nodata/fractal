@@ -31,9 +31,7 @@ extension ViewControllersSection: ViewControllerSection {
     
     public func createViewController() -> UIViewController { viewController }
     
-    public func size(in view: UIView, at index: Int) -> SectionCellSize {
-        SectionCellSize(width: view.bounds.size.width, height: view.bounds.size.height)
-    }
+    public func size(in view: UIView, at index: Int) -> SectionCellSize { SectionCellSize(view) }
     
     public func configure(_ viewController: UIViewController, at index: Int) { }
 }
