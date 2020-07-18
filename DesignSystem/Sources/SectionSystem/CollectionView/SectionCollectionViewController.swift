@@ -91,7 +91,12 @@ open class SectionCollectionViewController: UICollectionViewController {
         get { data.didScroll }
         set { data.didScroll = newValue }
     }
-
+    
+    public var didEndDecelerating: ((UIScrollView) -> Void)? {
+        get { data.didEndDecelerating }
+        set { data.didEndDecelerating = newValue }
+    }
+    
     open override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear

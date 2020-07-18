@@ -22,7 +22,8 @@ open class SectionControllerDataSource: NSObject {
     public var offset: CGFloat = 0.0 // TODO: Look at changing sections, potentially find current cell and keep hold of it, creating non moving section reloading if needed
     public var didScroll: ((UIScrollView) -> Void)?
     public var willEndDrag: ((_ scrollView: UIScrollView, _ velocity: CGPoint, _ initialOffset: CGPoint, _ targetContentOffset: CGPoint) -> CGPoint?)?
-    
+    public var didEndDecelerating: ((UIScrollView) -> Void)?
+
     public init(viewController: UIViewController) {
         self.viewController = viewController
         super.init()
@@ -172,6 +173,10 @@ extension SectionControllerDataSource: UIScrollViewDelegate {
         if let newTarget = willEndDrag?(scrollView, velocity, initialContentOffset, targetContentOffset.pointee) {
             targetContentOffset.pointee = newTarget
         }
+    }
+    
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        didEndDecelerating?(scrollView)
     }
 }
 

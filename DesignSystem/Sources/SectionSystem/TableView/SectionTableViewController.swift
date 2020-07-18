@@ -81,6 +81,16 @@ open class SectionTableViewController: UITableViewController {
     public var refresh: (() -> Void)?
     public var tearDownOnBrandChange: Bool = true
 
+    public var didScrollClosure: ((UIScrollView) -> Void)? {
+        get { return data.didScroll }
+        set { data.didScroll = newValue }
+    }
+    
+    public var didEndDecelerating: ((UIScrollView) -> Void)? {
+        get { data.didEndDecelerating }
+        set { data.didEndDecelerating = newValue }
+    }
+    
     public init(useRefreshControl: Bool = false, configureTableView: ((UITableView) -> Void)? = nil) {
         self.useRefreshControl = useRefreshControl
         self.configureTableView = configureTableView
@@ -148,10 +158,5 @@ open class SectionTableViewController: UITableViewController {
 
     open var refreshControlTintColor: UIColor {
         return .atom(.refreshControl)
-    }
-
-    public var didScrollClosure: ((UIScrollView) -> Void)? {
-        get { return data.didScroll }
-        set { data.didScroll = newValue }
     }
 }
