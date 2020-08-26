@@ -178,7 +178,11 @@ public struct Typography: CaseIterable, Equatable {
         let name = BrandingManager.brand.fontName(for: self)
         let defaultFont: UIFont = .systemFont(ofSize: fontSize, weight: fontWeight)
         guard let fontName = name else { return defaultFont }
-        return UIFont(name: fontName, size: fontSize) ?? defaultFont
+        guard let font = UIFont(name: fontName, size: fontSize) else {
+            print("Couldn't set font named \(name ?? ""), remember it's not the file name it's the actual font name, take a look in UIFont.familyNames : fontNames(forFamilyName:) and see if matches")
+            return defaultFont
+        }
+        return font
     }
 
     public func font(overriddenPointSize: CGFloat) -> UIFont {

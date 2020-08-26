@@ -37,7 +37,7 @@ private class ButtonLayer: CAGradientLayer {
     }
 }
 
-final public class Button: UIButton {
+open class Button: UIButton {
     
     public struct Style: Equatable, RawRepresentable {
         public let rawValue: String
@@ -179,7 +179,7 @@ final public class Button: UIButton {
         }
     }
     
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

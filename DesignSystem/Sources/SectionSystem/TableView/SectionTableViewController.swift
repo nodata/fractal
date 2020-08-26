@@ -18,8 +18,10 @@ extension SectionTableViewController: SectionController {
         set { refresh = newValue }
     }
 
-    open func reloadSections(at indexes: [Int]) {
+    public func reloadSections(at indexes: [Int]) {
 
+        reloadWillStart()
+        
         if data.newSections {
             data.registerCells(in: self.tableView, with: &self.registeredReuseIdentifiers)
         }
@@ -64,6 +66,10 @@ extension SectionTableViewController: SectionController {
         tableView.reloadData()
         refreshControl?.perform(#selector(refreshControl?.endRefreshing), with: nil, afterDelay: 0.1, inModes: [RunLoop.Mode.common])
         perform(#selector(reloadDidFinish), with: nil, afterDelay: 0.1, inModes: [RunLoop.Mode.common])
+    }
+    
+    @objc open func reloadWillStart() {
+        
     }
     
     @objc open func reloadDidFinish() {

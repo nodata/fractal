@@ -65,11 +65,15 @@ open class Label: UILabel {
         update()
     }
     
-    public func addFont(_ font: UIFont, to substring: String) {
+    public func addFont(_ font: UIFont, color: UIColor? = nil, to substring: String) {
         guard let t = text else { return }
         let range = (t as NSString).range(of: substring)
         let attributedString = NSMutableAttributedString(string: t, attributes: attributes)
         attributedString.addAttribute(NSAttributedString.Key.font, value: font, range: range)
+        if let c = color {
+            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: c, range: range)
+        }
+        
         attributedText = attributedString
     }
     
