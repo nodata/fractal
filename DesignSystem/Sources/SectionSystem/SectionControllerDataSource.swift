@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 open class SectionControllerDataSource: NSObject {
 
@@ -23,7 +24,9 @@ open class SectionControllerDataSource: NSObject {
     public var didScroll: ((UIScrollView) -> Void)?
     public var willEndDrag: ((_ scrollView: UIScrollView, _ velocity: CGPoint, _ initialOffset: CGPoint, _ targetContentOffset: CGPoint) -> CGPoint?)?
     public var didEndDecelerating: ((UIScrollView) -> Void)?
-
+    public var didEndScrollingAnimation: ((UIScrollView) -> Void)?
+    public var sectionTitles: [String]?
+    
     public init(viewController: UIViewController) {
         self.viewController = viewController
         super.init()
@@ -178,6 +181,10 @@ extension SectionControllerDataSource: UIScrollViewDelegate {
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         didEndDecelerating?(scrollView)
     }
+    
+    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        didEndScrollingAnimation?(scrollView)
+    }
 }
 
 extension SectionControllerDataSource: UITableViewDataSource, UITableViewDelegate {
@@ -257,6 +264,8 @@ extension SectionControllerDataSource: UITableViewDataSource, UITableViewDelegat
 
         return cell
     }
+    
+    public func sectionIndexTitles(for tableView: UITableView) -> [String]? { sectionTitles }
 
     private func defaultCell(at indexPath: IndexPath, in tableView: UITableView) -> UITableViewCell {
         let defaultCell = tableView.dequeueReusableCell(withIdentifier: defaultReuseIdentifier, for: indexPath)

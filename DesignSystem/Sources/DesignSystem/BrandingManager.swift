@@ -204,13 +204,13 @@ public struct Typography: CaseIterable, Equatable {
 
     public var useAccessibility: Bool { return !modifiers.contains(.noAccessibility) }
 
-    public var isStrong: Bool { return modifiers.contains(.strong) }
+    public var isStrong: Bool { modifiers.contains(.strong) }
 
-    public var fontSize: CGFloat { return BrandingManager.brand.fontSize(for: self) }
+    public var fontSize: CGFloat { BrandingManager.brand.fontSize(for: self) }
 
-    public var lineHeight: CGFloat { return font.lineHeight }
+    public var lineHeight: CGFloat { font.lineHeight }
 
-    public var defaultColor: UIColor { return .text } // TODO: put inside brand
+    public var defaultColor: UIColor { .text } // TODO: put inside brand
 }
 
 public extension Typography {
@@ -299,6 +299,28 @@ public extension UIColor {
         public static func ==(lhs: Key, rhs: Key) -> Bool {
             return lhs.rawValue == rhs.rawValue
         }
+    }
+}
+
+extension Label.Style {
+    static let medium = Label.Style(color: .black, typography: .medium)
+}
+
+extension Label {
+    struct Style {
+        let color: UIColor
+        let typography: Typography
+    }
+    
+    func apply(style: Style) -> Label {
+        self.textColor = style.color
+        self.typography = style.typography
+        return self
+    }
+
+    func ewlfkjnwef() {
+        let label = Label().apply(style: .medium)
+        label.text = ""
     }
 }
 

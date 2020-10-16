@@ -18,8 +18,7 @@ extension SectionTableViewController: SectionController {
         set { refresh = newValue }
     }
 
-    public func reloadSections(at indexes: [Int]) {
-
+    public func reloadSections(at indexes: [Int], animation: UITableView.RowAnimation) {
         reloadWillStart()
         
         if data.newSections {
@@ -28,36 +27,48 @@ extension SectionTableViewController: SectionController {
 
         data.notifySectionsOfReload(in: indexes)
 
-        DispatchQueue.main.async {
-
-            guard self.useRefreshControl else {
-
+        func refresh() {
+            if animation == .none {
                 if indexes.count > 0 {
                     UIView.performWithoutAnimation {
-                        self.tableView.reloadSections(IndexSet(indexes), with: .none)
-                        self.reloadDidFinish()
+                        tableView.reloadSections(IndexSet(indexes), with: .none)
+                        finished()
                     }
                 } else {
-                    self.tableView.reloadData()
-                    self.reloadDidFinish()
+                    tableView.reloadData()
+                    finished()
                 }
-
-                return
+            } else {
+                let sectionIndexes = indexes.count == 0 ? Array(0..<dataSource.sections.count) : indexes
+                var insertIndexPaths = [IndexPath]()
+                var removeIndexPaths = [IndexPath]()
+                
+                for i in sectionIndexes {
+                    let s = dataSource.sections[i]
+                    guard i < tableView.numberOfSections else { continue }
+                    insertIndexPaths += s.indexesToAdd.map { IndexPath(item: $0, section: i) }
+                    removeIndexPaths += s.indexesToRemove.map { IndexPath(item: $0, section: i) }
+                }
+                
+                if insertIndexPaths.count + removeIndexPaths.count == 0 {
+                    tableView.reloadData()
+                    finished()
+                } else {
+                    tableView.beginUpdates()
+                    tableView.insertRows(at: insertIndexPaths, with: animation)
+                    tableView.deleteRows(at: removeIndexPaths, with: animation)
+                    tableView.endUpdates()
+                    finished()
+                }
             }
-
+        }
+        
+        DispatchQueue.main.async {
+            guard self.useRefreshControl else { refresh(); return }
             if self.refreshControl?.isRefreshing ?? false {
                 self.perform(#selector(self.reloadRefresh), with: nil, afterDelay: 0.4, inModes: [RunLoop.Mode.common])
             } else {
-
-                if indexes.count > 0 {
-                    UIView.performWithoutAnimation {
-                        self.tableView.reloadSections(IndexSet(indexes), with: .none)
-                        self.reloadDidFinish()
-                    }
-                } else {
-                    self.tableView.reloadData()
-                    self.reloadDidFinish()
-                }
+                refresh()
             }
         }
     }
@@ -65,14 +76,19 @@ extension SectionTableViewController: SectionController {
     @objc private func reloadRefresh() {
         tableView.reloadData()
         refreshControl?.perform(#selector(refreshControl?.endRefreshing), with: nil, afterDelay: 0.1, inModes: [RunLoop.Mode.common])
-        perform(#selector(reloadDidFinish), with: nil, afterDelay: 0.1, inModes: [RunLoop.Mode.common])
+        perform(#selector(finished), with: nil, afterDelay: 0.1, inModes: [RunLoop.Mode.common])
     }
     
-    @objc open func reloadWillStart() {
+    @objc private func finished() {
+        for s in dataSource.sections { s.didReload() }
+        reloadDidFinish()
+    }
+    
+    open func reloadWillStart() {
         
     }
     
-    @objc open func reloadDidFinish() {
+    open func reloadDidFinish() {
         
     }
 }
@@ -95,6 +111,11 @@ open class SectionTableViewController: UITableViewController {
     public var didEndDecelerating: ((UIScrollView) -> Void)? {
         get { data.didEndDecelerating }
         set { data.didEndDecelerating = newValue }
+    }
+    
+    public var didEndScrollingAnimation: ((UIScrollView) -> Void)? {
+        get { data.didEndScrollingAnimation }
+        set { data.didEndScrollingAnimation = newValue }
     }
     
     public init(useRefreshControl: Bool = false, configureTableView: ((UITableView) -> Void)? = nil) {

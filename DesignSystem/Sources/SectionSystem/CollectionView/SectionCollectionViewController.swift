@@ -18,7 +18,7 @@ extension SectionCollectionViewController: SectionController {
         set { refresh = newValue }
     }
 
-    public func reloadSections(at indexes: [Int]) {
+    public func reloadSections(at indexes: [Int], animation: UITableView.RowAnimation) {
 
         reloadWillStart()
         
@@ -33,7 +33,8 @@ extension SectionCollectionViewController: SectionController {
             guard self.useRefreshControl else {
 
                 if indexes.count > 0 {
-                    UIView.performWithoutAnimation { self.collectionView.reloadSections(IndexSet(indexes))
+                    UIView.performWithoutAnimation {
+                        self.collectionView.reloadSections(IndexSet(indexes))
                         self.reloadDidFinish()
                     }
                 } else {
@@ -101,6 +102,11 @@ open class SectionCollectionViewController: UICollectionViewController {
     public var didEndDecelerating: ((UIScrollView) -> Void)? {
         get { data.didEndDecelerating }
         set { data.didEndDecelerating = newValue }
+    }
+    
+    public var didEndScrollingAnimation: ((UIScrollView) -> Void)? {
+        get { data.didEndScrollingAnimation }
+        set { data.didEndScrollingAnimation = newValue }
     }
     
     open override func viewDidLoad() {

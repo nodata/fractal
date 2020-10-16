@@ -10,15 +10,20 @@ import Foundation
 import UIKit
 
 public protocol SectionController {
-    func reload()
-    func reloadSections(at indexes: [Int])
+    func reload(animation: UITableView.RowAnimation)
+    func reloadSections(at indexes: [Int], animation: UITableView.RowAnimation)
     var didPullDownToRefreshClosure: (() -> Void)? { get set }
     var dataSource: SectionControllerDataSource { get }
 }
 
 public extension SectionController {
+    
     func reload() {
-        reloadSections(at: [])
+        reloadSections(at: [], animation: .none)
+    }
+    
+    func reload(animation: UITableView.RowAnimation) {
+        reloadSections(at: [], animation: animation)
     }
 }
 

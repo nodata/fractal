@@ -47,6 +47,7 @@ open class Label: UILabel {
         notificationObject = NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: BrandingManager.didChangeNotification), object: nil, queue: nil) { [weak self] (_) in
             self?.update()
         }
+        set(typography: .medium)
     }
 
     public func set(typography: Typography, color: UIColor? = nil) {
@@ -65,15 +66,19 @@ open class Label: UILabel {
         update()
     }
     
-    public func addFont(_ font: UIFont, color: UIColor? = nil, to substring: String) {
+    public func add(_ extraAttributes: [(font: UIFont?, color: UIColor?, substring: String)]) {
         guard let t = text else { return }
-        let range = (t as NSString).range(of: substring)
-        let attributedString = NSMutableAttributedString(string: t, attributes: attributes)
-        attributedString.addAttribute(NSAttributedString.Key.font, value: font, range: range)
-        if let c = color {
-            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: c, range: range)
-        }
         
+        let attributedString = NSMutableAttributedString(string: t, attributes: attributes)
+
+        for a in extraAttributes {
+            let range = (t as NSString).range(of: a.substring)
+            attributedString.addAttribute(NSAttributedString.Key.font, value: font ?? typography.font, range: range)
+            if let c = a.color {
+                attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: c, range: range)
+            }
+        }
+
         attributedText = attributedString
     }
     
@@ -85,7 +90,7 @@ open class Label: UILabel {
         
         var attr = [NSAttributedString.Key: Any]()
         attr[.font] = typography.font
-        attr[.foregroundColor] = textColor
+        attr[.foregroundColor] = textColor ?? typography.defaultColor
         attr[.paragraphStyle] = paragraphStyle
         attr[.underlineStyle] = underlineStyle.rawValue
         attr[.kern] = letterSpace

@@ -200,3 +200,20 @@ extension UIColor {
         return UIColor(displayP3Red: finalR, green: finalG, blue: finalB, alpha: finalA)
     }
 }
+
+extension CGColor {
+
+    public func equals(_ rhs: CGColor) -> Bool {
+        
+        guard let components = self.components, let rhsComponents = rhs.components else { return false}
+        guard components.count == rhsComponents.count else { return false }
+        
+        for i in 0..<components.count {
+            let c = components[i]
+            let r = rhsComponents[i]
+            guard c == r else { return false }
+        }
+        
+        return true
+    }
+}

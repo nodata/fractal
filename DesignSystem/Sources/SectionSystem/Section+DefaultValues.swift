@@ -10,6 +10,7 @@ import Foundation
 
 extension Section {
     public func willReload() { }
+    public func didReload() { }
     public func pullData() { }
     public var itemCount: Int { 0 }
     public var hasInputs: Bool { false }
@@ -21,6 +22,8 @@ extension Section {
     
     public var draggable: Bool { false }
     public func cellDragged(from: IndexPath, to: IndexPath) { }
+    public var indexesToRemove: [Int] { [] }
+    public var indexesToAdd: [Int] { [] }
 }
 
 extension BedrockSection {

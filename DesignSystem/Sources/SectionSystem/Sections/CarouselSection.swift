@@ -168,7 +168,7 @@ extension CarouselSection: ViewControllerSection {
 }
 
 extension CarouselSection {
-    public static func cardPagingClosure(with viewControllerSection: ViewControllerSection) -> (UIScrollView) -> Void {
+    public static func cardPagingClosure(with viewControllerSection: ViewControllerSection, showTopBorder: Bool = true) -> (UIScrollView) -> Void {
         return { [unowned viewControllerSection] scrollView in
             for vc in viewControllerSection.visibleViewControllers {
                 guard scrollView.isBeingManipulated else { return }
@@ -177,12 +177,36 @@ extension CarouselSection {
                 let absPercentage = abs(position.x) / scrollView.bounds.size.width
                 let excelPercentage = min(absPercentage * 10.0, 1.0)
                 let scale = 1.0 - (0.05 * absPercentage)
+                let dividerWidth: CGFloat = CGFloat.divider < 1.0 ? 1.0 : .divider
                 var transform = CGAffineTransform(scaleX: scale, y: scale)
                 transform = transform.rotated(by: (CGFloat.pi/100) * percentage)
                 vc.view.transform = transform
-                vc.view.layer.borderWidth = .divider * excelPercentage
+                vc.view.layer.borderWidth = dividerWidth * excelPercentage
                 vc.view.layer.cornerRadius = .mediumCornerRadius * excelPercentage
             }
+            
+            guard showTopBorder else { return }
+            guard let vc = viewControllerSection.visibleViewControllers.first else { return }
+            guard let parent = vc.parent else { return }
+            
+            if let c = vc.view.layer.borderColor {
+                if !(parent.view.layer.borderColor?.equals(c) ?? true) { parent.view.layer.borderColor = c }
+            }
+            
+            let amount = abs(scrollView.contentOffset.x.truncatingRemainder(dividingBy: scrollView.bounds.size.width))
+            if amount < 10.0 {
+                parent.view.layer.borderWidth = amount / 10.0
+            } else if amount > (scrollView.bounds.size.width - 10.0) {
+                parent.view.layer.borderWidth = (scrollView.bounds.size.width - amount) / 10.0
+            } else {
+                parent.view.layer.borderWidth = 1.0
+            }
         }
+    }
+    
+    public static func reset(_ viewController: UIViewController) {
+        viewController.view.transform = .identity
+        viewController.view.layer.borderWidth = 0.0
+        viewController.view.layer.cornerRadius = 0.0
     }
 }

@@ -86,3 +86,42 @@ public extension Array {
         return index
     }
 }
+
+public extension UIScreen {
+    
+    enum Device {
+        case unknown,
+        iPhone12, iPhone12Max, iPhoneX, iPhone8Plus, iPhone8, iPhoneSE,
+        iPadPro12, iPadPro10, iPad
+    }
+    
+    var device: Device {
+        
+        let size = CGSize(width: min(UIScreen.main.bounds.width, UIScreen.main.bounds.height),
+                          height: max(UIScreen.main.bounds.width, UIScreen.main.bounds.height))
+     
+        switch (size.width, size.height) {
+        case (428, 926):
+            return .iPhone12Max
+        case (390, 844):
+            return .iPhone12
+        case (375, 812):
+            return .iPhoneX
+        case (414, 736):
+            return .iPhone8Plus
+        case (375, 667):
+            return .iPhone8
+        case (320, 568):
+            return .iPhoneSE
+            
+        case (1024, 1336):
+            return .iPadPro12
+        case (834, 1112):
+            return .iPadPro10
+        case (768, 1024):
+            return .iPad
+        default:
+            return .unknown
+        }
+    }
+}

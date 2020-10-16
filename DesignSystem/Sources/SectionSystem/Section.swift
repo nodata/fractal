@@ -20,6 +20,7 @@ public protocol SectionBuilder {
 public protocol Section: class { // Base for NestedSection and BedrockSection
 
     func willReload()
+    func didReload()
     func pullData()
 
     var itemCount: Int { get }
@@ -37,6 +38,8 @@ public protocol Section: class { // Base for NestedSection and BedrockSection
     
     var draggable: Bool { get }
     func cellDragged(from: IndexPath, to: IndexPath)
+    var indexesToRemove: [Int] { get }
+    var indexesToAdd: [Int] { get }
 }
 
 public protocol NestedSection: Section {

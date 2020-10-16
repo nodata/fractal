@@ -9,7 +9,7 @@
 import Foundation
 
 extension SectionBuilder {
-    public func group(_ sections: [Section], middleDivider: BedrockSection? = nil, bookends: Bool = true) -> GroupSection {
+    public func group(_ sections: [Section], middleDivider: BedrockSection? = nil, bookends: GroupSection.BookendType = .both) -> GroupSection {
         return GroupSection(sections, middleDivider: middleDivider, bookends: bookends)
     }
 }
@@ -19,11 +19,15 @@ public class GroupSection: SectionBuilder {
     // NOTE: SectionInsets, minimumInteritemSpacing, minimumLineSpacing inside a group is not supported.
     // They will default to zero for all values
 
+    public enum BookendType {
+        case none, both, top, bottom
+    }
+    
     fileprivate let sections: [Section]
     fileprivate let middleDivider: BedrockSection?
-    fileprivate let bookends: Bool
+    fileprivate let bookends: BookendType
 
-    public init(_ sections: [Section], middleDivider: BedrockSection?, bookends: Bool) {
+    public init(_ sections: [Section], middleDivider: BedrockSection?, bookends: BookendType) {
         self.sections = sections
         self.middleDivider = middleDivider
         self.bookends = bookends
@@ -33,11 +37,32 @@ public class GroupSection: SectionBuilder {
         var count = 0
         for section in sections { count += section.itemCount }
         guard count > 0 else { return 0 }
-        return bookends ? 1 + (count * 2) : (count * 2) - 1
+        
+        var final = (count * 2) - 1
+        
+        switch bookends {
+        case .none:
+            break
+        case .both:
+            final += 2
+        case .top, .bottom:
+            final += 1
+        }
+
+        return final//bookends ? 1 + (count * 2) : (count * 2) - 1
     }
 
     private func unsaltedIndex(from index: Int) -> Int {
-        return bookends ? (index - 1)/2 : index/2
+        switch bookends {
+        case .none:
+            return index/2
+        case .both:
+            return (index - 1)/2
+        case .top:
+            return (index - 1)/2
+        case .bottom:
+            return index/2
+        }
     }
 
     // MARK: - Properties
@@ -69,12 +94,17 @@ extension GroupSection: NestedSection {
 
     public func section(at index: Int) -> Section {
 
-        if bookends {
-            if index == 0 { return bookendTopDivider }
-            if index == saltedContentCount() - 1 { return bookendBottomDivider }
+        let hasTopBookend = bookends == .top || bookends == .both
+
+        if hasTopBookend && index == 0 {
+            return bookendTopDivider
+        }
+        
+        if (bookends == .bottom || bookends == .both) && index == saltedContentCount() - 1 {
+            return bookendBottomDivider
         }
 
-        let isContentIndex = bookends ? index % 2 != 0 : index % 2 == 0
+        let isContentIndex = hasTopBookend ? index % 2 != 0 : index % 2 == 0
         
         if isContentIndex {
             var total = 0

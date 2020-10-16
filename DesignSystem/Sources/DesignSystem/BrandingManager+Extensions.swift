@@ -85,6 +85,7 @@ public extension Typography.Key {
     static let xlarge   = Typography.Key("xlarge")
     static let xxlarge  = Typography.Key("xxlarge")
     static let xxxlarge = Typography.Key("xxxlarge")
+    static let logo = Typography.Key("logo")
 }
 
 public extension CGFloat.Key {
