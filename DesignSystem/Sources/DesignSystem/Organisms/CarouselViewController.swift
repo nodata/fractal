@@ -78,6 +78,7 @@ public class CarouselViewController: SectionCollectionViewController, BrandUpdat
             var previousX: CGFloat = 0.0
             for section in dataSource.sections {
                 for i in 0..<section.itemCount {
+
                     guard let bedrock = dataSource.bedrock(in: section, index: i)?.0 else { continue }
                     let width = bedrock.size(in: view, at: i).width ?? collectionView.bounds.size.width
                     let xValues = CellXValues(minX: previousX, maxX: previousX + width)

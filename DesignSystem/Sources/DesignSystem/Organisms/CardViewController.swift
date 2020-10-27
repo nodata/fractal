@@ -148,6 +148,12 @@ public class CardViewController: UIViewController {
         }
     }
  
+    public func dismissAll() {
+        for cardView in cardViews {
+            cardView.animateOut(completion: nil)
+        }
+    }
+    
     // MARK: - Accessors
 
     private func newCoverView(dark:Bool) -> UIView {

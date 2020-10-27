@@ -39,6 +39,7 @@ extension SectionTableViewController: SectionController {
                     finished()
                 }
             } else {
+
                 let sectionIndexes = indexes.count == 0 ? Array(0..<dataSource.sections.count) : indexes
                 var insertIndexPaths = [IndexPath]()
                 var removeIndexPaths = [IndexPath]()
@@ -51,7 +52,8 @@ extension SectionTableViewController: SectionController {
                 }
                 
                 if insertIndexPaths.count + removeIndexPaths.count == 0 {
-                    tableView.reloadData()
+                    tableView.beginUpdates()
+                    tableView.endUpdates()
                     finished()
                 } else {
                     tableView.beginUpdates()
@@ -84,11 +86,11 @@ extension SectionTableViewController: SectionController {
         reloadDidFinish()
     }
     
-    open func reloadWillStart() {
+    @objc open func reloadWillStart() {
         
     }
     
-    open func reloadDidFinish() {
+    @objc open func reloadDidFinish() {
         
     }
 }

@@ -17,7 +17,7 @@ open class SectionControllerDataSource: NSObject {
     private var currentIndexPath = IndexPath(item: 0, section: 0)
 
     public var sections: [Section] = [] {
-        willSet { decoupleVisible() }
+        willSet { decoupleAllVisible() }
         didSet { newSections = true }
     }
     public var offset: CGFloat = 0.0 // TODO: Look at changing sections, potentially find current cell and keep hold of it, creating non moving section reloading if needed
@@ -33,8 +33,8 @@ open class SectionControllerDataSource: NSObject {
     }
 
     func bedrock(in section: Section, index: Int) -> (BedrockSection, Int)? {
-
         if let nestedSection = section as? NestedSection {
+            //guard index < nestedSection.itemCount else { return nil }
             guard let givenSectionIndex = nestedSection.givenSectionIndex(from: index) else { return nil }
             return bedrock(in: nestedSection.section(at: index), index: givenSectionIndex)
         } else if let bedrock = section as? BedrockSection {
@@ -75,7 +75,7 @@ open class SectionControllerDataSource: NSObject {
             }
         }
     }
-
+    
     public func registerCells(in collectionView: UICollectionView, with registeredReuseIdentifiers: inout Set<String>) {
 
         if registeredReuseIdentifiers.isEmpty {
@@ -128,7 +128,7 @@ open class SectionControllerDataSource: NSObject {
         newSections = false
     }
 
-    private func decoupleVisible() {
+    private func decoupleAllVisible() {
 
         func decouple(in section: Section) {
             if let section = section as? NestedSection {
@@ -142,7 +142,7 @@ open class SectionControllerDataSource: NSObject {
 
         for section in sections { decouple(in: section) }
     }
-
+    
     public func tearDownCellSubviews() {
         
         func tearDown(in section: Section) {
@@ -218,6 +218,8 @@ extension SectionControllerDataSource: UITableViewDataSource, UITableViewDelegat
 
         if let viewSection = section as? ViewSection {
 
+            cell.section = viewSection
+            
             guard let view = cell.sectionView else {
                 let sectionView = viewSection.createView()
                 cell.contentView.addSubview(sectionView)
@@ -236,6 +238,8 @@ extension SectionControllerDataSource: UITableViewDataSource, UITableViewDelegat
             return cell
 
         } else if let viewControllerSection = section as? ViewControllerSection {
+
+            cell.section = viewControllerSection
 
             guard let vc = cell.sectionViewController else {
 
@@ -281,12 +285,16 @@ extension SectionControllerDataSource: UITableViewDataSource, UITableViewDelegat
     }
 
     public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard let bedrock = bedrock(for: indexPath) else { return }
-        if let viewControllerSection = bedrock.section as? ViewControllerSection {
-            viewControllerSection.set(visibleViewController: nil, at: bedrock.index)
-        } else if let viewSection = bedrock.section as? ViewSection {
-            viewSection.set(visibleView: nil, at: bedrock.index)
+       
+        guard let cell = cell as? SectionTableViewCell else { return }
+        
+        if let viewControllerSection = cell.section as? ViewControllerSection, let vc = cell.sectionViewController {
+            viewControllerSection.decoupleVisibleViewController(vc)
+        } else if let viewSection = cell.section as? ViewSection, let v = cell.sectionView {
+            viewSection.decoupleVisibleView(v)
         }
+        
+        cell.section = nil
     }
 }
 
@@ -407,13 +415,15 @@ extension SectionControllerDataSource: UICollectionViewDataSource, UICollectionV
     }
 
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-
-        guard let bedrock = bedrock(for: indexPath) else { return }
-        if let viewControllerSection = bedrock.section as? ViewControllerSection {
-            viewControllerSection.set(visibleViewController: nil, at: bedrock.index)
-        } else if let viewSection = bedrock.section as? ViewSection {
-            viewSection.set(visibleView: nil, at: bedrock.index)
+        guard let cell = cell as? SectionCollectionViewCell else { return }
+        
+        if let viewControllerSection = cell.section as? ViewControllerSection, let vc = cell.sectionViewController {
+            viewControllerSection.decoupleVisibleViewController(vc)
+        } else if let viewSection = cell.section as? ViewSection, let v = cell.sectionView {
+            viewSection.decoupleVisibleView(v)
         }
+        
+        cell.section = nil
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout

@@ -33,7 +33,7 @@ public class GroupSection: SectionBuilder {
         self.bookends = bookends
     }
 
-    private func saltedContentCount() -> Int {
+    private var saltedContentCount: Int {
         var count = 0
         for section in sections { count += section.itemCount }
         guard count > 0 else { return 0 }
@@ -49,7 +49,7 @@ public class GroupSection: SectionBuilder {
             final += 1
         }
 
-        return final//bookends ? 1 + (count * 2) : (count * 2) - 1
+        return final
     }
 
     private func unsaltedIndex(from index: Int) -> Int {
@@ -62,6 +62,19 @@ public class GroupSection: SectionBuilder {
             return (index - 1)/2
         case .bottom:
             return index/2
+        }
+    }
+    
+    private func saltedIndex(from index: Int) -> Int {
+        switch bookends {
+        case .none:
+            return index*2
+        case .both:
+            return index*2 + 1
+        case .top:
+            return index*2 + 1
+        case .bottom:
+            return index*2
         }
     }
 
@@ -91,6 +104,28 @@ extension GroupSection: NestedSection {
     public var allSections: [Section] {
         return sections + [bookendTopDivider, bookendBottomDivider, (middleDivider ?? defaultMiddleDivider)]
     }
+    
+    public var indexesToAdd: [Int] {
+        var indexes = [Int]()
+        var total = 0
+        for s in givenSections {
+            indexes += s.indexesToAdd.map { saltedIndex(from: $0 + total) }
+            total += s.itemCount
+        }
+        
+        print("Indexes:", indexes)
+        return indexes
+    }
+    
+    public var indexesToRemove: [Int] {
+        var indexes = [Int]()
+        var total = 0
+        for s in givenSections {
+            indexes += s.indexesToAdd.map { saltedIndex(from: $0 + total) }
+            total += s.itemCount
+        }
+        return indexes
+    }
 
     public func section(at index: Int) -> Section {
 
@@ -100,7 +135,7 @@ extension GroupSection: NestedSection {
             return bookendTopDivider
         }
         
-        if (bookends == .bottom || bookends == .both) && index == saltedContentCount() - 1 {
+        if (bookends == .bottom || bookends == .both) && index == saltedContentCount - 1 {
             return bookendBottomDivider
         }
 
@@ -118,9 +153,7 @@ extension GroupSection: NestedSection {
         return middleDivider ?? defaultMiddleDivider
     }
 
-    public var itemCount: Int {
-        return self.saltedContentCount()
-    }
+    public var itemCount: Int { saltedContentCount }
 
     public var reuseIdentifiers: [String]  {
 

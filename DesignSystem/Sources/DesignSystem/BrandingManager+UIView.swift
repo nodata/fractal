@@ -121,11 +121,22 @@ extension CALayer {
         layer.shadowRadius = 2.0
     }
     
-    public func removeShadow() {
-        shadowColor = nil
-        shadowOffset = .zero
-        shadowRadius = 0.0
-        shadowOpacity = 0.0
+    public func removeShadow(animated: (duration: TimeInterval, delay: TimeInterval)? = nil) {
+        
+        guard let a = animated else {
+            shadowOpacity = 0.0
+            return
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + a.delay) {
+            let animation = CABasicAnimation(keyPath: "shadowOpacity")
+            animation.fromValue = self.shadowOpacity
+            animation.toValue = 0.0
+            animation.duration = a.duration
+            animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            self.add(animation, forKey: animation.keyPath)
+            self.shadowOpacity = 0.0
+        }
     }
 }
 
@@ -137,5 +148,5 @@ extension UIView {
     
     public func addLongShadow(_ direction: ShadowDirection = .down) { layer.addLongShadow(direction) }
    
-    public func removeShadow() { layer.removeShadow() }
+    public func removeShadow(animated: (duration: TimeInterval, delay: TimeInterval)? = nil, delay: TimeInterval = 0.0) { layer.removeShadow(animated: animated) }
 }

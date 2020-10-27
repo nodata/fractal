@@ -11,6 +11,7 @@ import UIKit
 
 public class SectionTableViewCell: UITableViewCell {
 
+    public internal(set) weak var section: BedrockSection?
     public internal(set) weak var sectionViewController: UIViewController?
     public internal(set) weak var sectionView: UIView?
 

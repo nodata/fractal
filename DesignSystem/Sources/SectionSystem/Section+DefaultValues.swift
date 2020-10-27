@@ -82,6 +82,17 @@ extension ViewSection {
             mapTable.setObject(visibleView, forKey: NSNumber(value: index))
         }
     }
+    
+    func decoupleVisibleView(_ viewController: UIView) {
+        guard let keys = mapTable.keyEnumerator().allObjects as? [NSNumber] else { return }
+        for k in keys {
+            let vc = mapTable.object(forKey: k)
+            if vc == viewController {
+                mapTable.removeObject(forKey: k)
+                break
+            }
+        }
+    }
 
     func decoupleVisibleViews() { mapTable.removeAllObjects() }
 
@@ -133,6 +144,17 @@ extension ViewControllerSection {
         }
     }
 
+    func decoupleVisibleViewController(_ viewController: UIViewController) {
+        guard let keys = mapTable.keyEnumerator().allObjects as? [NSNumber] else { return }
+        for k in keys {
+            let vc = mapTable.object(forKey: k)
+            if vc == viewController {
+                mapTable.removeObject(forKey: k)
+                break
+            }
+        }
+    }
+    
     func decoupleVisibleViewControllers() { mapTable.removeAllObjects() }
 
     func deleteVisibleViewControllers() {
@@ -159,6 +181,30 @@ extension NestedSection {
 
     public var hasInputs: Bool { return allSections.filter { $0.hasInputs }.count > 0 }
 
+    public var indexesToAdd: [Int] {
+        
+        var indexes = [Int]()
+        var total = 0
+        for s in givenSections {
+            indexes += s.indexesToAdd.map { $0 + total }
+            total += s.itemCount
+        }
+        
+        return indexes
+    }
+    
+    public var indexesToRemove: [Int] {
+        
+        var indexes = [Int]()
+        var total = 0
+        for s in givenSections {
+            indexes += s.indexesToAdd.map { $0 + total }
+            total += s.itemCount
+        }
+        
+        return indexes
+    }
+    
     public func givenSectionIndex(from index: Int) -> Int? {
         var total = 0
         for section in givenSections {

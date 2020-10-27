@@ -10,18 +10,29 @@ import Foundation
 
 extension SectionBuilder {
     public func seperator(_ direction: GapSection.Direction = .vertical) -> GapSection {
-        return GapSection(color: .background(), size: .medium, direction: direction)
+        return GapSection(color: .background(), size: Observable<CGFloat>(.medium), direction: direction)
     }
     
-    // Workaround to avoid to be detected as a leak when using system static UIColors
     public func padding(_ size: CGFloat = .medium,
-                        color: UIColor = .init(red: 0, green: 0, blue: 0, alpha: 0),
+                        color: UIColor = .clear,
+                        direction: GapSection.Direction = .vertical) -> GapSection {
+        return GapSection(color: color, size: Observable<CGFloat>(size), direction: direction)
+    }
+    
+    public func padding(multiplier: CGFloat,
+                        color: UIColor = .clear,
+                        direction: GapSection.Direction = .vertical) -> GapSection {
+        return GapSection(color: color, size: Observable<CGFloat>(multiplier), direction: direction, asMultiplier: true)
+    }
+    
+    public func padding(_ size: Observable<CGFloat>,
+                        color: UIColor = .clear,
                         direction: GapSection.Direction = .vertical) -> GapSection {
         return GapSection(color: color, size: size, direction: direction)
     }
     
-    public func padding(multiplier: CGFloat,
-                        color: UIColor = .init(red: 0, green: 0, blue: 0, alpha: 0),
+    public func padding(multiplier: Observable<CGFloat>,
+                        color: UIColor = .clear,
                         direction: GapSection.Direction = .vertical) -> GapSection {
         return GapSection(color: color, size: multiplier, direction: direction, asMultiplier: true)
     }
@@ -29,7 +40,7 @@ extension SectionBuilder {
 
 public class GapSection {
     fileprivate let color: UIColor?
-    fileprivate let size: CGFloat
+    fileprivate let size: Observable<CGFloat>
     fileprivate let direction: Direction
     fileprivate let asMultiplier: Bool
 
@@ -37,7 +48,7 @@ public class GapSection {
         case horiztonal, vertical
     }
     
-    init(color: UIColor, size: CGFloat, direction: Direction, asMultiplier: Bool = false) {
+    init(color: UIColor, size: Observable<CGFloat>, direction: Direction, asMultiplier: Bool = false) {
         self.color = color
         self.size = size
         self.direction = direction
@@ -48,16 +59,16 @@ public class GapSection {
 extension GapSection: ViewSection {
     
     public func createView() -> UIView {
-        return UIView()
+        UIView()
     }
     
     public func size(in view: UIView, at index: Int) -> SectionCellSize {
         switch direction {
         case .vertical:
             return SectionCellSize(width: view.bounds.size.width,
-                                   height: asMultiplier ? view.bounds.size.height * size : size)
+                                   height: asMultiplier ? view.bounds.size.height * size.value : size.value)
         case .horiztonal:
-            return SectionCellSize(width: asMultiplier ? view.bounds.size.width * size : size,
+            return SectionCellSize(width: asMultiplier ? view.bounds.size.width * size.value : size.value,
                                    height: view.bounds.size.height)
         }
     }
