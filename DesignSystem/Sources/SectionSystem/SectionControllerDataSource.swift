@@ -21,6 +21,7 @@ open class SectionControllerDataSource: NSObject {
         didSet { newSections = true }
     }
     public var offset: CGFloat = 0.0 // TODO: Look at changing sections, potentially find current cell and keep hold of it, creating non moving section reloading if needed
+    public var shouldScrollToTop: ((UIScrollView) -> Bool)?
     public var didScroll: ((UIScrollView) -> Void)?
     public var willEndDrag: ((_ scrollView: UIScrollView, _ velocity: CGPoint, _ initialOffset: CGPoint, _ targetContentOffset: CGPoint) -> CGPoint?)?
     public var didEndDecelerating: ((UIScrollView) -> Void)?
@@ -163,6 +164,11 @@ open class SectionControllerDataSource: NSObject {
 }
 
 extension SectionControllerDataSource: UIScrollViewDelegate {
+    
+    public func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
+        shouldScrollToTop?(scrollView) ?? true
+    }
+    
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         offset = scrollView.contentOffset.x
         didScroll?(scrollView)

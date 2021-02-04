@@ -8,9 +8,7 @@
 
 import UIKit
 
-open class Label: UILabel {
-
-    private var notificationObject: NSObjectProtocol?
+open class Label: UILabel, Brandable {
 
     public var typography: Typography = .medium { didSet { lineHeight = numberOfLines == 1 ? 0.0 : typography.lineHeight } }
     public var actualLineHeight: CGFloat { return max(lineHeight, font.lineHeight) }
@@ -36,17 +34,8 @@ open class Label: UILabel {
         super.init(coder: aDecoder)
         setup()
     }
-
-    deinit {
-        if let observer = notificationObject {
-            NotificationCenter.default.removeObserver(observer)
-        }
-    }
     
     private func setup() {
-        notificationObject = NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: BrandingManager.didChangeNotification), object: nil, queue: nil) { [weak self] (_) in
-            self?.update()
-        }
         set(typography: .medium)
     }
 
@@ -55,6 +44,10 @@ open class Label: UILabel {
         textColor = color ?? typography.defaultColor
     }
 
+    public func setForBrand() {
+        update()
+    }
+    
     private func update() {
         guard let text = text else { attributedText = nil; return }
         let attributedString = NSMutableAttributedString(string: text, attributes: attributes)

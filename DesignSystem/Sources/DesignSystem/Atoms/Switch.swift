@@ -16,16 +16,19 @@ public final class Switch: UISwitch {
     public init() {
         super.init(frame: .zero)
         layer.cornerRadius = bounds.size.height/2
-
-        thumbTintColor = .background(.cell)
-        backgroundColor = .atom(.switchNegativeTint)
-        tintColor = .atom(.switchNegativeTint)
-        onTintColor = .atom(.switchPositiveTint)
+        setForBand()
     }
 
     @available (*, unavailable)
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    public func setForBand() {
+        thumbTintColor = .atom(.switchThumbTint)
+        backgroundColor = .atom(.switchNegativeTint)
+        tintColor = .atom(.switchNegativeTint)
+        onTintColor = .atom(.switchPositiveTint)
     }
 
     private func updateForDark() {

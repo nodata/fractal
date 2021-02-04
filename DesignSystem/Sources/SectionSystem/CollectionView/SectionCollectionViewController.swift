@@ -35,29 +35,29 @@ extension SectionCollectionViewController: SectionController {
                 if indexes.count > 0 {
                     UIView.performWithoutAnimation {
                         self.collectionView.reloadSections(IndexSet(indexes))
-                        self.reloadDidFinish()
+                        self.finished()
                     }
                 } else {
                     self.collectionView.reloadData()
                     self.collectionView.layoutIfNeeded()
-                    self.reloadDidFinish()
+                    self.finished()
                 }
 
                 return
             }
 
             if self.collectionView.refreshControl?.isRefreshing ?? false {
-                self.perform(#selector(self.reloadRefresh), with: nil, afterDelay: 0.4, inModes: [RunLoop.Mode.common])
+                self.perform(#selector(self.finished), with: nil, afterDelay: 0.4, inModes: [RunLoop.Mode.common])
             } else {
 
                 if indexes.count > 0 {
                     UIView.performWithoutAnimation { self.collectionView.reloadSections(IndexSet(indexes))
-                        self.reloadDidFinish()
+                        self.finished()
                     }
                 } else {
                     self.collectionView.reloadData()
                     self.collectionView.layoutIfNeeded()
-                    self.reloadDidFinish()
+                    self.finished()
                 }
             }
         }
@@ -67,7 +67,12 @@ extension SectionCollectionViewController: SectionController {
         collectionView.reloadData()
         collectionView.layoutIfNeeded()
         collectionView.refreshControl?.perform(#selector(collectionView.refreshControl?.endRefreshing), with: nil, afterDelay: 0.2, inModes: [RunLoop.Mode.common])
-        perform(#selector(reloadDidFinish), with: nil, afterDelay: 0.2, inModes: [RunLoop.Mode.common])
+        perform(#selector(finished), with: nil, afterDelay: 0.2, inModes: [RunLoop.Mode.common])
+    }
+    
+    @objc private func finished() {
+        for s in dataSource.sections { s.didReload() }
+        reloadDidFinish()
     }
     
     @objc open func reloadWillStart() {
@@ -75,7 +80,7 @@ extension SectionCollectionViewController: SectionController {
     }
     
     @objc open func reloadDidFinish() {
-        
+
     }
 }
 

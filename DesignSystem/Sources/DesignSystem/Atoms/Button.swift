@@ -37,7 +37,7 @@ private class ButtonLayer: CAGradientLayer {
     }
 }
 
-open class Button: UIButton {
+open class Button: UIButton, Brandable {
     
     public struct Style: Equatable, RawRepresentable {
         public let rawValue: String
@@ -106,7 +106,6 @@ open class Button: UIButton {
     public let size: Size
     
     private var backgroundColors: [UIControl.State: UIColor] = [:]
-    private var designChangeNotificationObject: NSObjectProtocol?
     private var rerenderNotificationObject: NSObjectProtocol?
 
     override public var backgroundColor: UIColor? { didSet { backgroundColors[.normal] = backgroundColor } }
@@ -148,10 +147,7 @@ open class Button: UIButton {
     }
     
     private func setup() {
-        designChangeNotificationObject = NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: BrandingManager.didChangeNotification), object: nil, queue: nil) { [weak self] (_) in
-            self?.setForBrand()
-        }
-        
+
         rerenderNotificationObject = NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: BrandingManager.buttonsRerenderNotification), object: nil, queue: nil) { [weak self] (_) in
             self?.setForBrand()
         }
@@ -160,16 +156,13 @@ open class Button: UIButton {
     }
     
     deinit {
-        if let observer = designChangeNotificationObject {
-            NotificationCenter.default.removeObserver(observer)
-        }
 
         if let observer = rerenderNotificationObject {
             NotificationCenter.default.removeObserver(observer)
         }
     }
     
-    private func setForBrand() {
+    public func setForBrand() {
         if let buttonBrand = BrandingManager.brand as? ButtonBrand {
             contentEdgeInsets = buttonBrand.contentInset(for: size)
             titleLabel?.font = buttonBrand.typography(for: size).font
@@ -248,7 +241,7 @@ extension Pin {
         case .full:
             return .width(brand?.widthPadding(for: size) ?? -.keyline*2)
         case .half:
-            return .width(options: [.multiplier(0.5)])
+            return .width(brand?.widthPadding(for: size) ?? -.keyline*2, options: [.multiplier(0.5)])
         case .natural:
             return .none
         }

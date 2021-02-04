@@ -12,11 +12,16 @@ import UIKit
 // Brand, Spacing, Typography, Colour
 // Convienience for accessing the raw style level of the DesignSystem
 
+private weak var root: UIViewController?
 private var notificationObject: NSObjectProtocol?
 private var currentBrand: Brand?
 private var globalDateManager = DateManager()
 
 infix operator ====
+
+public protocol Brandable {
+    func setForBrand()
+}
 
 public protocol Brand {
 
@@ -66,15 +71,31 @@ public class BrandingManager {
         }
     }
 
+    public static func set(rootViewController: UIViewController) {
+        root = rootViewController
+    }
+    
     public static func set(brand: Brand) {
         
-        if let current = currentBrand {
-            guard current.id != brand.id else { print("Current brand: \(current.id) id matches: \(brand.id)"); return }
+        guard let current = currentBrand else { print("Setting Brand:", brand.id); currentBrand = brand; return }
+        guard current.id != brand.id else { print("Current brand: \(current.id) id matches: \(brand.id)"); return }
+
+        print("Rebranding to:", brand.id)
+        currentBrand = brand
+        
+        if let root = root, let snapshot = root.view.snapshotView(afterScreenUpdates: true) {
+            root.view.addSubview(snapshot)
+            snapshot.pin(to: root.view)
+            UIView.animate(withDuration: 0.6, delay: 0.0, options: [.beginFromCurrentState, .curveEaseInOut]) {
+                snapshot.alpha = 0.0
+            } completion: { (finished) in
+                snapshot.removeFromSuperview()
+            }
         }
         
-        currentBrand = brand
-        print("Setting Brand:", brand.id)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: BrandingManager.didChangeNotification), object: nil)
+        let n = Notification.Name(rawValue: BrandingManager.didChangeNotification)
+        NotificationCenter.default.post(name: n, object: nil)
+        rebrand()
     }
 
     public static var brand: Brand {
@@ -100,6 +121,29 @@ public class BrandingManager {
             return UIContentSizeCategory(rawValue: UserDefaults.standard.string(forKey: BrandingManager.contentSizeOverrideValueKey) ?? "medium")
         }
         return UIApplication.shared.preferredContentSizeCategory
+    }
+    
+    private static func rebrand() {
+        
+        guard let r = root else { return }
+
+        var views = [UIView]()
+        var vcs = [UIViewController]()
+        
+        func applyTo(view: UIView) {
+            for v in view.subviews { applyTo(view: v) }
+            if view as? Brandable != nil { views.append(view) }
+        }
+        
+        func applyTo(viewController: UIViewController) {
+            applyTo(view: viewController.view)
+            for vc in viewController.children { applyTo(viewController: vc) }
+            if viewController as? Brandable != nil { vcs.append(viewController) }
+        }
+        
+        applyTo(viewController: r)
+        for a in Set(views) { (a as? Brandable)?.setForBrand() }
+        for a in Set(vcs) { (a as? Brandable)?.setForBrand() }
     }
 }
 
@@ -193,7 +237,7 @@ public struct Typography: CaseIterable, Equatable {
     }
     
     public var strongVersion: Typography {
-        return Typography(self.key, [.strong])
+        Typography(self.key, [.strong])
     }
 
     // Apple font weights
@@ -210,7 +254,7 @@ public struct Typography: CaseIterable, Equatable {
 
     public var lineHeight: CGFloat { font.lineHeight }
 
-    public var defaultColor: UIColor { .text } // TODO: put inside brand
+    public var defaultColor: UIColor { .text }
 }
 
 public extension Typography {

@@ -16,6 +16,8 @@ extension SectionBuilder {
                          backgroundColor: UIColor = .clear,
                          layout: UICollectionViewLayout? = nil,
                          didScrollClosure: ((UIScrollView) -> Void)? = nil,
+                         didEndDecelerating: ((UIScrollView) -> Void)? = nil,
+                         didEndScrollingAnimation: ((UIScrollView) -> Void)? = nil,
                          sections: @autoclosure @escaping () -> [Section]) -> CarouselSection {
         return CarouselSection(id: reuseIdentifier,
                                heightType: height,
@@ -23,11 +25,13 @@ extension SectionBuilder {
                                backgroundColor: backgroundColor,
                                layout: layout,
                                didScrollClosure: didScrollClosure,
+                               didEndDecelerating: didEndDecelerating,
+                               didEndScrollingAnimation: didEndScrollingAnimation,
                                sectionsClosure: sections)
     }
 }
 
-public class CarouselSection {
+open class CarouselSection {
 
     public enum PositionType {
         case left, right, center, top, bottom
@@ -75,6 +79,8 @@ public class CarouselSection {
     private var staticSections: [Section]
     private let layout: UICollectionViewLayout?
     private var didScrollClosure: ((UIScrollView) -> Void)?
+    private var didEndDecelerating: ((UIScrollView) -> Void)?
+    private var didEndScrollingAnimation: ((UIScrollView) -> Void)?
     private let backgroundColor: UIColor
     
     fileprivate init(id: String,
@@ -83,6 +89,8 @@ public class CarouselSection {
                      backgroundColor: UIColor,
                      layout: UICollectionViewLayout?,
                      didScrollClosure: ((UIScrollView) -> Void)?,
+                     didEndDecelerating: ((UIScrollView) -> Void)?,
+                     didEndScrollingAnimation: ((UIScrollView) -> Void)?,
                      sectionsClosure: @escaping () -> [Section]) {
         self.id = id
         self.heightType = heightType
@@ -91,6 +99,8 @@ public class CarouselSection {
         self.sectionsClosure = sectionsClosure
         self.staticSections = sectionsClosure()
         self.didScrollClosure = didScrollClosure
+        self.didEndDecelerating = didEndDecelerating
+        self.didEndScrollingAnimation = didEndScrollingAnimation
         self.layout = layout
     }
     
@@ -136,6 +146,8 @@ extension CarouselSection: ViewControllerSection {
     public func createViewController() -> UIViewController {
         let vc = CarouselViewController()
         vc.didScrollClosure = didScrollClosure
+        vc.didEndDecelerating = didEndDecelerating
+        vc.didEndScrollingAnimation = didEndScrollingAnimation
         return vc
     }
 
@@ -160,6 +172,8 @@ extension CarouselSection: ViewControllerSection {
         vc.pagingType = pagingType
         vc.dataSource.sections = staticSections
         vc.view.backgroundColor = backgroundColor
+        vc.didScrollClosure = didScrollClosure
+        vc.didEndDecelerating = didEndDecelerating
         vc.reload()
         
         // move offset logic into section collectionviewcontroller

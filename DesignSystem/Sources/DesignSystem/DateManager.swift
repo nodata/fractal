@@ -18,23 +18,21 @@ private let oneMonth = oneDay * 30.0
 private let twoMonths = oneMonth * 2.0
 private let sixMonths = oneMonth * 6.0
 
-// A single DateFormatter as they are incredibly heavy to create..
-// I'm wondering how other than a singleton you might create a solution here? Or is a Singleton the only option? - Anthony
-
 public enum DateStyle {
-    case detailed, medium, fuzzy
+    case detailed, medium, fuzzy, time
 }
 
 public protocol BrandDate {
     var detailedFormatter: DateFormatter { get }
     var mediumFormatter: DateFormatter { get }
+    var timeFormatter: DateFormatter { get }
     func fuzzyString(from date: Date) -> String
 }
 
 public final class DateManager {
 
     // TODO: subscribe to NSLocale.currentLocaleDidChangeNotification to reset on Locale change
-
+    
     public func string(from date: Date?, style: DateStyle = .medium, placeholder: String = "") -> String {
 
         guard let date = date else { return placeholder }
@@ -47,6 +45,8 @@ public final class DateManager {
                 return brand.mediumFormatter.string(from: date)
             case .fuzzy:
                 return brand.fuzzyString(from: date)
+            case .time:
+                return brand.timeFormatter.string(from: date)
             }
         }
 
@@ -55,6 +55,8 @@ public final class DateManager {
             return defaultDetailedFormatter.string(from: date)
         case .medium:
             return defaultMediumFormatter.string(from: date)
+        case .time:
+            return timeFormatter.string(from: date)
         case .fuzzy:
             return fuzzyString(from: date)
         }
@@ -109,6 +111,15 @@ public final class DateManager {
         formatter.timeStyle = .none
         formatter.timeZone = .current
 
+        return formatter
+    }()
+    
+    private lazy var timeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = .current
+        formatter.dateStyle = .none
+        formatter.timeStyle = .short
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
         return formatter
     }()
 }
