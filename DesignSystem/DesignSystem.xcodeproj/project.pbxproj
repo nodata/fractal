@@ -12,11 +12,11 @@
 		2256487D24123FA80081CAD5 /* DesignSystem.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 92BA38F72179829800266383 /* DesignSystem.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		723609162282AD2100300065 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 723609152282AD2100300065 /* Images.xcassets */; };
 		7244A0AA230D234F00C7EC28 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7244A0A9230D234F00C7EC28 /* Observable.swift */; };
-		728D057A2282996000B44543 /* BrandingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728D05752282996000B44543 /* BrandingManager.swift */; };
-		728D057B2282996000B44543 /* BrandingManager+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728D05762282996000B44543 /* BrandingManager+UIView.swift */; };
+		728D057A2282996000B44543 /* BrandManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728D05752282996000B44543 /* BrandManager.swift */; };
+		728D057B2282996000B44543 /* BrandManager+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728D05762282996000B44543 /* BrandManager+UIView.swift */; };
 		728D057C2282996000B44543 /* DateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728D05772282996000B44543 /* DateManager.swift */; };
-		728D057D2282996000B44543 /* BrandingManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728D05782282996000B44543 /* BrandingManager+Extensions.swift */; };
-		728D057E2282996000B44543 /* BrandingManager+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728D05792282996000B44543 /* BrandingManager+String.swift */; };
+		728D057D2282996000B44543 /* BrandManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728D05782282996000B44543 /* BrandManager+Extensions.swift */; };
+		728D057E2282996000B44543 /* BrandManager+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728D05792282996000B44543 /* BrandManager+String.swift */; };
 		9202FFCB2313C850006A8E92 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9202FFCA2313C850006A8E92 /* NavigationController.swift */; };
 		920963372271518E00FC8E6F /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920962E12271518D00FC8E6F /* Helpers.swift */; };
 		920963382271518E00FC8E6F /* DesignSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 920962E22271518D00FC8E6F /* DesignSystem.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -104,11 +104,11 @@
 		2256487424123D1F0081CAD5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		723609152282AD2100300065 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Resources/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		7244A0A9230D234F00C7EC28 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
-		728D05752282996000B44543 /* BrandingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BrandingManager.swift; path = Sources/DesignSystem/BrandingManager.swift; sourceTree = SOURCE_ROOT; };
-		728D05762282996000B44543 /* BrandingManager+UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "BrandingManager+UIView.swift"; path = "Sources/DesignSystem/BrandingManager+UIView.swift"; sourceTree = SOURCE_ROOT; };
+		728D05752282996000B44543 /* BrandManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BrandManager.swift; path = Sources/DesignSystem/BrandManager.swift; sourceTree = SOURCE_ROOT; };
+		728D05762282996000B44543 /* BrandManager+UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "BrandManager+UIView.swift"; path = "Sources/DesignSystem/BrandManager+UIView.swift"; sourceTree = SOURCE_ROOT; };
 		728D05772282996000B44543 /* DateManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DateManager.swift; path = Sources/DesignSystem/DateManager.swift; sourceTree = SOURCE_ROOT; };
-		728D05782282996000B44543 /* BrandingManager+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "BrandingManager+Extensions.swift"; path = "Sources/DesignSystem/BrandingManager+Extensions.swift"; sourceTree = SOURCE_ROOT; };
-		728D05792282996000B44543 /* BrandingManager+String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "BrandingManager+String.swift"; path = "Sources/DesignSystem/BrandingManager+String.swift"; sourceTree = SOURCE_ROOT; };
+		728D05782282996000B44543 /* BrandManager+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "BrandManager+Extensions.swift"; path = "Sources/DesignSystem/BrandManager+Extensions.swift"; sourceTree = SOURCE_ROOT; };
+		728D05792282996000B44543 /* BrandManager+String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "BrandManager+String.swift"; path = "Sources/DesignSystem/BrandManager+String.swift"; sourceTree = SOURCE_ROOT; };
 		9202FFCA2313C850006A8E92 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		920962E12271518D00FC8E6F /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		920962E22271518D00FC8E6F /* DesignSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DesignSystem.h; sourceTree = "<group>"; };
@@ -241,10 +241,10 @@
 			isa = PBXGroup;
 			children = (
 				9228C61D229E2AE000B8972B /* DefaultBrand.swift */,
-				728D05752282996000B44543 /* BrandingManager.swift */,
-				728D05782282996000B44543 /* BrandingManager+Extensions.swift */,
-				728D05792282996000B44543 /* BrandingManager+String.swift */,
-				728D05762282996000B44543 /* BrandingManager+UIView.swift */,
+				728D05752282996000B44543 /* BrandManager.swift */,
+				728D05782282996000B44543 /* BrandManager+Extensions.swift */,
+				728D05792282996000B44543 /* BrandManager+String.swift */,
+				728D05762282996000B44543 /* BrandManager+UIView.swift */,
 				728D05772282996000B44543 /* DateManager.swift */,
 			);
 			path = Branding;
@@ -506,7 +506,7 @@
 			files = (
 				9209635E2271518E00FC8E6F /* SectionCollectionViewController.swift in Sources */,
 				92AC189A22F6A6A90002376E /* CarouselSection.swift in Sources */,
-				728D057D2282996000B44543 /* BrandingManager+Extensions.swift in Sources */,
+				728D057D2282996000B44543 /* BrandManager+Extensions.swift in Sources */,
 				9228C566229CB21600B8972B /* TextView.swift in Sources */,
 				9209635A2271518E00FC8E6F /* SectionTableViewController.swift in Sources */,
 				9228C567229CB21600B8972B /* Label.swift in Sources */,
@@ -532,13 +532,13 @@
 				92AC188222E9F69B0002376E /* GroupSection.swift in Sources */,
 				9228C562229CB21600B8972B /* ImageView.swift in Sources */,
 				9284A74523D46D5E00AD66EF /* PeekingContentSection.swift in Sources */,
-				728D057E2282996000B44543 /* BrandingManager+String.swift in Sources */,
+				728D057E2282996000B44543 /* BrandManager+String.swift in Sources */,
 				9228C561229CB21600B8972B /* TextField.swift in Sources */,
 				92AC189C22F6A6D70002376E /* CarouselViewController.swift in Sources */,
-				728D057B2282996000B44543 /* BrandingManager+UIView.swift in Sources */,
+				728D057B2282996000B44543 /* BrandManager+UIView.swift in Sources */,
 				92AC188D22EDB3570002376E /* DividerView.swift in Sources */,
 				9209633A2271518E00FC8E6F /* UIView+Pin.swift in Sources */,
-				728D057A2282996000B44543 /* BrandingManager.swift in Sources */,
+				728D057A2282996000B44543 /* BrandManager.swift in Sources */,
 				92A5884A23D46F6200B462CD /* GapSection.swift in Sources */,
 				9228C564229CB21600B8972B /* Switch.swift in Sources */,
 				92C5D92522F1727000E1A68D /* Section+Enumeration.swift in Sources */,

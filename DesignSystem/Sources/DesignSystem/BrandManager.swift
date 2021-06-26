@@ -1,5 +1,5 @@
 //
-//  BrandingManager.swift
+//  BrandManager.swift
 //  Mercari
 //
 //  Created by Anthony Smith on 28/08/2018.
@@ -8,14 +8,6 @@
 
 import Foundation
 import UIKit
-
-// Brand, Spacing, Typography, Colour
-// Convienience for accessing the raw style level of the DesignSystem
-
-private weak var root: UIViewController?
-private var notificationObject: NSObjectProtocol?
-private var currentBrand: Brand?
-private var globalDateManager = DateManager()
 
 infix operator ====
 
@@ -50,82 +42,75 @@ public protocol Brand {
 }
 
 protocol BrandTest {
-    var rawPalette: [BrandingManager.PaletteOption] { get }
+    var rawPalette: [PaletteOption] { get }
     var allTypographyCases: [Typography] { get }
 }
 
-public class BrandingManager {
+public struct PaletteOption {
+    public let name: String
+    public let color: UIColor
+    
+    public init(name: String, color: UIColor) {
+        self.name = name
+        self.color = color
+    }
+}
+
+public class BrandManager {
 
     public static let didChangeNotification = "BrandingManager_BrandDidChange"
-    public static let buttonsRerenderNotification = "BrandingManager_ButtonsRerender"
     public static let contentSizeOverrideKey = "BrandingManager_contentSizeCategory_override"
     public static let contentSizeOverrideValueKey = "BrandingManager_contentSizeCategory_value"
 
-    public struct PaletteOption {
-        public let name: String
-        public let color: UIColor
-        
-        public init(name: String, color: UIColor) {
-            self.name = name
-            self.color = color
+    public static let shared = BrandManager()
+    
+    public var dateManager: DateManager!
+    public var brand: Brand = DefaultBrand() { didSet { brandDidChange() } }
+
+    public weak var rootViewController: UIViewController?
+    
+    private var notificationObject: NSObjectProtocol?
+    private var initialLoad = true
+    
+    init() {
+        notificationObject = NotificationCenter.default.addObserver(forName: UIContentSizeCategory.didChangeNotification, object: nil, queue: nil) { [weak self] (_) in
+            self?.rebrandViewHierarchy()
         }
+        
+        dateManager = DateManager(brandManager: self)
     }
 
-    public static func set(rootViewController: UIViewController) {
-        root = rootViewController
+    public var contentSizeCategory: UIContentSizeCategory {
+        if UserDefaults.standard.bool(forKey: BrandManager.contentSizeOverrideKey) {
+            return UIContentSizeCategory(rawValue: UserDefaults.standard.string(forKey: BrandManager.contentSizeOverrideValueKey) ?? "medium")
+        }
+        return UIApplication.shared.preferredContentSizeCategory
     }
     
-    public static func set(brand: Brand) {
+    public func brandDidChange() {
         
-        guard let current = currentBrand else { print("Setting Brand:", brand.id); currentBrand = brand; return }
-        guard current.id != brand.id else { print("Current brand: \(current.id) id matches: \(brand.id)"); return }
-
-        print("Rebranding to:", brand.id)
-        currentBrand = brand
+        print("brandDidChange:", brand.id)
         
-        if let root = root, let snapshot = root.view.snapshotView(afterScreenUpdates: true) {
+        if !initialLoad, let root = rootViewController, let snapshot = root.view.snapshotView(afterScreenUpdates: true) {
             root.view.addSubview(snapshot)
             snapshot.pin(to: root.view)
-            UIView.animate(withDuration: 0.6, delay: 0.0, options: [.beginFromCurrentState, .curveEaseInOut]) {
+            UIView.animate(withDuration: 0.2, delay: 0.0, options: [.beginFromCurrentState, .curveEaseInOut]) {
                 snapshot.alpha = 0.0
             } completion: { (finished) in
                 snapshot.removeFromSuperview()
             }
         }
         
-        let n = Notification.Name(rawValue: BrandingManager.didChangeNotification)
-        NotificationCenter.default.post(name: n, object: nil)
-        rebrand()
-    }
-
-    public static var brand: Brand {
-        if let brand = currentBrand { return brand }
-        print("BrandingManager: No Brand set - Using DefaultBrand")
-        let defaultBrand = DefaultBrand()
-        currentBrand = defaultBrand
-        return defaultBrand
-    }
-
-    public static var dateManager: DateManager {
-        return globalDateManager
-    }
-
-    public static func subscribeToNotifications() {
-        notificationObject = NotificationCenter.default.addObserver(forName: UIContentSizeCategory.didChangeNotification, object: nil, queue: nil) { (_) in
-            NotificationCenter.default.post(name: Notification.Name(rawValue: BrandingManager.didChangeNotification), object: nil)
-        }
-    }
-
-    public static var contentSizeCategory: UIContentSizeCategory {
-        if UserDefaults.standard.bool(forKey: BrandingManager.contentSizeOverrideKey) {
-            return UIContentSizeCategory(rawValue: UserDefaults.standard.string(forKey: BrandingManager.contentSizeOverrideValueKey) ?? "medium")
-        }
-        return UIApplication.shared.preferredContentSizeCategory
+        initialLoad = false
+        rebrandViewHierarchy()
     }
     
-    private static func rebrand() {
+    private func rebrandViewHierarchy() {
         
-        guard let r = root else { return }
+        guard let root = rootViewController else {
+            print("No rootViewController set on BrandManager, unable to rebrand hierarchy")
+            return
+        }
 
         var views = [UIView]()
         var vcs = [UIViewController]()
@@ -137,13 +122,27 @@ public class BrandingManager {
         
         func applyTo(viewController: UIViewController) {
             applyTo(view: viewController.view)
+            
+            if viewController as? Brandable != nil {
+                vcs.append(viewController)
+            }
+            
+            if viewController.presentedViewController as? Brandable != nil {
+                vcs.append(viewController.presentedViewController!)
+                applyTo(viewController: viewController.presentedViewController!)
+            }
+            
+            if let navigationController = viewController as? UINavigationController {
+                for vc in navigationController.viewControllers { applyTo(viewController: vc) }
+                applyTo(viewController: navigationController)
+            }
+            
             for vc in viewController.children { applyTo(viewController: vc) }
-            if viewController as? Brandable != nil { vcs.append(viewController) }
         }
         
-        applyTo(viewController: r)
-        for a in Set(views) { (a as? Brandable)?.setForBrand() }
-        for a in Set(vcs) { (a as? Brandable)?.setForBrand() }
+        applyTo(viewController: root)
+        for b in Set(views) { (b as? Brandable)?.setForBrand() }
+        for b in Set(vcs) { (b as? Brandable)?.setForBrand() }
     }
 }
 
@@ -169,7 +168,7 @@ public struct Typography: CaseIterable, Equatable {
 
     public let key: Key
     public var modifiers: [Modifier]
-
+    
     public struct Modifier: Equatable, RawRepresentable {
         public let rawValue: String
 
@@ -219,7 +218,7 @@ public struct Typography: CaseIterable, Equatable {
     }
 
     public var font: UIFont {
-        let name = BrandingManager.brand.fontName(for: self)
+        let name = BrandManager.shared.brand.fontName(for: self)
         let defaultFont: UIFont = .systemFont(ofSize: fontSize, weight: fontWeight)
         guard let fontName = name else { return defaultFont }
         guard let font = UIFont(name: fontName, size: fontSize) else {
@@ -230,27 +229,23 @@ public struct Typography: CaseIterable, Equatable {
     }
 
     public func font(overriddenPointSize: CGFloat) -> UIFont {
-        let name = BrandingManager.brand.fontName(for: self)
+        let name = BrandManager.shared.brand.fontName(for: self)
         let defaultFont: UIFont = .systemFont(ofSize: overriddenPointSize, weight: fontWeight)
         guard let fontName = name else { return defaultFont }
         return UIFont(name: fontName, size: overriddenPointSize) ?? defaultFont
-    }
-    
-    public var strongVersion: Typography {
-        Typography(self.key, [.strong])
     }
 
     // Apple font weights
     // ultraLight, thin, light, regular, medium, semibold, bold, heavy, strong, black
     public var fontWeight: UIFont.Weight {
-        return BrandingManager.brand.fontWeight(for: self)
+        BrandManager.shared.brand.fontWeight(for: self)
     }
 
     public var useAccessibility: Bool { return !modifiers.contains(.noAccessibility) }
 
     public var isStrong: Bool { modifiers.contains(.strong) }
 
-    public var fontSize: CGFloat { BrandingManager.brand.fontSize(for: self) }
+    public var fontSize: CGFloat { BrandManager.shared.brand.fontSize(for: self) }
 
     public var lineHeight: CGFloat { font.lineHeight }
 
@@ -346,28 +341,6 @@ public extension UIColor {
     }
 }
 
-extension Label.Style {
-    static let medium = Label.Style(color: .black, typography: .medium)
-}
-
-extension Label {
-    struct Style {
-        let color: UIColor
-        let typography: Typography
-    }
-    
-    func apply(style: Style) -> Label {
-        self.textColor = style.color
-        self.typography = style.typography
-        return self
-    }
-
-    func ewlfkjnwef() {
-        let label = Label().apply(style: .medium)
-        label.text = ""
-    }
-}
-
 public extension UIImage {
     struct Key: Equatable, RawRepresentable {
         public let rawValue: String
@@ -386,25 +359,71 @@ public extension UIImage {
     }
 
     static func with(_ key: Key, in bundle: Bundle? = nil) -> UIImage? {
-        guard let name = BrandingManager.brand.imageName(for: key) else { return nil }
+        guard let name = BrandManager.shared.brand.imageName(for: key) else { return nil }
 
-        if let bundle = bundle, let image = UIImage(named: name, in: bundle, compatibleWith: nil) {
-            return image
-        }
+        if let bundle = bundle, let image = UIImage(named: name, in: bundle, compatibleWith: nil) { return image }
 
-        if let bundle = BrandingManager.brand.resourceBundle, let image = UIImage(named: name, in: bundle, compatibleWith: nil) {
-            return image
-        }
+        if let bundle = BrandManager.shared.brand.resourceBundle, let image = UIImage(named: name, in: bundle, compatibleWith: nil) { return image }
 
-        if let image = UIImage(named: name, in: .main, compatibleWith: nil) {
-            return image
-        }
+        if let image = UIImage(named: name, in: .main, compatibleWith: nil) { return image }
 
-        if let image = UIImage(named: name, in: Bundle(for: BrandingManager.self), compatibleWith: nil) {
-            return image
-        }
+        if let image = UIImage(named: name, in: Bundle(for: BrandManager.self), compatibleWith: nil) { return image }
 
         print("Failed to find \(key.rawValue) in any bundle")
         return nil
     }
+}
+
+public extension CGSize { // IconSize
+
+    static var xxSmallIcon: CGSize { BrandManager.shared.brand.size(for: .xxsmall) }
+    static var xSmallIcon:  CGSize { BrandManager.shared.brand.size(for: .xsmall) }
+    static var smallIcon:   CGSize { BrandManager.shared.brand.size(for: .small) }
+    static var mediumIcon:  CGSize { BrandManager.shared.brand.size(for: .medium) }
+    static var largeIcon:   CGSize { BrandManager.shared.brand.size(for: .large) }
+    static var xLargeIcon:  CGSize { BrandManager.shared.brand.size(for: .xlarge) }
+    static var xxLargeIcon: CGSize { BrandManager.shared.brand.size(for: .xxlarge) }
+}
+
+public extension UIColor {
+
+    static var atom:       UIColor { .atom(.primary) }
+    static var brand:      UIColor { .brand(.primary) }
+    static var background: UIColor { .background(.primary) }
+    static var text:       UIColor { .text(.primary) }
+
+    static func atom(_ key: UIColor.Key = .primary) -> UIColor { BrandManager.shared.brand.atomColor(for: key) }
+
+    static func brand(_ key: UIColor.Key = .primary) -> UIColor { BrandManager.shared.brand.brandColor(for: key) }
+
+    static func background(_ key: UIColor.Key = .primary) -> UIColor { BrandManager.shared.brand.backgroundColor(for: key) }
+    static func text(_ key: UIColor.Key = .primary) -> UIColor { BrandManager.shared.brand.textColor(for: key) }
+}
+
+public extension CGFloat { // Spacing and size
+
+    static var xxsmall:  CGFloat { return BrandManager.shared.brand.floatValue(for: .xxsmall) }
+    static var xsmall:   CGFloat { return BrandManager.shared.brand.floatValue(for: .xsmall) }
+    static var small:    CGFloat { return BrandManager.shared.brand.floatValue(for: .small) }
+    static var medium:   CGFloat { return BrandManager.shared.brand.floatValue(for: .medium) }
+    static var large:    CGFloat { return BrandManager.shared.brand.floatValue(for: .large) }
+    static var xlarge:   CGFloat { return BrandManager.shared.brand.floatValue(for: .xlarge) }
+    static var xxlarge:  CGFloat { return BrandManager.shared.brand.floatValue(for: .xxlarge) }
+    static var xxxlarge: CGFloat { return BrandManager.shared.brand.floatValue(for: .xxxlarge) }
+
+    static var padding:  CGFloat { return BrandManager.shared.brand.floatValue(for: .padding) }
+    static var keyline:  CGFloat { return BrandManager.shared.brand.floatValue(for: .keyline) }
+    static var divider:  CGFloat { return BrandManager.shared.brand.floatValue(for: .divider) }
+    
+    static var smallCornerRadius: CGFloat { return BrandManager.shared.brand.floatValue(for: .cornersmall) }
+    static var mediumCornerRadius: CGFloat { return BrandManager.shared.brand.floatValue(for: .cornermedium) }
+    static var largeCornerRadius: CGFloat { return BrandManager.shared.brand.floatValue(for: .cornerlarge) }
+}
+
+public extension UIKeyboardAppearance {
+    static var brandKeyboardAppearance: UIKeyboardAppearance { BrandManager.shared.brand.keyboardAppearance }
+}
+
+public extension UIContentSizeCategory {
+    static var managedContentSizeCategory: UIContentSizeCategory { BrandManager.shared.contentSizeCategory }
 }

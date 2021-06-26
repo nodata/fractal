@@ -105,8 +105,8 @@ open class Button: UIButton, Brandable {
     public let style: Style
     public let size: Size
     
+    private let brandManager: BrandManager
     private var backgroundColors: [UIControl.State: UIColor] = [:]
-    private var rerenderNotificationObject: NSObjectProtocol?
 
     override public var backgroundColor: UIColor? { didSet { backgroundColors[.normal] = backgroundColor } }
     override public var isSelected: Bool { didSet { updateBackground() } }
@@ -125,50 +125,37 @@ open class Button: UIButton, Brandable {
         return layer as? CAGradientLayer
     }
 
-    public init(style: Style, size: Size) {
+    public init(style: Style, size: Size, brandManager: BrandManager = .shared) {
         self.size = size
         self.style = style
+        self.brandManager = brandManager
         super.init(frame: .zero)
-        setup()
-    }
-    
-    public init(_ style: Style, _ size: Size) {
-        self.size = size
-        self.style = style
-        super.init(frame: .zero)
-        setup()
-    }
-    
-    public init(_ style: Style, _ sizeTuple: (width: Size.Width, height: Size.Height)) {
-        self.size = Size(width: sizeTuple.width, height: sizeTuple.height)
-        self.style = style
-        super.init(frame: .zero)
-        setup()
-    }
-    
-    private func setup() {
-
-        rerenderNotificationObject = NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: BrandingManager.buttonsRerenderNotification), object: nil, queue: nil) { [weak self] (_) in
-            self?.setForBrand()
-        }
-        
         setForBrand()
     }
     
-    deinit {
-
-        if let observer = rerenderNotificationObject {
-            NotificationCenter.default.removeObserver(observer)
-        }
+    public init(_ style: Style, _ size: Size, brandManager: BrandManager = .shared) {
+        self.size = size
+        self.style = style
+        self.brandManager = brandManager
+        super.init(frame: .zero)
+        setForBrand()
+    }
+    
+    public init(_ style: Style, _ sizeTuple: (width: Size.Width, height: Size.Height), brandManager: BrandManager = .shared) {
+        self.size = Size(width: sizeTuple.width, height: sizeTuple.height)
+        self.style = style
+        self.brandManager = brandManager
+        super.init(frame: .zero)
+        setForBrand()
     }
     
     public func setForBrand() {
-        if let buttonBrand = BrandingManager.brand as? ButtonBrand {
+        if let buttonBrand = brandManager.brand as? ButtonBrand {
             contentEdgeInsets = buttonBrand.contentInset(for: size)
             titleLabel?.font = buttonBrand.typography(for: size).font
             buttonBrand.configure(self, with: style)
         } else {
-            print("BrandingManager.brand does not conform to protocol ButtonBrand")
+            print("BrandManager.brand does not conform to protocol ButtonBrand")
         }
     }
     
@@ -177,14 +164,13 @@ open class Button: UIButton, Brandable {
     }
     
     @discardableResult public func pin(sizeIn view: UIView) -> [NSLayoutConstraint] {
-        pin(to: view, [.width(for: size, brand: BrandingManager.brand as? ButtonBrand),
-                       .height(for: size, brand: BrandingManager.brand as? ButtonBrand)])
+        pin(to: view, [.width(for: size, brandManager: brandManager),
+                       .height(for: size, brandManager: brandManager)])
     }
     
     @discardableResult public func pin(height view: UIView) -> [NSLayoutConstraint] {
-        pin(to: view, [.height(for: size, brand: BrandingManager.brand as? ButtonBrand)])
+        pin(to: view, [.height(for: size, brandManager: brandManager)])
     }
-    
     
     public func setBackgroundColor(_ color: UIColor?, for state: UIControl.State) {
         backgroundColors[state] = color
@@ -234,20 +220,20 @@ open class Button: UIButton, Brandable {
 
 extension Pin {
 
-    static func width(for size: Button.Size, brand: ButtonBrand? = nil) -> Pin {
+    static func width(for size: Button.Size, brandManager: BrandManager) -> Pin {
         switch size.width {
         case .custom(let value):
             return .width(asConstant: value)
         case .full:
-            return .width(brand?.widthPadding(for: size) ?? -.keyline*2)
+            return .width((brandManager.brand as? ButtonBrand)?.widthPadding(for: size) ?? -.keyline*2)
         case .half:
-            return .width(brand?.widthPadding(for: size) ?? -.keyline*2, options: [.multiplier(0.5)])
+            return .width((brandManager.brand as? ButtonBrand)?.widthPadding(for: size) ?? -.keyline*2, options: [.multiplier(0.5)])
         case .natural:
             return .none
         }
     }
     
-    static func height(for size: Button.Size, brand: ButtonBrand? = nil) -> Pin {
+    static func height(for size: Button.Size, brandManager: BrandManager) -> Pin {
         
         func defaultPin() -> Pin {
             switch size.height {
@@ -264,17 +250,11 @@ extension Pin {
             }
         }
         
-        if let brand = brand {
-            let floatValue = brand.height(for: size)
-            return floatValue == 0.0 ? .none : .height(asConstant: floatValue)
-        }
-        
-        if let brand = BrandingManager.brand as? ButtonBrand {
+        if let brand = brandManager.brand as? ButtonBrand {
             let floatValue = brand.height(for: size)
             return floatValue == 0.0 ? .none : .height(asConstant: floatValue)
         }
         
         return defaultPin()
-
     }
 }

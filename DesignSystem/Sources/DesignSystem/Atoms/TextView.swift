@@ -41,7 +41,7 @@ final public class TextView: UITextView {
         tintColor = .brand
         backgroundColor = .clear
         contentInset = .zero
-        keyboardAppearance = BrandingManager.brand.keyboardAppearance
+        keyboardAppearance = .brandKeyboardAppearance
     }
 
     override public func layoutSubviews() {

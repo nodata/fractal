@@ -44,7 +44,6 @@ public class CardViewController: UIViewController {
     
     @objc private func coverViewTapped() {
         
-        guard !isIPad else { return }
         guard let cardView = cardViews.last else { return }
         guard cardView.viewController?.cardViewContentDelegate?.isBackgroundDismissable ?? true else { return }
         cardView.animateOut()

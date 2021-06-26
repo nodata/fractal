@@ -18,6 +18,17 @@ public protocol BrandUpdateable: UIViewController { // TODO: maybe doesn't have 
 
 public class NavigationController: UINavigationController, Brandable {
 
+    private let brandManager: BrandManager
+    
+    init(rootViewController: UIViewController, brandManager: BrandManager = .shared) {
+        self.brandManager = brandManager
+        super.init(rootViewController: rootViewController)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override public func viewDidLoad() {
         super.viewDidLoad()
         setForBrand()
@@ -29,7 +40,7 @@ public class NavigationController: UINavigationController, Brandable {
     }
     
     private func applyBrand() {
-        guard let brand = BrandingManager.brand as? NavigationControllerBrand else {
+        guard let brand = brandManager.brand as? NavigationControllerBrand else {
             print("BrandingManager.brand does not conform to NavigationControllerBrand")
             return
         }

@@ -14,7 +14,7 @@ public protocol CardViewContentDelegate: CardViewDelegate {
     // Adding contentScrollView allows for drag to dismiss when your contentOffet.y is zero.
     var contentScrollView: UIScrollView? { get }
     
-    // Dynamically disable and enable background tap to dismiss.. Always blocked on iPad.
+    // Dynamically disable and enable background tap to dismiss.. blocked by default on iPad.
     var isBackgroundDismissable: Bool { get }
     
     // Dynamically disable and enable dragging.
@@ -44,7 +44,7 @@ public protocol CardViewDelegate: class {
 public extension CardViewContentDelegate {
 
     var contentScrollView: UIScrollView? { return nil }
-    var isBackgroundDismissable: Bool { return true }
+    var isBackgroundDismissable: Bool { return !isIPad }
     var isDraggable: Bool { return true }
 
     var cardHandleColor: UIColor? { return nil }

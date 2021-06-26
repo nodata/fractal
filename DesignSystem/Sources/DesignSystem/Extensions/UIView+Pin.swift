@@ -515,7 +515,7 @@ private class ExampleView: UIView {
         let aSubview = UIView()
         addSubview(aSubview)
         aSubview.pin(to: self, [.leading, .top, .width, .height])
-
+                
         // or
 
         aSubview.pin(to: self, [.centerX, .centerY, .width, .height])

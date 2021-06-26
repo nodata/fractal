@@ -95,13 +95,12 @@ extension SectionTableViewController: SectionController {
     }
 }
 
-open class SectionTableViewController: UITableViewController {
-
+open class SectionTableViewController: UITableViewController, Brandable {
+    
     private let useRefreshControl: Bool
     private var registeredReuseIdentifiers: Set<String> = []
     private var data: SectionControllerDataSource!
     private var configureTableView: ((UITableView) -> Void)?
-    private var notificationObject: NSObjectProtocol?
     public var refresh: (() -> Void)?
     public var tearDownOnBrandChange: Bool = true
 
@@ -157,22 +156,15 @@ open class SectionTableViewController: UITableViewController {
         }
 
         configureTableView?(tableView)
-
-        notificationObject = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: BrandingManager.didChangeNotification), object: nil, queue: nil) { [weak self] (_) in
-            guard let `self` = self else { return }
-            guard self.tearDownOnBrandChange else { return }
-            self.tearDownSections()
-        }
-    }
-
-    deinit {
-        if let observer = notificationObject {
-            NotificationCenter.default.removeObserver(observer)
-        }
     }
 
     @objc open func refreshTriggered() {
         didPullDownToRefreshClosure?()
+    }
+    
+    open func setForBrand() {
+        guard tearDownOnBrandChange else { return }
+        tearDownSections()
     }
     
     private func tearDownSections() {

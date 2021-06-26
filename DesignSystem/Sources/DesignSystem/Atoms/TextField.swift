@@ -43,7 +43,7 @@ final public class TextField: UITextField {
         textColor = .text
         tintColor = .brand
         backgroundColor = .clear
-        keyboardAppearance = BrandingManager.brand.keyboardAppearance
+        keyboardAppearance = .brandKeyboardAppearance
     }
     
     private func update() {

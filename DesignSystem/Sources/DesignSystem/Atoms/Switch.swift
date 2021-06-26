@@ -9,14 +9,14 @@
 import Foundation
 import UIKit
 
-public final class Switch: UISwitch {
+public final class Switch: UISwitch, Brandable {
 
     public var dark: Bool = false { didSet { updateForDark() }}
 
     public init() {
         super.init(frame: .zero)
         layer.cornerRadius = bounds.size.height/2
-        setForBand()
+        setForBrand()
     }
 
     @available (*, unavailable)
@@ -24,7 +24,7 @@ public final class Switch: UISwitch {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func setForBand() {
+    public func setForBrand() {
         thumbTintColor = .atom(.switchThumbTint)
         backgroundColor = .atom(.switchNegativeTint)
         tintColor = .atom(.switchNegativeTint)

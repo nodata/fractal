@@ -21,8 +21,11 @@ open class Observable<V> {
             self.closure = closure
         }
     }
-    
-    public var value: V { didSet { notify() } }
+            
+    private var previous: V!
+    public var value: V { didSet { if log { print("didset", value) }; notify(); previous = value } }
+    public var log = false
+    public var ignoreSame = true
     
     // NSMapTable for this purpose is essentially a dictionary with the ability to hold objects weakly or strongly...
     // Meaning in this case we can let numerous objects observe our value and be removed automatically on deinit
@@ -36,7 +39,8 @@ open class Observable<V> {
         
         let wrapper = ClosureWrapper(closure)
         
-        // Giving the closure back to the object that is observing allows ClosureWrapper to die at the same time as observing object
+        // Giving the closure back to the object that is observing allows ClosureWrapper
+        // to die at the same time as observing object
         
         var wrappers = objc_getAssociatedObject(observingObject, &AssociatedKeys.reference) as? [Any] ?? [Any]()
         wrappers.append(wrapper)
@@ -55,8 +59,32 @@ open class Observable<V> {
     }
     
     private func notify() {
-        let enumerator = observers.objectEnumerator()
-        while let wrapper = enumerator?.nextObject() { (wrapper as? ClosureWrapper<V>)?.closure(value) }
+        
+        if ignoreSame {
+           // guard value != previous else { return }
+        }
+        
+        if log { print("** Count:", observers.count) }
+        
+        var i = 0
+        
+        var objects = [ClosureWrapper<V>]()
+        
+        for object in observers.objectEnumerator() ?? NSEnumerator() {
+            if log { print("Notify", i); i += 1 }
+            guard let o =  (object as? ClosureWrapper<V>) else { return }
+            objects.append(o)
+        }
+        
+        if log { print("-- Objects:", objects.count) }
+        
+        for o in objects { o.closure(value) }
+        
+//        let enumerator = observers.objectEnumerator()
+//        while let wrapper = enumerator?.nextObject() {
+//            if log { print("Notify", i); i += 1 }
+//            (wrapper as? ClosureWrapper<V>)?.closure(value)
+//        }
     }
 }
 

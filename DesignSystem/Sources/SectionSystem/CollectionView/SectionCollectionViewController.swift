@@ -34,12 +34,16 @@ extension SectionCollectionViewController: SectionController {
 
                 if indexes.count > 0 {
                     UIView.performWithoutAnimation {
+                        let offset = self.collectionView.contentOffset
                         self.collectionView.reloadSections(IndexSet(indexes))
+                        self.collectionView.contentOffset = offset
                         self.finished()
                     }
                 } else {
+                    let offset = self.collectionView.contentOffset
                     self.collectionView.reloadData()
                     self.collectionView.layoutIfNeeded()
+                    self.collectionView.contentOffset = offset
                     self.finished()
                 }
 
@@ -55,19 +59,14 @@ extension SectionCollectionViewController: SectionController {
                         self.finished()
                     }
                 } else {
+                    let offset = self.collectionView.contentOffset
                     self.collectionView.reloadData()
                     self.collectionView.layoutIfNeeded()
+                    self.collectionView.contentOffset = offset
                     self.finished()
                 }
             }
         }
-    }
-    
-    @objc private func reloadRefresh() {
-        collectionView.reloadData()
-        collectionView.layoutIfNeeded()
-        collectionView.refreshControl?.perform(#selector(collectionView.refreshControl?.endRefreshing), with: nil, afterDelay: 0.2, inModes: [RunLoop.Mode.common])
-        perform(#selector(finished), with: nil, afterDelay: 0.2, inModes: [RunLoop.Mode.common])
     }
     
     @objc private func finished() {
@@ -84,12 +83,11 @@ extension SectionCollectionViewController: SectionController {
     }
 }
 
-open class SectionCollectionViewController: UICollectionViewController {
+open class SectionCollectionViewController: UICollectionViewController, Brandable {
     
     private let useRefreshControl: Bool
     private var data: SectionControllerDataSource!
     private var registeredReuseIdentifiers: Set<String> = []
-    private var notificationObject: NSObjectProtocol?
     fileprivate var refresh: (() -> Void)?
     public var tearDownOnBrandChange: Bool = true
 
@@ -135,20 +133,8 @@ open class SectionCollectionViewController: UICollectionViewController {
                 collectionView.addSubview(refreshControl)
             }
         }
-        
-        notificationObject = NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: BrandingManager.didChangeNotification), object: nil, queue: nil) { [weak self] (_) in
-            guard let `self` = self else { return }
-            guard self.tearDownOnBrandChange else { return }
-            self.tearDownSections()
-        }
     }
-
-    deinit {
-        if let observer = notificationObject {
-            NotificationCenter.default.removeObserver(observer)
-        }
-    }
-
+    
     @available (*, unavailable)
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -156,6 +142,11 @@ open class SectionCollectionViewController: UICollectionViewController {
 
     @objc open func refreshTriggered() {
         refresh?()
+    }
+    
+    open func setForBrand() {
+        guard tearDownOnBrandChange else { return }
+        tearDownSections()
     }
 
     private func tearDownSections() {

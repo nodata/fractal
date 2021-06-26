@@ -14,15 +14,13 @@ public class DefaultBrand: NSObject, Brand {
 
     public var keyboardAppearance: UIKeyboardAppearance = .default
 
-    public var preferredStatusBarStyle: UIStatusBarStyle { return .default }
+    public var preferredStatusBarStyle: UIStatusBarStyle { .default }
 
     public var defaultCellHeight: CGFloat = 44.0
 
-    public var resourceBundle: Bundle? = Bundle(for: BrandingManager.self)
+    public var resourceBundle: Bundle? = Bundle(for: BrandManager.self)
 
-    public func imageName(for key: UIImage.Key) -> String? {
-        return key.rawValue
-    }
+    public func imageName(for key: UIImage.Key) -> String? { key.rawValue }
 
     // MARK: - Size / Spacing
     
@@ -124,7 +122,7 @@ public class DefaultBrand: NSObject, Brand {
     }
 
     private func fontSizeAdjustment(for typography: Typography) -> CGFloat {
-        switch (typography.key, BrandingManager.contentSizeCategory) {
+        switch (typography.key, UIContentSizeCategory.managedContentSizeCategory) {
         case (.xxsmall, .extraSmall),
              (.xxsmall, .small):
             return 0.0

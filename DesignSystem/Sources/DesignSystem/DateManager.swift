@@ -33,11 +33,17 @@ public final class DateManager {
 
     // TODO: subscribe to NSLocale.currentLocaleDidChangeNotification to reset on Locale change
     
+    private let brandManager: BrandManager
+    
+    init(brandManager: BrandManager) {
+        self.brandManager = brandManager
+    }
+    
     public func string(from date: Date?, style: DateStyle = .medium, placeholder: String = "") -> String {
 
         guard let date = date else { return placeholder }
 
-        if let brand = BrandingManager.brand as? BrandDate {
+        if let brand = brandManager.brand as? BrandDate {
             switch style {
             case .detailed:
                 return brand.detailedFormatter.string(from: date)
